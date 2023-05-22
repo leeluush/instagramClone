@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const Chance = require('chance');
-const Comment = require('./models/comments'); 
-const User = require('./models/user')// Replace with your actual path
+const Comment = require('./models/comment');
+const User = require('./models/user');
+const Post = require('./models/post');
+
+const chance = new Chance();
 
 // Replace with your MongoDB connection URI
 const mongoUri = 'mongodb://localhost:27017/instagram-clone';
@@ -12,23 +15,26 @@ const connection = mongoose.connection;
 connection.once('open', async () => {
   console.log('MongoDB database connection established successfully');
 
-  const chance = new Chance();
-
   try {
     // Get all user IDs from the User collection
-    const userIds = await User.find({}, '_id');
-    console.log(userIds)
+    const users = await User.find({}, '_id');
+
+    // Get all post IDs from the Post collection
+    const posts = await Post.find({}, '_id');
 
     // Generate fake comments
     const comments = [];
     for (let i = 0; i < 50; i++) {
-      const randomAuthorId = userIds[Math.floor(Math.random() * userIds.length)]._id;
+      const randomAuthorId = chance.pickone(users)._id;
+      const randomPostId = chance.pickone(posts)._id;
+
       const comment = new Comment({
         author: randomAuthorId,
+        post: randomPostId,
         content: chance.sentence(),
         likes: chance.integer({ min: 0, max: 100 }),
       });
-      console.log(comment);
+
       comments.push(comment);
     }
 

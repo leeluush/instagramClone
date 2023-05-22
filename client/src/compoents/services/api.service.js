@@ -30,7 +30,7 @@ export async function getPosts() {
 
 export async function fetchComments() {
     try {
-        const response = await fetch('/api/comments');
+        const response = await fetch('/api/comments/');
         console.log('response:', response); 
         const data = await response.json();  
         console.log("comments:", data);  

@@ -8,7 +8,7 @@ async function getCommentsByPostId(req, res) {
 
   try {
 
-    const comments = await Comment.find({ post: postId })
+    const comments = await Comment.find({ post: postId || {$exists: true}})
       .populate('author', "profileImage userName")
     
       .sort('-created')

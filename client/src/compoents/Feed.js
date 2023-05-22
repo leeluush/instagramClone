@@ -8,6 +8,7 @@ import { getUsers, getPosts,fetchComments } from './services/api.service';
 function Feed() {
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
+  
 
   useEffect(() => {
     fetchUsers()
@@ -34,7 +35,7 @@ function Feed() {
         post.comments = commentsData.filter((comment) => comment.post === post._id);
         return post;
       });
-  
+      console.log('Comments data:', commentsData);
       setPosts(postWithComments);
     } catch (error) {
       console.error(error);
