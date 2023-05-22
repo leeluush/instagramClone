@@ -1,9 +1,17 @@
+body{
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+}
+
 .App {
   max-width: 935px;
   margin: 0 auto;
-  padding: 20px;
+  padding-bottom:  12px;
 }
 
+.logo {
+  height: 50px;
+}
 
 .Header {
   position: sticky;
@@ -40,6 +48,10 @@
   border-radius: 3px;
   background-color: white;
   margin-bottom: 24px;
+}
+
+.Feed > li {
+  
 }
 
 .Feed > div {

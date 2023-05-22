@@ -1,11 +1,11 @@
-const router = require('express').Router();
-const controller = require('../controllers/auth')
+const express = require('express');
+const router = express.Router();
+const categoryController = require('../controllers/categories.controllers');
 
-
-router.post('/api/login', controller.login)
-router.post('/api/register', controller.register)
-router.get('/api/user-info', controller.getUserInfo)
-router.post('/api/refresh-token', controller.refreshToken)
-
+router.get('/api/categories', categoryController.getCategories);
+router.get('/api/categories/:categoryId', categoryController.getCategory);
+router.post('/api/categories', categoryController.createCategory);
+router.delete('/api/categories/:categoryId', categoryController.removeCategory);
+router.put('/api/categories/:categoryId', categoryController.updateCategory);
 
 module.exports = router;

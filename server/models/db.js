@@ -12,6 +12,7 @@ async function connect() {
         });
         require('./user')
         require('./post')
+        require('./comment')
         console.log('Connection to mongo succeed');
     } catch (err) {
         throw new Error(`Failed to connect to mongo: ${err}`)

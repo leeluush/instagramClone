@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-const ACCESS_TOKEN_SECRET = 'my access token secret';
-const REFRESH_TOKEN_SECRET = 'my refresh token secret';
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || 'my access token secret';
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'my refresh token secret';
 
 function encode(payload) {
   const identifier = (Math.random() * Math.random()).toString();
@@ -9,6 +9,7 @@ function encode(payload) {
     identifier,
     access_token: jwt.sign(payload, ACCESS_TOKEN_SECRET, {expiresIn: '1h'}),
     refresh_token: jwt.sign({...payload, identifier}, REFRESH_TOKEN_SECRET, {expiresIn: '90 days'}),
+
   }
 }
 

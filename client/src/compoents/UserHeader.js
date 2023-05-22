@@ -1,13 +1,14 @@
 import React, {useContext} from 'react';
 import {UserInfoContext} from '../App'
+import './UserHeader.css'
 
 
 function UserHeader() {
-    const { userImage, userName, userBio } = useContext(UserInfoContext);
+    const { profileImage, userName, userBio } = useContext(UserInfoContext);
   
     return (
       <div className="UserHeader">
-        <img src={userImage} alt={userName} />
+        <img src={profileImage} alt={userName} />
         <h1>{userName}</h1>
         <p>{userBio}</p>
       </div>

@@ -2,26 +2,31 @@ const Post = require('../models/post');
 const User = require('../models/user');
 
 
+
+
 async function getPosts(req, res) {
   try {
 
-    const posts = await Post
-      .find({ author: req.user._id })
+    const posts = await Post.find()
+
+  
       .sort('-created')
       .limit(50)
-      .select('author category title created')
+      .select('author category title content thumbnail coverImage likes created updated')
       .populate('category')
-      .populate('author', 'fullName username')
+      .populate('author', 'firstName lastName profileImage userName')
+      .populate('comments')
+
 
       .exec();
 
-    res.json(posts);
+    res.json(posts)
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ message: error.message });
-
-  }
+  console.log(error);
+  res.status(500).json({ message: error.message });
 }
+}
+
 
 async function getSinglePost(req, res) {
   try {
@@ -60,7 +65,7 @@ async function removePost(req, res) {
     await Post
       .deleteOne({ _id: postId, author: req.user._id })
       .exec()
-      res.json({ message: "Post removed successfully" });
+    res.json({ message: "Post removed successfully" });
 
 
   } catch (error) {
@@ -75,13 +80,13 @@ async function updatePost(req, res) {
   try {
     const postId = req.params.postId;
     const content = req.body.content;
-     await Post.updateOne(
+    await Post.updateOne(
       { _id: postId, author: req.user._id },
       { $set: { content: content } }).exec();
-      res.json({ message: "Post updated successfully", data: content });
-    } catch (error) {
-      res.status(500).json({ message: "An error occurred while updating the post" });
-    }
+    res.json({ message: "Post updated successfully", data: content });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred while updating the post" });
+  }
 }
 
 

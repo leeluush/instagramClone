@@ -1,28 +1,36 @@
-const {verifyAccessToken, verifyRefreshToken,encode} = require("../services/jwt.service");
+const { verifyAccessToken, encode, verifyRefreshToken } = require("../services/jwt.service");
+const {ninetyDays} = require('../config')
 const UserToken = require('../models/user-token')
 
 async function verifyUser(req, res, next) {
-  console.log('Checking token...')
   try {
     const token = req.cookies.token;
     if (!token) {
       console.log('No token found');
-      return res.status(401).json({message:'not connected'})
+      return res.status(401).json({ message: 'not authorized' })
     }
 
-    const user = verifyAccessToken(token)
+    const user = verifyRefreshToken(token)
     const creationTime = user.iat;
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (currentTime - creationTime > 10 * 60) {
       const isTokenInDB = await UserToken.exists({ user: user._id, token: user.identifier });
-    
+
       if (isTokenInDB) {
-        const newTokens = encode(user);
-        res.json({tokens:newTokens})
+        const { identifier, refresh_token } = encode(user);
+
+        await UserToken.updateOne(
+          { user: user._id, token: user.identifier },
+          { $set: { token: identifier } }
+        )
+
+        res.cookie('token', refresh_token, { httpOnly: true, maxAge: ninetyDays, path: '/api' })
 
       } else {
         console.log('Token not in DB');
+        res.cookie('token', '', { httpOnly: true, maxAge: 0, path: '/api' })
+
         return res.status(401).json({ message: 'not connected' });
       }
     }
@@ -30,6 +38,7 @@ async function verifyUser(req, res, next) {
     req.user = user;
     next();
   } catch {
+    res.cookie('token', '', { httpOnly: true, maxAge: 0, path: '/api' })
     console.log('Error verifying token')
     res.status(401).json({ message: 'not authorized' });
   }
