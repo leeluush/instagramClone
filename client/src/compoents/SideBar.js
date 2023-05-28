@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../logos/inst.png"
 import { Link } from "react-router-dom";
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -12,76 +12,54 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import Avatar from '@mui/material/Avatar';
 import './SideBar.css';
 import { useMediaQuery } from '@mui/material';
+import { AuthContext } from '../pages/context/AuthContext';
+
 
 
 
 
 function SideBar() {
-  const isSmallScreen = useMediaQuery('(max-width:772px), (max-height:577px)');
+  const { user } = useContext(AuthContext);
+   const isSmallScreen = useMediaQuery('(max-width:772px), (max-height:577px)');
+  
+   if (!user) {
+    return null;
+  }
+
+  const navLinks = [
+    { to: "/", icon: <HomeIcon />, text: "Home" },
+    { to: "/search", icon: <SearchIcon />, text: "Search" },
+    { to: "/explore", icon: <ExploreIcon />, text: "Explore" },
+    { to: "/reels", icon: <SlideshowIcon />, text: "Reels" },
+    { to: "/messages", icon: <MessageIcon />, text: "Messages" },
+    { to: "/notifications", icon: <FavoriteBorderIcon />, text: "Notification" },
+    { to: "/create", icon: <AddBoxIcon />, text: "Create" },
+    { to: "/Profile", icon: <Avatar />, text: "Profile" },
+  ];
 
   return (
     <aside className={`side-bar ${isSmallScreen ? 'side-bar-small' : ''}`}>
-      <div>
+      <header>
         {isSmallScreen ? (
           <InstagramIcon />
           ) : (
             <img className="logo" src={logo} alt="logo" />
           )}
-      </div>
-      <nav>
-        <ul>
-          <li>
-            <div>
-              <HomeIcon />
-              {!isSmallScreen && <Link to="/">Home</Link>}
-            </div>
-          </li>
-          <li>
-            <div>
-              <SearchIcon />
-              {!isSmallScreen && <Link to="/search">Search</Link>}
-            </div>
-          </li>
-          <li>
-            <div>
-              <ExploreIcon />
-              {!isSmallScreen && <Link to="/explore">Explore</Link>}
-            </div>
-          </li>
-          <li>
-            <div>
-              <SlideshowIcon />
-              {!isSmallScreen && <Link to="/reels">Reels</Link>}
-            </div>
-          </li>
-          <li>
-            <div>
-              <MessageIcon />
-              {!isSmallScreen && <Link to="/messages">Messages</Link>}
-            </div>
-          </li>
-          <li>
-            <div>
-              <FavoriteBorderIcon />
-              {!isSmallScreen && <Link to="/notifications">Notification</Link>}
-            </div>
-          </li>
-          <li>
-            <div>
-              <AddBoxIcon />
-              {!isSmallScreen && <Link to="/create">Create</Link>}
-            </div>
-          </li>
-          <li>
-            <div>
-              <Avatar />
-              {!isSmallScreen && <Link to="/Profile">Profile</Link>}
-            </div>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-  );
-}
+        </header>
+        <nav>
+          <ul>
+            {navLinks.map((link, index) => (
+              <li key={index}>
+                <div>
+                  {link.icon}
+                  {!isSmallScreen && <Link to={link.to}>{link.text}</Link>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    );
+  }
 
 export default SideBar;

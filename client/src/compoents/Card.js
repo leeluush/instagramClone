@@ -1,7 +1,9 @@
 import React from "react";
+import Card from '@mui/material/Card';
 
 
-function Card({ children }) {
+
+function CardList({ children }) {
     return (
   
       <div className="card">

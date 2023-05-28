@@ -1,6 +1,9 @@
 import UserHeader from "../compoents/UserHeader";
+
+import { AuthContext } from "../pages/context/AuthContext";
 import SideBar from "../compoents/SideBar";
 import { Outlet, useLoaderData } from "react-router-dom";
+import { useContext } from "react";
 
 
 export async function loader() {
@@ -9,16 +12,14 @@ export async function loader() {
 
 
 export default function Root() {
+    const { user } = useContext(AuthContext); 
     // const {cards} = useLoaderData();
     return (
         <>
-            <div className='header'>
-                <SideBar />
-                </div>
-                <UserHeader/>
-            <main className='Main'>
-                <Outlet />
-            </main>
+          <UserHeader/>
+          <main className='Main'>
+            <Outlet />
+          </main>
         </>
-    );
-}
+      );
+    }

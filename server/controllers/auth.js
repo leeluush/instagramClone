@@ -7,7 +7,7 @@ const ninetyDays = 90 * 24 * 60 * 60 * 1000
 
 
 async function login(req, res) {
-    const { email, password, userName } = req.body;
+    const { email, password, userName, profileImage, } = req.body;
     try {
         const user = await User.findOne({
             email: email,

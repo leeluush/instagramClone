@@ -1,18 +1,27 @@
 import React, {useContext} from 'react';
-import {UserInfoContext} from '../App'
+import { AuthContext } from '../pages/context/AuthContext'
 import './UserHeader.css'
 
 
-function UserHeader() {
-    const { profileImage, userName, userBio } = useContext(UserInfoContext);
+  function UserHeader() {
+    const { user } = useContext(AuthContext);
+  
+    if (!user) {
+      return null;
+    }
+  
+    const { profileImage, userName, email } = user || {};
+  
+    if(!profileImage || !userName || !email) {
+      return null;
+    }
   
     return (
       <div className="UserHeader">
         <img src={profileImage} alt={userName} />
         <h1>{userName}</h1>
-        <p>{userBio}</p>
       </div>
     );
   }
-  
-  export default UserHeader; 
+    
+  export default UserHeader;

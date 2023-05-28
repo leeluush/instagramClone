@@ -1,56 +1,14 @@
 import React from "react";
-import { Avatar, Card, CardHeader, CardMedia, CardContent, CardActions, List } from "@mui/material";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import TelegramIcon from '@mui/icons-material/Telegram';
+import PostCardHeader from "./PostCardHeader";
+import PostCardMedia from "./PostCardMedia";
+import PostContent from "./PostContent";
+import PostInteractions from "./PostInteractions";
+
+import { Collapse, IconButton, Card, CardActions, List } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import Comment from "./Comment";
 import "./Post.css";
-
-
-
-function PostHeader({ post }) {
-  if (!post || !post.author) return null;
-  const { userName, profileImage } = post.author;
-
-
-  const date = new Date(post.created);
-  const createdTime = date.toDateString();
-
-  return (
-    <CardHeader
-      avatar={<Avatar alt={userName} src={profileImage} />}
-      title={userName}
-      subheader={createdTime}
-    />
-  );
-}
-
-function PostMedia({ media }) {
-  return (
-    <CardMedia
-      component="img"
-      height="194"
-      image={media}
-      alt="media"
-    />
-  );
-}
-
-function PostInteractions({ likesNumber, content }) {
-  return (
-    <CardContent>
-      <CardActions>
-        <FavoriteBorderIcon />
-        <ChatBubbleOutlineIcon />
-        <TelegramIcon />
-      </CardActions>
-      <p className="post-likes">{likesNumber} likes</p>
-      <p className="post-content">{content}</p>
-
-    </CardContent>
-  );
-}
-
 
 
 function Post({ post }) {
@@ -58,19 +16,36 @@ function Post({ post }) {
     thumbnail,
     likes,
     content, comments } = post;
-    console.log(post);
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   return (
     <Card className="post">
-      <PostHeader post={post} />
-      <PostMedia media={thumbnail} />
-      <PostInteractions likesNumber={likes} content={content} />
-      <List>
-        {comments.map((comment) => (
-          <Comment key={comment._id} comment={comment} />
-        ))}
-      </List>
-
+      <PostCardHeader post={post} />
+      <PostCardMedia media={thumbnail} />
+      <PostInteractions likesNumber={likes} />
+      <PostContent content={content}></PostContent>
+      <CardActions disableSpacing>
+       
+        <IconButton
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <List>
+        
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))}
+        </List>
+      </Collapse>
     </Card>
   );
 }

@@ -7,7 +7,7 @@ function List({ cards }) {
       <ul className="List">
         {cards.map((cardContent,index) => {
           return (
-            <li key={index} className="List-item"><Card>{cardContent}</Card></li>
+            <li key={index} className="List-item" ><Card>{cardContent}</Card></li>
           )
         })}
       </ul>
