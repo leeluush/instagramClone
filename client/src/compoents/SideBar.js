@@ -23,9 +23,11 @@ function SideBar() {
    const isSmallScreen = useMediaQuery('(max-width:772px), (max-height:577px)');
   
    if (!user) {
-    return null;
-  }
+    return <div>Loading...</div>;
 
+  }
+  const { userName, profileImage } = user;
+  console.log(user)
   const navLinks = [
     { to: "/", icon: <HomeIcon />, text: "Home" },
     { to: "/search", icon: <SearchIcon />, text: "Search" },
@@ -34,7 +36,7 @@ function SideBar() {
     { to: "/messages", icon: <MessageIcon />, text: "Messages" },
     { to: "/notifications", icon: <FavoriteBorderIcon />, text: "Notification" },
     { to: "/create", icon: <AddBoxIcon />, text: "Create" },
-    { to: "/Profile", icon: <Avatar />, text: "Profile" },
+    { to: "/Profile", icon: <Avatar alt={userName} src={profileImage}/>, text: "Profile"   },
   ];
 
   return (
@@ -62,4 +64,4 @@ function SideBar() {
     );
   }
 
-export default SideBar;
+export default SideBar;   

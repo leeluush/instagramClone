@@ -1,10 +1,12 @@
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
 const UserAvatarRow = ({users}) => {
     return (
+      
       <Stack direction="row" spacing={2}>
-        {users.map((user, index) => (
+        {users.slice(0, 8).map((user, index) => (
           <Avatar key={index} alt={user.name} src={user.profileImage} />
         ))}
       </Stack>

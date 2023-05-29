@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Post from './Post'
 import UserAvatarRow from './UserAvatarRow';
 import { getUsers, getPosts,fetchComments } from './services/api.service';
+import Container from '@mui/material/Container';
 
 
 
@@ -46,7 +47,8 @@ function Feed() {
   console.log(posts); // Debug statement
 
     return (
-      <div className='feed'>
+      <Container maxWidth = "sm">
+
         <UserAvatarRow users={users} />
        
         <ul className="post-list">
@@ -58,7 +60,9 @@ function Feed() {
             </li>
           ))}
         </ul>
-      </div>
+        </Container>
+   
+
     );
   }
 

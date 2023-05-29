@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express')
 const cors = require('cors')
 const connect = require('./models/db');
@@ -15,6 +16,8 @@ app.use(express.json())
 app.use(cors())
 
 app.use(router)
+app.use(express.static(path.join(__dirname,'../client/build')))
+app.use('*',express.static(path.join(__dirname,'../client/build/index.html')))
 
 
 

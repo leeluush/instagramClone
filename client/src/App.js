@@ -36,7 +36,7 @@ export default function App() {
             <div className='side-bar'>
               <SideBar />
             </div>
-            <header><UserHeader className='UserHeader' /></header>
+
           </>
         )}
         <main className='Main'>

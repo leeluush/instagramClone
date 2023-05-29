@@ -3,7 +3,8 @@ import { AuthContext } from '../pages/context/AuthContext'
 import './UserHeader.css'
 
 
-  function UserHeader() {
+function UserHeader() {
+
     const { user } = useContext(AuthContext);
   
     if (!user) {
