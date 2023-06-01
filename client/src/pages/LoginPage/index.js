@@ -63,6 +63,9 @@ const LoginPage = () => { //
       <Grid item>
         <Button variant="contained" onClick={login}>Login</Button>
       </Grid>
+      <Grid item>
+  <Button variant="outlined" onClick={() => navigate("/register")}>Register</Button>
+</Grid>
     </Grid>
     </Grid>
   );

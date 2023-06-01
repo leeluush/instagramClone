@@ -6,8 +6,8 @@ async function verifyUser(req, res, next) {
   try {
     const token = req.cookies.token;
     if (!token) {
-      console.log('No token found');
       return res.status(401).json({ message: 'not authorized' })
+      
     }
 
     const user = verifyRefreshToken(token)
@@ -39,7 +39,6 @@ async function verifyUser(req, res, next) {
     next();
   } catch {
     res.cookie('token', '', { httpOnly: true, maxAge: 0, path: '/api' })
-    console.log('Error verifying token')
     res.status(401).json({ message: 'not authorized' });
   }
 }

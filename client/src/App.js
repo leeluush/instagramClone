@@ -5,7 +5,6 @@ import '@fontsource/roboto/700.css';
 
 import React, { createContext } from "react";
 
-import UserHeader from './compoents/UserHeader';
 import Feed from './compoents/Feed';
 import SideBar from './compoents/SideBar';
 

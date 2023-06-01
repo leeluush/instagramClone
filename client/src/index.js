@@ -6,14 +6,15 @@ import Root, { loader as rootLoader } from './routes/root';
 import App from './App';
 import ErrorPage from './routes/error-page';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/register-page.js';
+
 import { AuthProvider } from './pages/context/AuthContext.js'
 
 
 
-// CSS Imports
+
 import './index.css';
 
-// Setup BrowserRouter
 const router = createBrowserRouter([
 
   {
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
       index: true,
       element: <LoginPage />,
     },
+    {
+      path: "/register",
+      element: <RegisterPage />
+
+    }
    ]
   }
 ])

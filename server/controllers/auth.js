@@ -7,7 +7,7 @@ const ninetyDays = 90 * 24 * 60 * 60 * 1000
 
 
 async function login(req, res) {
-    const { email, password, userName, profileImage, } = req.body;
+    const { email, password, userName, } = req.body;
     try {
         const user = await User.findOne({
             email: email,
@@ -21,20 +21,17 @@ async function login(req, res) {
             }
 
             const { identifier, ...tokens } = encode({ email, userName,  userId: user._id });
-            console.log(user._id);
-
             res.cookie('token', tokens.refresh_token, { httpOnly: true, maxAge: ninetyDays, path: '/api' })
-            
-
+    
             const userToken = new UserToken({
                 user: user._id,
                 token: identifier
             })
-            console.log(userToken)
 
             await userToken.save();
 
-                res.json({
+            return res.status(200).json
+            ({ message: 'Logged in successfully.',
                     payload: {
                         user: {
                             _id: user._id,
@@ -103,7 +100,8 @@ async function refreshToken(req, res) {
 }
 
 async function register(req, res) {
-    const { firstName, lastName, email, password, birthdate,userName } = req.body;
+    const { firstName, lastName, email, password, birthdate,userName,  } = req.body;
+    const profileImage = req.file.path
     const hash = bcrypt.hashSync(password, 5)
 
     //to do add login 
@@ -115,12 +113,14 @@ async function register(req, res) {
             lastName,
             email,
             password: hash,
-            birthdate
+            birthdate,
+            profileImage
         });
         await user.save();
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: `failed to register user' ${error}` });
+        console.log(error);
     }
 }
 
