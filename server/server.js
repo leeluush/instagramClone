@@ -16,6 +16,8 @@ connect();
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors())
+app.use('/upload', express.static('upload'));
+
 
 app.use(router)
 app.use(express.static(path.join(__dirname, '../client/build')))

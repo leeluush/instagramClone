@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../logos/inst.png"
 import { Link } from "react-router-dom";
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -10,6 +10,16 @@ import MessageIcon from '@mui/icons-material/Message';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Avatar from '@mui/material/Avatar';
+import Button from "@mui/material/Button";
+import { useNavigate } from 'react-router-dom';
+
+
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import {logout} from '../services/api.service'
+
+
 import './SideBar.css';
 import { useMediaQuery } from '@mui/material';
 import { AuthContext } from '../pages/context/AuthContext';
@@ -18,9 +28,37 @@ import { AuthContext } from '../pages/context/AuthContext';
 
 
 
+
+
 function SideBar() {
   const { user } = useContext(AuthContext);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+
+
+
    const isSmallScreen = useMediaQuery('(max-width:772px), (max-height:577px)');
+
+   const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    handleClose();
+    try {
+      await logout();
+      navigate('/login');
+
+
+    } catch (error) {
+  console.log(error); 
+    }
+  };
+
   
    if (!user) {
     return <div>Loading...</div>;
@@ -36,7 +74,7 @@ function SideBar() {
     { to: "/messages", icon: <MessageIcon />, text: "Messages" },
     { to: "/notifications", icon: <FavoriteBorderIcon />, text: "Notification" },
     { to: "/create", icon: <AddBoxIcon />, text: "Create" },
-    { to: "/Profile", icon: <Avatar alt={userName} src={profileImage}/>, text: "Profile"   },
+    { to: "/Profile", icon: <Avatar alt={userName} src={profileImage}/>, text: "Profile"   }
   ];
 
   return (
@@ -60,6 +98,18 @@ function SideBar() {
             ))}
           </ul>
         </nav>
+        <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+  More
+</Button>
+        <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+       >
+         <MenuItem onClick={handleLogout}>Logout</MenuItem>
+         </Menu>
       </aside>
     );
   }

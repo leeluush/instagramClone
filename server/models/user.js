@@ -33,10 +33,18 @@ const UserSchema = new mongoose.Schema({
     password: String,
     created: {
         type: Date,
-        Default: Date.now
+        default: Date.now
     },
     birthDate: Date,
-})
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+});
 
 
 

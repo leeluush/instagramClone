@@ -158,10 +158,14 @@ async function getUserByUserId(req,res) {
         res.status(500).json({ message: error.message });
     }
 
+
 }
 
 
-
+   function logout (req,res) {
+    res.cookie('token', '', { maxAge: 0, httpOnly: true, path: '/api' });
+    res.status(200).send('Logged out');
+}
 
 
 
@@ -174,5 +178,6 @@ module.exports = {
     register,
     getUserInfo,
     refreshToken,
-    getUserByUserId
+    getUserByUserId,
+    logout
 }
