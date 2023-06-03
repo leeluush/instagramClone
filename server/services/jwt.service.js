@@ -7,16 +7,17 @@ function encode(payload) {
   const identifier = (Math.random() * Math.random()).toString();
   return {
     identifier,
-    access_token: jwt.sign(payload, ACCESS_TOKEN_SECRET, {expiresIn: '1h'}),
-    refresh_token: jwt.sign({...payload, identifier}, REFRESH_TOKEN_SECRET, {expiresIn: '90 days'}),
+    access_token: jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' }),
+    refresh_token: jwt.sign({ ...payload, identifier }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' }),
 
-  }
+  };
 }
 
 function verifyAccessToken(token) {
+  console.log("Verifying Token: ", token);
+
   return jwt.verify(token, ACCESS_TOKEN_SECRET);
 }
-
 
 function verifyRefreshToken(token) {
   return jwt.verify(token, REFRESH_TOKEN_SECRET);
@@ -25,5 +26,5 @@ function verifyRefreshToken(token) {
 module.exports = {
   encode,
   verifyAccessToken,
-  verifyRefreshToken
-}
+  verifyRefreshToken,
+};

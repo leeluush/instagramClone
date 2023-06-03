@@ -1,6 +1,5 @@
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 
 const UserAvatarRow = ({users}) => {
     return (

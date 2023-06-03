@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const controller = require('../controllers/auth')
 const verifyUser = require('../middleware/verify-user')
+
 const upload = require('../middleware/upload');
 
 

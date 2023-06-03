@@ -5,8 +5,8 @@ import { createBrowserRouter, RouterProvider} from 'react-router-dom';
 import Root, { loader as rootLoader } from './routes/root';
 import App from './App';
 import ErrorPage from './routes/error-page';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/register-page.js';
+import LoginPage from './compoents/Auth/loginForm'
+import RegisterPage from './compoents/Auth/RegisterForm';
 
 import { AuthProvider } from './pages/context/AuthContext.js'
 

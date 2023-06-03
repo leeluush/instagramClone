@@ -5,11 +5,12 @@ const User = require('../models/user');
 
 
 async function getPosts(req, res) {
+
+
   try {
 
     const posts = await Post.find()
 
-  
       .sort('-created')
       .limit(50)
       .select('author category title content thumbnail coverImage likes created updated')

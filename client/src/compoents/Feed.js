@@ -26,14 +26,13 @@ function useUsers() {
     }
     fetchUsers()
 
-  }, [])
+  },[navigate]);
   return users
 }
 
 
 function Feed() {
   const users = useUsers()
-  debugger
   const [posts, setPosts] = useState([]);
 
 
@@ -45,6 +44,7 @@ function Feed() {
   async function fetchPosts() {
     try {
       const postData = await getPosts();
+      console.log(postData)
       const commentsData = await fetchComments();
       console.log('Comments data:', commentsData);
 

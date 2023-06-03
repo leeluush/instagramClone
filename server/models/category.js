@@ -1,5 +1,4 @@
 const mongoose = require ('mongoose');
-const Todo = require('./todo');
 const ObjectId = mongoose.ObjectId;
 
 const CategorySchema = new mongoose.Schema({

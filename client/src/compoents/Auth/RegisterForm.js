@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from './context/AuthContext';
+import { AuthContext } from '../../pages/context/AuthContext';
 import { TextField, Button, Grid, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
