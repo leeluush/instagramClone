@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../pages/context/AuthContext';
+import { AuthContext } from '../AuthContext';
 import { TextField, Button, Grid, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
@@ -27,11 +27,6 @@ const LoginPage = () => { //
       }
 
       const data = await res.json();
-
-      console.log('Response data: ', data); 
-      
-      localStorage.setItem('token', data.tokens.access_token)
-      console.log('Token after storage: ', localStorage.getItem('token'));
 
       setUser(data.payload.user); 
       navigate("/app");

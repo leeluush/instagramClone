@@ -8,7 +8,7 @@ import ErrorPage from './routes/error-page';
 import LoginPage from './compoents/Auth/loginForm'
 import RegisterPage from './compoents/Auth/RegisterForm';
 
-import { AuthProvider } from './pages/context/AuthContext.js'
+import { AuthProvider } from './compoents/AuthContext'
 
 
 

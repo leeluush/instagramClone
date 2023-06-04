@@ -1,14 +1,14 @@
 import React, {useContext} from 'react';
-import { AuthContext } from '../pages/context/AuthContext'
+import { AuthContext } from '../compoents/AuthContext'
 import './UserHeader.css'
 
 
 function UserHeader() {
 
-    const { user } = useContext(AuthContext);
-  
+  const { user } = useContext(AuthContext);
+    
     if (!user) {
-      return null;
+      return <div>Loading user information...</div>;
     }
   
     const { profileImage, userName, email } = user || {};

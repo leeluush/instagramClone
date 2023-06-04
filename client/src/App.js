@@ -7,6 +7,8 @@ import React, { createContext } from "react";
 
 import Feed from './compoents/Feed';
 import SideBar from './compoents/SideBar';
+import { AuthProvider } from './compoents/AuthContext'
+
 
 
 
@@ -28,6 +30,8 @@ export default function App() {
     userBio: "a genuies"
   }
   return (
+  <AuthProvider>
+    
     <UserInfoContext.Provider value={user}>
       <div className='App'>
         {user && (
@@ -44,5 +48,6 @@ export default function App() {
         <footer className='Footer'></footer>
       </div>
     </UserInfoContext.Provider>
+    </AuthProvider>
   );
 }

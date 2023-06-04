@@ -1,6 +1,6 @@
 import UserHeader from "../compoents/UserHeader";
 
-import { AuthContext } from "../pages/context/AuthContext";
+import { AuthContext } from "../compoents/AuthContext"
 import SideBar from "../compoents/SideBar";
 import { Outlet, useLoaderData } from "react-router-dom";
 import { useContext } from "react";

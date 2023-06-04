@@ -22,7 +22,7 @@ import {logout} from '../services/api.service'
 
 import './SideBar.css';
 import { useMediaQuery } from '@mui/material';
-import { AuthContext } from '../pages/context/AuthContext';
+import { AuthContext } from './AuthContext'
 
 
 

@@ -1,18 +1,17 @@
 const { verifyAccessToken, encode  } = require("../services/jwt.service");
 const { ninetyDays } = require('../config')
 const RefreshToken = require('../models/user-token');
+const cookie = require('cookie');
 
 async function verifyUser(req, res, next) {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) {
-            throw new Error('Not authorized');
-        }
+        const cookies = cookie.parse(req.headers.cookie || '');
+        const token = cookies.accessToken;
 
-        const token = authHeader.split(' ')[1];
         if (!token) {
             throw new Error('Not authorized');
         }
+
         let decoded;
         try {
             decoded = verifyAccessToken(token);

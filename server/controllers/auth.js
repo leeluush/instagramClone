@@ -139,7 +139,7 @@ async function getUserInfo(req, res) {
     const userId = req.user.userId
     try {
         const user = await User.findById(userId)
-            .select('firstName lastName email birthdate')
+            .select('firstName lastName email birthdate profileImage')
             .exec()
 
         if (user) {
