@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
+
 import { fetchUserInfo } from '../services/api.service'; 
 
 export const AuthContext = createContext();
@@ -13,19 +14,19 @@ export const AuthProvider = ({ children }) => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
     } else {
-      localStorage.removeItem('user'); // If user logs out or user data is null
+      localStorage.removeItem('user'); 
     }
   }, [user]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      // Only fetch the user info if a user is stored in local storage
+      
       if (localStorage.getItem('user')) {
         try {
           const userInfo = await fetchUserInfo();
           setUser(userInfo)
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       }
     };

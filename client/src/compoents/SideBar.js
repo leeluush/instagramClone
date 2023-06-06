@@ -55,7 +55,7 @@ function SideBar() {
 
 
     } catch (error) {
-  console.log(error); 
+  // console.log(error); 
     }
   };
 
@@ -65,7 +65,7 @@ function SideBar() {
 
   }
   const { userName, profileImage } = user;
-  console.log(user)
+  // console.log(user)
   const navLinks = [
     { to: "/", icon: <HomeIcon />, text: "Home" },
     { to: "/search", icon: <SearchIcon />, text: "Search" },

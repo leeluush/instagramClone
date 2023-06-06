@@ -27,17 +27,17 @@ export async function sendJson(body, method, url) {
 
 
 
-export async function getUsers() {
+export async function getUsersById(userId) {
     try {
-        const response = await fetch('/api/user', {
+        const response = await fetch(`/api/users/${userId}`, {
             credentials: 'include',
 
         });
         if (!response.ok) {
-            throw new Error('Failed to fetch users');
+            throw new Error('Failed to fetch user');
         }
-        const users = await response.json();
-        return users;
+        const user = await response.json();
+        return user;
     } catch (error) {
         console.error(error);
         throw error;
@@ -55,7 +55,7 @@ export async function getPosts() {
         })
 
         const posts = await response.json();
-        console.log({})
+        // console.log({})
 
         return posts;
     } catch (error) {
@@ -72,9 +72,9 @@ export async function fetchComments() {
             credentials: 'include',
 
         });
-        console.log('response:', response);
+        // console.log('response:', response);
         const data = await response.json();
-        console.log("comments:", data);
+        // console.log("comments:", data);
 
         return data;
     } catch (error) {
@@ -114,8 +114,6 @@ export async function followUser(userId, followerId) {
 
 export async function unfollowUser(userId, followerId) {
 
-
-
     try {
         const response = await fetch('/api/users/unfollow', {
             method: 'POST',
@@ -141,7 +139,6 @@ export async function logout() {
         const response = await fetch('/api/logout', {
             method: 'POST',
             credentials: 'include',
-
         });
         if (response.ok) {
 

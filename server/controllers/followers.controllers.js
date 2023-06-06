@@ -1,36 +1,42 @@
 const userService = require('../services/user.service')
+const Follower = require('../models/follower')
 
-async function followUser (req, res) {
+async function followUser(req, res) {
 
     try {
-        const userId = req.params.id;
-        const followerId = req.user.id;
+        const followee = req.params.id;
+        const user = req.user.id;
 
-        await userService.addFollwing(userId,followerId);
-        
-        res.status(200).json({message: "Followed Sucessfully"});
+        const follower = new Follower({
+            user, followee
+        })
 
-        
-    } catch(error)  {
-        res.status(500).json({message: error.message})
-        
+
+
+        await follower.save()
+     res.status(200).json({ message: "Followed Sucessfully" });
+
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+
     }
 }
 
-async function unfollowUser (req ,res) {
+async function unfollowUser(req, res) {
     try {
-        const userId = req.params.id;
-        const followerId = req.user.id;
+        const followee = req.params.id;
+        const user = req.user.id;
 
-        await userService.removeFollwing(userId, followerId);
+        await Follower.findOneAndRemove({ followee, user })
 
-        res.status(200).json({message:"Unfollowed successfully"})
+        res.status(200).json({ message: "Unfollowed successfully" })
     } catch (error) {
-        
+
     }
 }
 
 module.exports = {
     followUser,
     unfollowUser
-  }
+}

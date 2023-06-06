@@ -1,38 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Post from './Post'
-import UserAvatarRow from './UserAvatarRow';
-import { getUsers, getPosts, fetchComments } from '../services/api.service';
+import Reels from './Reels';
+import { getPosts, fetchComments } from '../services/api.service';
 import Container from '@mui/material/Container';
 
 
-
-function useUsers() {
-  const [users, setUsers] = useState([]);
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const data = await getUsers();
-        setUsers(data)
-      } catch (error) {
-        if (error.status === 401) {
-          return navigate("/login")
-        }
-        console.log(error)
-
-      }
-    }
-    fetchUsers()
-
-  },[navigate]);
-  return users
-}
-
-
 function Feed() {
-  const users = useUsers()
   const [posts, setPosts] = useState([]);
 
 
@@ -44,28 +17,27 @@ function Feed() {
   async function fetchPosts() {
     try {
       const postData = await getPosts();
-      console.log(postData)
+      // console.log(postData)
       const commentsData = await fetchComments();
-      console.log('Comments data:', commentsData);
+      // console.log('Comments data:', commentsData);
 
       const postWithComments = postData.map((post) => {
         post.comments = commentsData.filter((comment) => comment.post === post._id);
         return post;
       });
-      console.log('Comments data:', commentsData);
+      // console.log('Comments data:', commentsData);
       setPosts(postWithComments);
     } catch (error) {
       console.error(error);
     }
   }
 
-
-  console.log(posts); // Debug statement
+  // console.log(posts); // Debug statement
 
   return (
     <Container maxWidth="sm">
 
-      <UserAvatarRow users={users} />
+      <Reels/>
 
       <ul className="post-list">
         {posts.map((post) => (

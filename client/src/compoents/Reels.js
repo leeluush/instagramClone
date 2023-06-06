@@ -1,18 +1,20 @@
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import { useState } from 'react';
 
-const UserAvatarRow = ({users}) => {
+const Reels = () => {
+  const [reels, setReels] = useState([])
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="start"
- 
+
     >
       <Stack direction="row" spacing={2}>
-        {users.slice(0, 8).map((user, index) => (
-          <Avatar key={index} alt={user.name} src={user.profileImage} />
+        {reels.map((reels, index) => (
+          <Avatar key={index} alt={reels.name} src={reels.profileImage} />
         ))}
       </Stack>
     </Box>
@@ -20,6 +22,5 @@ const UserAvatarRow = ({users}) => {
 }
 
 
-  export default UserAvatarRow;
+export default Reels;
 
-  
