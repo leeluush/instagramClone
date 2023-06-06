@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "render":"(cd client && npm i && npm run build)&& (cd server && npm i )",
+    "render": "(cd client && npm i && npm run build)&& (cd server && npm i )",
     "start": "cd server && npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "(npm run build --workspace client)",
     "postinstall": "npm run build"
   },
-  "workspaces": ["client","server"],
-  
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leeluush/instagramClone.git"
@@ -21,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/leeluush/instagramClone/issues"
   },
-  "homepage": "https://github.com/leeluush/instagramClone#readme"
+  "homepage": "https://github.com/leeluush/instagramClone#readme",
+  "dependencies": {
+    "express-async-handler": "^1.2.0"
+  }
 }

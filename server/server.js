@@ -5,6 +5,7 @@ const cors = require('cors')
 const connect = require('./models/db');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
+const {errorHandler} = require('./middleware/errorMiddleware')
 
 const router = require('./routes/index')
 
@@ -15,11 +16,13 @@ connect();
 
 app.use(cookieParser())
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 app.use(cors())
 app.use('/upload', express.static('upload'));
 
 
 app.use(router)
+app.use(errorHandler)
 app.use(express.static(path.join(__dirname, '../client/build')))
 app.use('*', express.static(path.join(__dirname, '../client/build/index.html')))
 
