@@ -6,9 +6,9 @@ import './UserHeader.css'
 function UserHeader() {
 
   const { user } = useContext(AuthContext);
-    
+  
     if (!user) {
-      return <div>Loading user information...</div>;
+      return <div>Loading user information... bla bla bla</div>;
     }
   
     const { profileImage, userName, email } = user || {};
