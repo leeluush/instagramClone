@@ -31,11 +31,9 @@ import { AuthContext } from './AuthContext'
 
 
 function SideBar() {
-  const { user } = useContext(AuthContext);
+  const { user , token } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-
-
 
    const isSmallScreen = useMediaQuery('(max-width:772px), (max-height:577px)');
 
@@ -50,12 +48,10 @@ function SideBar() {
   const handleLogout = async () => {
     handleClose();
     try {
-      await logout();
+      await logout(token);
       navigate('/login');
-
-
     } catch (error) {
-  // console.log(error); 
+      console.error("Logout error:", error);
     }
   };
 
@@ -65,7 +61,7 @@ function SideBar() {
 
   }
   const { userName, profileImage } = user;
-  // console.log(user)
+
   const navLinks = [
     { to: "/", icon: <HomeIcon />, text: "Home" },
     { to: "/search", icon: <SearchIcon />, text: "Search" },

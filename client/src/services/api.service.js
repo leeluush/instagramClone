@@ -136,9 +136,10 @@ export async function unfollowUser(userId, followerId) {
 
 export async function logout() {
     try {
-        const response = await fetch('/api/logout', {
+        const response = await fetch('/api/users/logout', {
             method: 'POST',
             credentials: 'include',
+            
         });
         if (response.ok) {
 

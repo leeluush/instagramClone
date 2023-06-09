@@ -1,17 +1,17 @@
 const router = require('express').Router();
 const controller = require('../controllers/auth')
-const verifyUser = require('../middleware/verify-user')
+const authMiddleware = require('../middleware/authMiddleware')
 
 
 const upload = require('../middleware/upload');
 
 
-router.post('/api/login',controller.login)
-router.post('/api/register',upload.single('profileImage'), controller.register)
-router.post('/api/logout',verifyUser, controller.logout)
-router.get('/api/user-info',  verifyUser,controller.getUserInfo)
-router.post('/api/refresh-token',controller.refreshToken)
-router.get('/api/users/:userId',controller.getUserByUserId);
+router.post('/api/users/login',controller.login)
+router.post('/api/users/register',upload.single('profileImage'), controller.register)
+router.post('/api/users/logout', controller.logout)
+router.get('/api/users/userprofile',  authMiddleware,controller.getUserInfo)
+router.post('/api/users/refresh-token',authMiddleware, controller.refreshToken)
+
 
 
 

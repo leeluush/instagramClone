@@ -1,9 +1,9 @@
 const router = require('express').Router(); 
 const controller = require('../controllers/followers.controllers.js')
-const verifyUser = require('../middleware/verify-user.js')
+const authMiddleware = require('../middleware/authMiddleware.js')
 
 
-router.put('/api/follow/:id', verifyUser,  controller.followUser);
-router.put('/api/unfollow/:unfollowUser', verifyUser, controller.unfollowUser);
+router.put('/api/follow/:id', authMiddleware,  controller.followUser);
+router.put('/api/unfollow/:unfollowUser', authMiddleware, controller.unfollowUser);
 
 module.exports = router;

@@ -7,6 +7,7 @@ import React, { createContext } from "react";
 
 import Feed from './compoents/Feed';
 import SideBar from './compoents/SideBar';
+import UserHeader from './compoents/UserHeader';
 import { AuthProvider } from './compoents/AuthContext'
 
 
@@ -21,7 +22,7 @@ export const UserInfoContext = createContext({
   userBio: "A mastermind"
 })
 
-
+//TODO: to merged with route (it's needed to be up) 
 
 export default function App() {
   const user = {
@@ -36,10 +37,10 @@ export default function App() {
       <div className='App'>
         {user && (
           <>
+              <UserHeader/>
             <div className='side-bar'>
               <SideBar />
             </div>
-
           </>
         )}
         <main className='Main'>

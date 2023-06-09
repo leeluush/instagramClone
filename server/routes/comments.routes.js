@@ -1,6 +1,6 @@
 const router = require('express').Router(); 
 const controller = require('../controllers/comments.controllers.js')
-const verifyUser = require("../middleware/verify-user");
+
 
 router.get('/api/posts/:postId/comments',controller.getCommentsByPostId)
 router.get('/api/comments', controller.getCommentsByPostId);
