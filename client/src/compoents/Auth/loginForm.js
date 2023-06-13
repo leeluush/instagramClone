@@ -14,7 +14,7 @@ const LoginPage = () => { //
 
   const login = async () => {
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch('/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ const LoginPage = () => { //
       const data = await res.json();
 
       setUser(data.payload.user); 
-      navigate("/app");
+      navigate("/feed");
 
     } catch (err) {
       setError(err.message); // 

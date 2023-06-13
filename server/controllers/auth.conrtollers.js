@@ -3,6 +3,7 @@ const User = require('../models/user');
 const RefreshToken = require('../models/refreshToken');
 const { encode, verifyRefreshToken } = require('../services/jwt.service');
 
+
 // @desc Authenticate a user
 // @route POST /api/login
 // @access Public
@@ -25,9 +26,11 @@ const login = asyncHandler(async (req, res) => {
     res.cookie('refreshToken', refresh_token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api' }); // 7 days
 
     res.status(201).json({
-      _id: user.id,
-      name: user.name,
+      _id: user._id,
+      userName: user.userName,
       email: user.email,
+      profileImage: user.profileImage,
+      tokens: { access_token, refresh_token },
     });
   } else {
     res.status(401);

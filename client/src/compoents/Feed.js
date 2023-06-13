@@ -17,22 +17,19 @@ function Feed() {
   async function fetchPosts() {
     try {
       const postData = await getPosts();
-      // console.log(postData)
+   
       const commentsData = await fetchComments();
-      // console.log('Comments data:', commentsData);
 
       const postWithComments = postData.map((post) => {
         post.comments = commentsData.filter((comment) => comment.post === post._id);
         return post;
       });
-      // console.log('Comments data:', commentsData);
       setPosts(postWithComments);
     } catch (error) {
       console.error(error);
     }
   }
 
-  // console.log(posts); // Debug statement
 
   return (
     <Container maxWidth="sm">

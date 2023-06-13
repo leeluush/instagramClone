@@ -157,7 +157,8 @@ export async function logout() {
 
 export async function fetchUserInfo() {
     try {
-        const response = await fetch('/api/user-info', {
+        const response = await fetch('/api/users/userprofile', {
+            method: 'GET',
             credentials: 'include'
         });
         if (!response.ok) {
