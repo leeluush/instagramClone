@@ -1,9 +1,11 @@
+const API_SERVER_URL = 'http://localhost:4000'; 
+
 
 export async function sendJson(body, method, url) {
 
 
     try {
-        const response = await fetch(`/api${url}`, {
+        const response = await fetch(`/${API_SERVER_URL}${url}`, {
             method,
             headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +31,7 @@ export async function sendJson(body, method, url) {
 
 export async function getUsersById(userId) {
     try {
-        const response = await fetch(`/api/users/${userId}`, {
+        const response = await fetch(`/${API_SERVER_URL}/users/${userId}`, {
             credentials: 'include',
 
         });
@@ -49,13 +51,12 @@ export async function getPosts() {
 
 
     try {
-        const response = await fetch('/api/posts', {
+        const response = await fetch(`${API_SERVER_URL}/api/posts`, {
             credentials: 'include',
 
         })
 
         const posts = await response.json();
-        // console.log({})
 
         return posts;
     } catch (error) {
@@ -68,13 +69,12 @@ export async function fetchComments() {
 
 
     try {
-        const response = await fetch('/api/comments/', {
+        const response = await fetch(`${API_SERVER_URL}/api/comments/`, {
             credentials: 'include',
 
         });
-        // console.log('response:', response);
+
         const data = await response.json();
-        // console.log("comments:", data);
 
         return data;
     } catch (error) {
@@ -87,7 +87,7 @@ export async function followUser(userId, followerId) {
 
 
     try {
-        const response = await fetch('api/users/follow', {
+        const response = await fetch(`${API_SERVER_URL}/api/users/follow`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export async function followUser(userId, followerId) {
 export async function unfollowUser(userId, followerId) {
 
     try {
-        const response = await fetch('/api/users/unfollow', {
+        const response = await fetch(`${API_SERVER_URL}/api/users/unfollow`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ export async function unfollowUser(userId, followerId) {
 
 export async function logout() {
     try {
-        const response = await fetch('/api/users/logout', {
+        const response = await fetch(`${API_SERVER_URL}/api/users/logout`, {
             method: 'POST',
             credentials: 'include',
             
@@ -157,7 +157,7 @@ export async function logout() {
 
 export async function fetchUserInfo() {
     try {
-        const response = await fetch('/api/users/userprofile', {
+        const response = await fetch(`${API_SERVER_URL}/api/users/userprofile`, {
             method: 'GET',
             credentials: 'include'
         });

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { hashPassword, matchPassword } = require('../middleware/passwordMiddleware');
+
 
 const UserSchema = new mongoose.Schema({
     userName: {
@@ -49,6 +51,8 @@ const UserSchema = new mongoose.Schema({
 });
 
 
+UserSchema.pre('save', hashPassword);
+UserSchema.methods.matchPassword = matchPassword;
 
 const User = mongoose.model('User', UserSchema)
 

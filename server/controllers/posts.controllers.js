@@ -15,7 +15,7 @@ const getPosts = asyncHandler(async function(req, res) {
   res.json(posts);
 });
 
-const getSinglePost = asyncHandler(async function(req, res) {
+const getPostById = asyncHandler(async function(req, res) {
   const postId = req.params.postId;
   const post = await Post
     .findOne({ _id: postId, author: req.user._id })
@@ -53,7 +53,7 @@ const updatePost = asyncHandler(async function(req, res) {
 
 module.exports = {
   getPosts,
-  getSinglePost,
+  getPostById,
   createPost,
   removePost,
   updatePost

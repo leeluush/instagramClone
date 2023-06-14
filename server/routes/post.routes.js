@@ -6,7 +6,7 @@ const multer = require('multer');
 const upload = multer ({dest: 'upload/'})
 
 router.get('/api/posts', controller.getPosts);
-router.get('/api/posts/:postId', controller.getSinglePost);
+router.get('/api/posts/:postId', controller.getPostById);
 router.post('/api/posts', controller.createPost)
 router.put('/api/posts/:postId', controller.updatePost);
 router.delete('/api/posts/:postId', controller.removePost);

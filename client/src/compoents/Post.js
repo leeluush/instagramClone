@@ -14,7 +14,7 @@ import "./Post.css";
 function Post({ post }) {
   const {
     thumbnail,
-    likes,
+    _id,
     content, comments } = post;
   const [expanded, setExpanded] = React.useState(false);
 
@@ -26,7 +26,7 @@ function Post({ post }) {
     <Card className="post">
       <PostCardHeader post={post} />
       <PostCardMedia media={thumbnail} />
-      <PostInteractions likesNumber={likes} />
+      <PostInteractions postId={_id} />
       <PostContent content={content}></PostContent>
       <CardActions disableSpacing>
        

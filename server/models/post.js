@@ -27,6 +27,7 @@ const PostSchema = new mongoose.Schema({
     coverImage: {
         type: String,
     },
+    // TODO : remove this once the like feature is wokring
     likes: {
         type: Number,
         default: 0,

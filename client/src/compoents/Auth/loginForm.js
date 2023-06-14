@@ -28,8 +28,10 @@ const LoginPage = () => { //
       }
 
       const data = await res.json();
+      console.log(data);
 
-      setUser(data.payload.user); 
+
+      setUser(data); 
       navigate("/feed");
 
     } catch (err) {
