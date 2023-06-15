@@ -4,9 +4,6 @@ const RefreshToken = require('../models/refreshToken');
 const { encode, verifyRefreshToken } = require('../services/jwt.service');
 
 
-// @desc Authenticate a user
-// @route POST /api/login
-// @access Public
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -141,7 +138,6 @@ const refreshToken = asyncHandler(async (req, res) => {
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const userId = req.user.id;
-
   const user = await User.findById(userId)
     .select('firstName lastName email birthdate profileImage')
     .exec();
@@ -155,10 +151,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const getUserByUserId = asyncHandler(async (req, res) => {
   const userId = req.params.userId;
-  const users = await User.find({ user: userId })
+  console.log("UserId from request:", req.user.id);
+
+  const user = await User.findById( userId )
     .sort('-created')
     .exec();
-  res.json(users);
+  res.json(user);
 });
 
 // @desc Log out user

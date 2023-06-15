@@ -7,15 +7,12 @@ function encode(payload) {
   const identifier = (Math.random() * Math.random()).toString();
   return {
     identifier,
-    access_token: jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' }),
-    refresh_token: jwt.sign({ ...payload, identifier }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' }),
-
+    access_token: jwt.sign({ ...payload, identifier }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' }),
+    refresh_token: jwt.sign({ identifier }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' }),
   };
 }
 
 function verifyAccessToken(token) {
-  console.log("Verifying Token: ", token);
-
   return jwt.verify(token, ACCESS_TOKEN_SECRET);
 }
 

@@ -1,39 +1,44 @@
 import { createContext, useEffect, useState } from 'react';
 
-import { fetchUserInfo } from '../services/api.service'; 
-
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const localData = localStorage.getItem('user');
-    return localData ? JSON.parse(localData) : null;
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const localData = localStorage.getItem('user');
+        if (localData) {
+          const userInfo = JSON.parse(localData);
+          setUser(userInfo);
+        }
+      } catch (error) {
+        if (error.message === '401') {
+          throw Error;
+        }
+      } finally {
+        setLoading(false); // set loading to false after fetching user data
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
     } else {
-      localStorage.removeItem('user'); 
+      localStorage.removeItem('user');
     }
   }, [user]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      
-      if (localStorage.getItem('user')) {
-        try {
-          const userInfo = await fetchUserInfo();
-          setUser(userInfo)
-        } catch (error) {
-          // console.log(error)
-        }
-      }
-    };
-    fetchUsers();
-  },[]);
-
   const value = { user, setUser };
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <AuthContext.Provider value={value}>

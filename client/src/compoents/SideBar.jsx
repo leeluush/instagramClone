@@ -26,10 +26,6 @@ import { AuthContext } from './AuthContext'
 
 
 
-
-
-
-
 function SideBar() {
   const { user , token } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);

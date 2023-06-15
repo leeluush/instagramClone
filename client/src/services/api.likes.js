@@ -13,6 +13,8 @@ const useLikes = (postId) => {
     const [liked, setLiked] = useState(false);
 
     useEffect(() => {
+        if(!user) return
+
         fetch(`${API_SERVER_URL}/api/likes/likescount/${postId}`)
         .then(res =>res.json())
         .then(data => {
