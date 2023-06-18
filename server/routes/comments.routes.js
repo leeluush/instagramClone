@@ -1,11 +1,11 @@
 const router = require('express').Router(); 
-const controller = require('../controllers/comments.controllers.js')
+const controller = require('../controllers/comments.controllers.js');
+const authMiddleware = require('../middleware/authMiddleware.js');
 
 
 router.get('/api/posts/:postId/comments',controller.getCommentsByPostId)
-router.get('/api/comments', controller.getCommentsByPostId);
-router.post('/api/comments',  controller.createComment)
-router.put('/api/comments/:commentsId',  controller.updateComment);
-router.delete('/api/comments/:commentsId', controller.removeComment);
+router.post('/api/comments', authMiddleware, controller.createComment)
+router.put('/api/comments/:commentsId', authMiddleware, controller.updateComment);
+router.delete('/api/comments/:commentsId', authMiddleware,controller.removeComment);
 
 module.exports = router;

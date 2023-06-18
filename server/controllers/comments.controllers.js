@@ -5,7 +5,10 @@ const Comment = require('../models/comment')
 
 async function getCommentsByPostId(req, res) {
     const postId = req.params.postId
-
+    if (!postId) {
+      return res.status(400).json({ message: "postId is required" });
+    }
+    
   try {
 
     const comments = await Comment.find({ post: postId || {$exists: true}})
@@ -22,11 +25,15 @@ async function getCommentsByPostId(req, res) {
 }
 
 async function createComment (req, res) {
-
   const body = req.body;
-  const comment = new Comment(body);
 
-  comment.author = req.user._id;
+  if (!body.postId) {
+    return res.status(400).json({ message: "postId is required" });
+  }
+
+  const comment = new Comment(body);
+  comment.author = req.user.id;
+
 
   try {
     await comment.save();

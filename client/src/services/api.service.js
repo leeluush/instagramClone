@@ -61,20 +61,7 @@ export async function getPosts() {
   }
 }
 
-export async function fetchComments() {
-  try {
-    const response = await fetch(`${API_SERVER_URL}/api/comments/`, {
-      credentials: 'include',
-    });
 
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw new Error('Failed to fetch comments');
-  }
-}
 
 export async function followUser(userId, followerId) {
   try {

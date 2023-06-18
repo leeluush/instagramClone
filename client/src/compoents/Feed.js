@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Post from './Post'
 import Reels from './Reels';
-import { getPosts, fetchComments } from '../services/api.service';
+import { getPosts  } from '../services/api.service';
 import Container from '@mui/material/Container';
+import { fetchComments } from "../services/api.comments";
 
 
 function Feed() {
@@ -15,13 +16,16 @@ function Feed() {
 
 
   async function fetchPosts() {
+
     try {
       const postData = await getPosts();
-   
-      const commentsData = await fetchComments();
+      
+      const commentsData = await Promise.all(postData.map(async (post) => {
+        return fetchComments(post._id); // Pass postId to fetchComments
+      }))
 
-      const postWithComments = postData.map((post) => {
-        post.comments = commentsData.filter((comment) => comment.post === post._id);
+      const postWithComments = postData.map((post, index) => {
+        post.comments = commentsData[index];
         return post;
       });
       setPosts(postWithComments);
