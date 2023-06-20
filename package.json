@@ -8,7 +8,8 @@
     "start": "cd server && npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "(npm run build --workspace client)",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "build:client":"(cd client && npm i && npm run build)&& (mv client/build server/build)"
   },
   "workspaces": [
     "client",

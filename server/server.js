@@ -31,11 +31,11 @@ app.use('/upload', express.static('upload'));
 
 app.use(router)
 app.use(errorHandler)
-app.use(express.static(path.join(__dirname, '../client/build')))
-app.use('*', express.static(path.join(__dirname, '../client/build/index.html')))
+app.use(express.static(path.join(__dirname, 'build')))
+app.use('*', express.static(path.join(__dirname, 'build/index.html')))
 
 
 
 const port = process.env.PORT || 4000
 
-app.listen(port, () => console.log('app is listening to port: ' + port))
+app.listen(port, '0.0.0.0',() => console.log('app is listening to port: ' + port))
