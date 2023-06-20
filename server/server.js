@@ -14,11 +14,14 @@ const app = express()
 
 connect();
 
-app.use(cors({
+if(process.env.NODE_ENV === "development") {
+  app.use(cors({
     origin: 'http://localhost:3000',
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true 
   }));
+}
+
 
 app.use(cookieParser())
 app.use(express.json())
