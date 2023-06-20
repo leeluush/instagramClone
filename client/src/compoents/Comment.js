@@ -1,4 +1,4 @@
-import { Grid, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Box  } from "@mui/material";
+import { Grid, ListItem, ListItemAvatar, Avatar, Typography, Box  } from "@mui/material";
 import CommentInteractions from "./CommentInteractions";
 
 function Comment({ comment }) {

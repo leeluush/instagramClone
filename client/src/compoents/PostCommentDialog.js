@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { 
     Dialog, 
-    DialogContent, 
-    DialogActions, 
+    DialogContent,  
     TextField, 
     Button, 
     Box, 
@@ -20,12 +19,12 @@ import timeSincePost from '../services/timeUtils';
 import PostInteractions from './PostInteractions';
 
 const PostCommentDialog = ({ open, handleClose, post }) => {
-    const { thumbnail, _id, content, comments, author } = post;
+    const { thumbnail, _id, content, comments  } = post;
     const { user } = useContext(AuthContext);
     const [comment, setComment] = useState('');
     const [postComments, setPostComments] = useState(comments);
     const { userName, profileImage } = post.author;
-    const { likes, liked, handleLike } = usePostLikes(_id);
+    const { likes } = usePostLikes(_id);
 
     var aDay = 24*60*60*1000;
     const timeSince = timeSincePost(new Date(Date.now()-aDay));
