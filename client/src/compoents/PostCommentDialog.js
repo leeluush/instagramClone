@@ -1,10 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Dialog, DialogContent, DialogActions, TextField, Button, Box, Grid, Typography, Avatar } from '@mui/material';
+import { 
+    Dialog, 
+    DialogContent, 
+    DialogActions, 
+    TextField, 
+    Button, 
+    Box, 
+    Grid, 
+    Typography, 
+    Avatar 
+} from '@mui/material';
+
 import PostCardMedia from './PostCardMedia';
 import Comment from './Comment';
 import { usePostLikes } from '../services/api.likes';
 import { postComment, fetchComments } from '../services/api.comments';
 import { AuthContext } from './AuthContext';
+import timeSincePost from '../services/timeUtils';
+import PostInteractions from './PostInteractions';
 
 const PostCommentDialog = ({ open, handleClose, post }) => {
     const { thumbnail, _id, content, comments, author } = post;
@@ -13,6 +26,9 @@ const PostCommentDialog = ({ open, handleClose, post }) => {
     const [postComments, setPostComments] = useState(comments);
     const { userName, profileImage } = post.author;
     const { likes, liked, handleLike } = usePostLikes(_id);
+
+    var aDay = 24*60*60*1000;
+    const timeSince = timeSincePost(new Date(Date.now()-aDay));
 
     useEffect(() => {
         setPostComments(comments);
@@ -55,33 +71,42 @@ const PostCommentDialog = ({ open, handleClose, post }) => {
                                 <strong>{userName}</strong> {content}
                             </Typography>
                         </Box>
-
-                        {postComments.map((comment) => (
-                            <Comment key={comment._id} comment={comment} />
-                        ))}
+                        <Typography variant="body2" style={{paddingLeft:'40px'}}>{timeSince}</Typography>
+                        <Box 
+                            sx={{ 
+                                overflowY: 'scroll', 
+                                maxHeight: '200px',
+                                marginBottom: '10px'
+                            }}
+                        >
+                            {postComments.map((comment) => (
+                                <Comment key={comment._id} comment={comment} />
+                            ))}
+                        </Box>
+                        <Box>
+                            <PostInteractions postId={_id} likes={likes} />
+                            <form onSubmit={handleSubmit}>
+                                <TextField
+                                    value={comment}
+                                    onChange={e => setComment(e.target.value)}
+                                    placeholder="Add a comment"
+                                    fullWidth
+                                    margin="normal"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    variant="outlined"
+                                />
+                                <Button type="submit" variant="contained" color="primary">
+                                    Post Comment
+                                </Button>
+                            </form>
+                        </Box>
                     </Grid>
                 </Grid>
             </DialogContent>
-            <DialogActions>
-                <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-                    <TextField
-                        value={comment}
-                        onChange={e => setComment(e.target.value)}
-                        placeholder="Add a comment"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                    />
-                    <Button type="submit" variant="contained" color="primary">
-                        Post Comment
-                    </Button>
-                </form>
-            </DialogActions>
         </Dialog>
     );
-};
+}
 
 export default PostCommentDialog;
