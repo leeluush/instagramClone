@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../compoents/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const API_SERVER_URL = 'http://localhost:4000';
+
 
  export function usePostLikes(postId) {
     const { user } = useContext(AuthContext);
@@ -14,7 +14,7 @@ const API_SERVER_URL = 'http://localhost:4000';
         if (!user)
             return;
 
-        fetch(`${API_SERVER_URL}/api/likes/likescount/${postId}`)
+        fetch(`/api/likes/likescount/${postId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
@@ -27,7 +27,7 @@ const API_SERVER_URL = 'http://localhost:4000';
 
         if (user) {
 
-            fetch(`${API_SERVER_URL}/api/likes/like/${postId}/${user._id}`)
+            fetch(`/api/likes/like/${postId}/${user._id}`)
                 .then(res => res.json())
                 .then(data => {
                     setLiked(data.liked);
@@ -44,7 +44,7 @@ const API_SERVER_URL = 'http://localhost:4000';
 
         // Determine the request method based on whether the user has liked the post
         const method = liked ? 'DELETE' : 'POST';
-        const url = `${API_SERVER_URL}/api/likes/${postId}`; // Endpoint to create/delete a like
+        const url = `/api/likes/${postId}`; // Endpoint to create/delete a like
 
         fetch(url, {
             method,
@@ -79,7 +79,7 @@ export function useCommentLikes(commentId) {
         if (!user)
             return;
 
-        fetch(`${API_SERVER_URL}/api/likes/likescount/${commentId}`)
+        fetch(`/api/likes/likescount/${commentId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
@@ -92,7 +92,7 @@ export function useCommentLikes(commentId) {
 
         if (user) {
 
-            fetch(`${API_SERVER_URL}/api/likes/like/${commentId}/${user._id}`)
+            fetch(`/api/likes/like/${commentId}/${user._id}`)
                 .then(res => res.json())
                 .then(data => {
                     setLiked(data.liked);
@@ -109,7 +109,7 @@ export function useCommentLikes(commentId) {
 
         // Determine the request method based on whether the user has liked the post
         const method = liked ? 'DELETE' : 'POST';
-        const url = `${API_SERVER_URL}/api/likes/${commentId}`; // Endpoint to create/delete a like
+        const url = `/api/likes/${commentId}`; // Endpoint to create/delete a like
 
         fetch(url, {
             method,

@@ -1,8 +1,8 @@
-const API_SERVER_URL = 'http://localhost:4000';
+
 
 export async function sendJson(body, method, url) {
   try {
-    const response = await fetch(`${API_SERVER_URL}${url}`, {
+    const response = await fetch(`${url}`, {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export async function sendJson(body, method, url) {
 
 export async function getUsersById(userId) {
   try {
-    const response = await fetch(`${API_SERVER_URL}/users/${userId}`, {
+    const response = await fetch(`/users/${userId}`, {
       credentials: 'include',
     });
     if (!response.ok) {
@@ -40,7 +40,7 @@ export async function getUsersById(userId) {
 
 export async function getPosts() {
   try {
-    const response = await fetch(`${API_SERVER_URL}/api/posts`, {
+    const response = await fetch(`/api/posts`, {
       credentials: 'include',
     });
 
@@ -65,7 +65,7 @@ export async function getPosts() {
 
 export async function followUser(userId, followerId) {
   try {
-    const response = await fetch(`${API_SERVER_URL}/api/users/follow`, {
+    const response = await fetch(`/api/users/follow`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export async function followUser(userId, followerId) {
 
 export async function unfollowUser(userId, followerId) {
   try {
-    const response = await fetch(`${API_SERVER_URL}/api/users/unfollow`, {
+    const response = await fetch(`/api/users/unfollow`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export async function unfollowUser(userId, followerId) {
 
 export async function logout() {
   try {
-    const response = await fetch(`${API_SERVER_URL}/api/users/logout`, {
+    const response = await fetch(`/api/users/logout`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -125,7 +125,7 @@ export async function logout() {
 
 export async function fetchUserInfo() {
   try {
-    const response = await fetch(`${API_SERVER_URL}/api/users/userprofile`, {
+    const response = await fetch(`/api/users/userprofile`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -1,9 +1,9 @@
-const API_SERVER_URL = 'http://localhost:4000';
+
 
 
 export async function fetchComments(postId) {
     try {
-      const response = await fetch(`${API_SERVER_URL}/api/posts/${postId}/comments`, {
+      const response = await fetch(`/api/posts/${postId}/comments`, {
         credentials: 'include',
       });
   
@@ -18,7 +18,7 @@ export async function fetchComments(postId) {
   
   export async function postComment(postId, comment ) {
     try {
-        const response = await fetch(`${API_SERVER_URL}/api/comments`, {
+        const response = await fetch(`/api/comments`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
