@@ -1,35 +1,38 @@
 import React from "react";
-import { CardContent, CardActions } from "@mui/material";
+import { CardContent, CardActions, Typography } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TelegramIcon from '@mui/icons-material/Telegram';
-import useLikes from '../services/api.likes'
-import { AuthContext } from "./AuthContext";
-import { useContext } from "react";
+import {usePostLikes} from '../services/api.likes'
 
+function PostInteractions({ postId, handleDialogOpen }) {
+  const { likes, liked, handleLike } = usePostLikes(postId);
 
-
-
-function PostInteractions({ postId }) {
-  const { likes, liked, handleLike } = useLikes(postId);
-  const { user } = useContext(AuthContext);
-
-    return (
-      <CardContent>
-        <CardActions>
+  return (
+    <CardContent>
+      <CardActions>
         {liked ? (
           <FavoriteBorderIcon onClick = { handleLike } style={{ color : 'red'}} />
         ) : (
           <FavoriteBorderIcon  onClick={ handleLike }/>
         )}
-        
-          <ChatBubbleOutlineIcon />
-          <TelegramIcon />
-        </CardActions>
-        <p className="post-likes">{ likes } likes</p>
-      </CardContent>
-    );
-  }
+        <ChatBubbleOutlineIcon onClick={handleDialogOpen} />
+        <TelegramIcon />
+      </CardActions>
+     
+      {typeof likes === 'number' ? (
+        <Typography variant="body2" color="textSecondary" className="post-likes">
+          {likes} likes
+        </Typography>
+      ) : (
+        <Typography variant="body2" color="textSecondary" className="post-likes">
+          Loading likes...
+        </Typography>
+      )}
   
-  export default PostInteractions
+    </CardContent>
+  );
+}
+
+
+export default PostInteractions

@@ -11,7 +11,7 @@ async function getCommentsByPostId(req, res) {
     
   try {
 
-    const comments = await Comment.find({ post: postId || {$exists: true}})
+    const comments = await Comment.find({ post: postId })
       .populate('author', "profileImage userName")
     
       .sort('-created')
@@ -33,6 +33,7 @@ async function createComment (req, res) {
 
   const comment = new Comment(body);
   comment.author = req.user.id;
+  comment.post = body.postId;
 
 
   try {
@@ -70,7 +71,7 @@ async function updateComment(req, res) {
     const comment = req.body.comment;
     await Comment.updateOne(
       { _id: commentId, author: req.user._id },
-      { $set: { content: comment } }).exec();
+      { $set: { content: commentContent } }).exec();
     res.json({ message: "Comment updated successfully", data: comment });
   } catch (error) {
     res.status(500).json({ message: "An error occurred while updating the comment" });

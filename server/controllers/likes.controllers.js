@@ -9,6 +9,8 @@ const like = asyncHandler(async function (req, res) {
     const { userId  } = req.body;
     const { postId } = req.params;
 
+    
+
     try {
         // Creating a new Like instance
         const like = new Like({ user: userId, post: postId });
@@ -53,6 +55,17 @@ const getLikesCount = asyncHandler(async function (req ,res){
         res.status(200).json({ likesCount })
     } catch (error) {
         res.status(500).json({error: "an error occurred while counting the likes"})
+    } 
+
+})
+
+const getLikesCountComments = asyncHandler(async function (req ,res){
+    const { commentId } = req.params;
+    try {
+        const likesCount = await Like.countDocuments({comment: commentId});
+        res.status(200).json({ likesCount })
+    } catch (error) {
+        res.status(500).json({error: "an error occurred while counting the likes"})
     }
 
 })
@@ -79,5 +92,6 @@ module.exports = {
     like,
     unlike,
     getLikesCount,
+    getLikesCountComments,
     checkLike
 }

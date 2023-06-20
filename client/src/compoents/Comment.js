@@ -1,48 +1,35 @@
-import ListItem from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-
-
-
-
+import { Grid, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Box  } from "@mui/material";
+import CommentInteractions from "./CommentInteractions";
 
 function Comment({ comment }) {
-    const { content } = comment
+    const { content } = comment;
     const { userName, profileImage } = comment.author;
-    const date = new Date(comment.created);
-    const createdTime = date.toDateString();
-
+    
 
     return (
-
-        <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-                <Avatar alt={userName} src={profileImage}
-                    sx={{ width: 46, height: 46 }} />
-            </ListItemAvatar>
-            <ListItemText
-            
-            primary={
-                <>
-                <Typography component="span" variant="subtitle1" color="textPrimary">
-                  {userName}
+      <ListItem alignItems="flex-start">
+        <Grid container>
+          <Grid item xs={12}>
+            <Box display="flex" alignItems="center">
+              <ListItemAvatar>
+                <Avatar alt={userName} src={profileImage} sx={{ width: 32, height: 32 }} />
+              </ListItemAvatar>
+              <Box ml={0}>
+                <Typography component="span" variant="body1" color="textPrimary">
+                  <strong>{userName}</strong>
                 </Typography>
-                <Typography component="span" variant="caption" color="textSecondary">
-                  {' • '}
-                  {createdTime}
+                <Typography component="span" variant="body2" color="textSecondary" ml={1}>
+                  {content}
                 </Typography>
-              </>
-            }
-            secondary={content}
-          />
-          
-         
-        </ListItem>
-    )
-
-
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <CommentInteractions commentId={comment._id} /> {/* pass commentId here */}
+          </Grid>
+        </Grid>
+      </ListItem>
+    );
 }
 
 export default Comment;

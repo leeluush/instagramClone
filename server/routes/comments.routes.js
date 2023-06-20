@@ -8,4 +8,5 @@ router.post('/api/comments', authMiddleware, controller.createComment)
 router.put('/api/comments/:commentsId', authMiddleware, controller.updateComment);
 router.delete('/api/comments/:commentsId', authMiddleware,controller.removeComment);
 
+
 module.exports = router;

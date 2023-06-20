@@ -43,7 +43,7 @@ const LoginPage = () => { //
     container 
     direction="row"
     justifyContent="center"
-    alignItems='center'
+    alignItems="center"
     style={{height: '100vh'}}
     >
       

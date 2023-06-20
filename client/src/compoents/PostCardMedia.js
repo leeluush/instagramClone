@@ -5,9 +5,11 @@ function PostCardMedia({ media }) {
   return (
     <CardMedia
       component="img"
-      height="194"
+      height="auto"
       image={media}
       alt="media"
+      style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+
     />
   );
 }
