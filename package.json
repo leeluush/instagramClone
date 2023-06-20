@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/leeluush/instagramClone/issues"
   },
-  "homepage": "https://github.com/leeluush/instagramClone#readme",
-  "dependencies": {
-    "express-async-handler": "^1.2.0"
-  }
+  "homepage": "https://github.com/leeluush/instagramClone#readme"
 }

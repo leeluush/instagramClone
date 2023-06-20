@@ -12,7 +12,11 @@ export default function Root() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
+    if (user) {
+      navigate('/feed')
+
+
+    } else  {
       navigate('/login');
     }
   }, [user, navigate]);
@@ -20,6 +24,8 @@ export default function Root() {
   if (!user) {
     return null;
   }
+
+  
 
   return (
     <div className='App'>

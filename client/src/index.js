@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import Root from './routes/root';
 import ErrorPage from './routes/error-page';
 import LoginPage from './compoents/Auth/loginForm';
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/feed",
         element: <Feed /> 
+      },
+      {
+        path:"*",
+        to: "/feed"
       }
     ]
   },
