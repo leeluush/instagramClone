@@ -47,7 +47,7 @@ function Post({ post }) {
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
-      <PostCommentDialog open ={dialogOpen} handleClose ={handleDialogClose} post={post}/>
+      <PostCommentDialog open ={dialogOpen} handleClose ={handleDialogClose} post={post} postId={_id}/>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <List>
         

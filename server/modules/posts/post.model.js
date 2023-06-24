@@ -8,12 +8,7 @@ const PostSchema = new mongoose.Schema({
         ref: 'User',
         index: true,
         },
-        category: {
-            type: ObjectId,
-            required: true,
-            ref: 'Category',
-            index: true, 
-        },
+    
     title: { 
             type: String, 
             required: true },

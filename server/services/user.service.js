@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../modules/users/user.model');
 
 async function addFollwing (userId, followerId) {
     await User.updateOne({_id: followerId}, {$push: {following:userId}})

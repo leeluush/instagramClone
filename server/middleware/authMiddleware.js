@@ -1,5 +1,5 @@
 const { verifyAccessToken, verifyRefreshToken, encode } = require("../services/jwt.service");
-const RefreshToken = require('../models/refreshToken');
+const RefreshToken = require('../modules/auth/refreshToken.model');
 const cookie = require('cookie');
 const fifteenMinutes = 15 * 60 * 1000;
 

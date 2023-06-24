@@ -1,6 +1,6 @@
 const router = require('express').Router(); 
-const controller = require('../controllers/posts.controllers')
-const authMiddleware = require("../middleware/authMiddleware");
+const controller = require('./posts.controller')
+const authMiddleware = require("../../middleware/authMiddleware");
 const multer = require('multer');
 
 const upload = multer ({dest: 'upload/'})

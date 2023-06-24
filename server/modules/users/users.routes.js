@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const controller = require('../controllers/auth.conrtollers')
-const authMiddleware = require('../middleware/authMiddleware')
+const controller = require('./users.conrtoller')
+const authMiddleware = require('../../middleware/authMiddleware')
 
 
-const upload = require('../middleware/upload');
+const upload = require('../../middleware/upload');
 
 
 router.post('/api/users/login',controller.login)

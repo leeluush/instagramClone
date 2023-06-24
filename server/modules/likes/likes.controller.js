@@ -1,4 +1,4 @@
-const Like = require('../models/like');
+const Like = require('./like.model');
 const asyncHandler = require('express-async-handler');
 
 // Function to handle like operation

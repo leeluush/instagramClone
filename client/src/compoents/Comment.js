@@ -1,5 +1,6 @@
 import { Grid, ListItem, ListItemAvatar, Avatar, Typography, Box  } from "@mui/material";
 import CommentInteractions from "./CommentInteractions";
+import { fetchComments } from '../services/api.comments';
 
 function Comment({ comment }) {
     const { content } = comment;
@@ -25,7 +26,7 @@ function Comment({ comment }) {
             </Box>
           </Grid>
           <Grid item xs={12}>
-            <CommentInteractions commentId={comment._id} /> {/* pass commentId here */}
+            <CommentInteractions commentId={comment._id} fetchComments={fetchComments}/> {/* pass commentId here */}
           </Grid>
         </Grid>
       </ListItem>

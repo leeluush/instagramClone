@@ -1,7 +1,22 @@
+export async function deleteComment(commentId) {
+  try {
+    const response = await fetch(`/api/comments/${commentId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
 
+    const data = await response.json();
 
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to delete comment');
+  }
+}
 
 export async function fetchComments(postId) {
+  
+ 
     try {
       const response = await fetch(`/api/posts/${postId}/comments`, {
         credentials: 'include',

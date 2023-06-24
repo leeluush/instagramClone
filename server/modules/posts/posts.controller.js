@@ -1,13 +1,12 @@
 const asyncHandler = require('express-async-handler');
-const Post = require('../models/post');
-const User = require('../models/user');
+const Post = require('./post.model');
+const User = require('../users/user.model');
 
 const getPosts = asyncHandler(async function(req, res) {
   const posts = await Post.find()
     .sort('-created')
     .limit(50)
     .select('author category title content thumbnail coverImage likes created updated')
-    .populate('category')
     .populate('author', 'firstName lastName profileImage userName')
     .populate('comments')
     .exec();

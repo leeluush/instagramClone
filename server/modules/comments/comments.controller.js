@@ -1,6 +1,6 @@
-const Post = require('../models/post');
-const User = require('../models/user');
-const Comment = require('../models/comment')
+const Post = require('../posts/post.model');
+const User = require('../users/user.model');
+const Comment = require('../comments/comment.model')
 
 
 async function getCommentsByPostId(req, res) {
@@ -13,7 +13,6 @@ async function getCommentsByPostId(req, res) {
 
     const comments = await Comment.find({ post: postId })
       .populate('author', "profileImage userName")
-    
       .sort('-created')
       .exec();
 
@@ -49,8 +48,10 @@ async function createComment (req, res) {
 async function removeComment(req, res) {
   try {
     const commentId = req.params.commentId;
+    const userId = req.user._id;
+
     await Comment
-      .deleteOne({ _id: commentId, author: req.user._id })
+      .deleteOne({ _id: commentId })
       .exec()
     res.json({ message: "Comment removed successfully" });
 

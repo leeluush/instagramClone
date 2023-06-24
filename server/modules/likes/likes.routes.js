@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/likes.controllers');
-const authMiddleware = require('../middleware/authMiddleware')
+const controller = require('./likes.controller');
+const authMiddleware = require('../../middleware/authMiddleware')
 
 
 router.get('/api/likes/likescount/:postId', controller.getLikesCountPost)

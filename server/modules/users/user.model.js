@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { hashPassword, matchPassword } = require('../middleware/passwordMiddleware');
+const { hashPassword, matchPassword } = require('../../middleware/passwordMiddleware');
 
 
 const UserSchema = new mongoose.Schema({

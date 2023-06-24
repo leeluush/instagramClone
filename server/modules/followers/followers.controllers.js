@@ -1,5 +1,5 @@
-const userService = require('../services/user.service')
-const Follower = require('../models/follower')
+const userService = require('../../services/user.service')
+const Follower = require('./follower.model')
 
 async function followUser(req, res) {
 

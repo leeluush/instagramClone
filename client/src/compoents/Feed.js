@@ -19,6 +19,7 @@ function Feed() {
 
     try {
       const postData = await getPosts();
+
       
       const commentsData = await Promise.all(postData.map(async (post) => {
         return fetchComments(post._id); // Pass postId to fetchComments

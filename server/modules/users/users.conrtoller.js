@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
-const User = require('../models/user');
-const RefreshToken = require('../models/refreshToken');
-const { encode, verifyRefreshToken } = require('../services/jwt.service');
+const User = require('./user.model');
+const RefreshToken = require('../auth/refreshToken.model');
+const { encode, verifyRefreshToken } = require('../../services/jwt.service');
 
 
 const login = asyncHandler(async (req, res) => {
