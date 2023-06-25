@@ -10,7 +10,7 @@ import PostCommentDialog from './PostCommentDialog';
 import { Collapse, IconButton, Card, CardActions, List } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import Comment from "./Comment";
+import Comment from "../Comment/Comment";
 import "./Post.css";
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Post from './Post'
+import Post from './Post/Post'
 import Reels from './Reels';
 import { getPosts  } from '../services/api.service';
 import Container from '@mui/material/Container';

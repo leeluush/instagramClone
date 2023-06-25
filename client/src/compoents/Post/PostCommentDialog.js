@@ -11,11 +11,11 @@ import {
 } from '@mui/material';
 
 import PostCardMedia from './PostCardMedia';
-import Comment from './Comment';
-import { usePostLikes } from '../services/api.likes';
-import { postComment, fetchComments } from '../services/api.comments';
-import { AuthContext } from './AuthContext';
-import timeSincePost from '../services/timeUtils';
+import Comment from '../Comment/Comment';
+import { usePostLikes } from '../../services/api.likes';
+import { postComment, fetchComments } from '../../services/api.comments';
+import { AuthContext } from '../Auth/AuthContext';
+import timeSincePost from '../../services/timeUtils';
 import PostInteractions from './PostInteractions';
 
 const PostCommentDialog = ({ open, handleClose, post }) => {

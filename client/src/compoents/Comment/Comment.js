@@ -1,12 +1,11 @@
 import { Grid, ListItem, ListItemAvatar, Avatar, Typography, Box  } from "@mui/material";
 import CommentInteractions from "./CommentInteractions";
-import { fetchComments } from '../services/api.comments';
+import { fetchComments } from '../../services/api.comments';
 
 function Comment({ comment }) {
     const { content } = comment;
     const { userName, profileImage } = comment.author;
     
-
     return (
       <ListItem alignItems="flex-start">
         <Grid container>
@@ -26,7 +25,7 @@ function Comment({ comment }) {
             </Box>
           </Grid>
           <Grid item xs={12}>
-            <CommentInteractions commentId={comment._id} fetchComments={fetchComments}/> {/* pass commentId here */}
+            <CommentInteractions commentId={comment._id} fetchComments={fetchComments}/> 
           </Grid>
         </Grid>
       </ListItem>

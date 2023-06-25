@@ -3,7 +3,7 @@ import { CardContent, CardActions, Typography } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TelegramIcon from '@mui/icons-material/Telegram';
-import {usePostLikes} from '../services/api.likes'
+import {usePostLikes} from '../../services/api.likes'
 
 function PostInteractions({ postId, handleDialogOpen }) {
   const { likes, liked, handleLike } = usePostLikes(postId);

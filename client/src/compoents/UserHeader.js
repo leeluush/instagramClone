@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { AuthContext } from '../compoents/AuthContext'
+import { AuthContext } from '../compoents/Auth/AuthContext'
 import './UserHeader.css'
 
 

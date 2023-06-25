@@ -2,12 +2,12 @@ import { CardActions, Typography , Button} from "@mui/material";
 import { useState } from 'react'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useCommentLikes } from '../services/api.likes';
-import timeSincePost from '../services/timeUtils';
+import { useCommentLikes } from '../../services/api.likes';
+import timeSincePost from '../../services/timeUtils';
 import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { deleteComment } from '../services/api.comments';
-import fetchComments from '../services/api.comments';
+import { deleteComment } from '../../services/api.comments';
+import fetchComments from '../../services/api.comments';
 
 function CommentInteractions({ commentId, commentCreated, fetchComments }) {
     const { likes, liked, handleLike } = useCommentLikes(commentId);

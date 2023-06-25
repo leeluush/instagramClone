@@ -2,7 +2,7 @@ import UserHeader from "../compoents/UserHeader";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import SideBar from "../compoents/SideBar";
-import { AuthContext } from "../compoents/AuthContext";
+import { AuthContext } from "../compoents/Auth/AuthContext";
 
 
 

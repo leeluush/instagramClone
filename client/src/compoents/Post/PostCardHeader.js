@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar, Typography, Box } from "@mui/material";
-import timeSincePost from '../services/timeUtils'
+import timeSincePost from '../../services/timeUtils'
 
 function PostCardHeader({post}) {
     if (!post || !post.author) return null;
