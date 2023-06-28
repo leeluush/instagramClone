@@ -2,6 +2,9 @@ const asyncHandler = require('express-async-handler');
 const User = require('./user.model');
 const RefreshToken = require('../auth/refreshToken.model');
 const { encode, verifyRefreshToken } = require('../../services/jwt.service');
+const bcrypt = require('bcrypt');
+const { upload } = require('../../services/gcs.service')
+
 
 
 const login = asyncHandler(async (req, res) => {
@@ -10,25 +13,32 @@ const login = asyncHandler(async (req, res) => {
   // Check for user email
   const user = await User.findOne({ email }).exec();
 
-  if (user && (await user.matchPassword(password))) {
-    // Generate new access and refresh tokens for the user
-    const { access_token, refresh_token } = encode({ email, userId: user._id });
+  if (user) {
+    const isPasswordMatch = await user.matchPassword(password);
 
-    // Save the refresh token in the database
-    const userRefreshToken = new RefreshToken({ token: refresh_token, user: user._id });
-    await userRefreshToken.save();
+    if (isPasswordMatch) {
+      // Generate new access and refresh tokens for the user
+      const { access_token, refresh_token } = encode({ email, userId: user._id });
 
-    // Send the tokens to the client in cookies
-    res.cookie('accessToken', access_token, { httpOnly: true, maxAge: 15 * 60 * 1000, path: '/api' }); // 15 minutes
-    res.cookie('refreshToken', refresh_token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api' }); // 7 days
+      // Save the refresh token in the database
+      const userRefreshToken = new RefreshToken({ token: refresh_token, user: user._id });
+      await userRefreshToken.save();
 
-    res.status(201).json({
-      _id: user._id,
-      userName: user.userName,
-      email: user.email,
-      profileImage: user.profileImage,
-      tokens: { access_token, refresh_token },
-    });
+      // Send the tokens to the client in cookies
+      res.cookie('accessToken', access_token, { httpOnly: true, maxAge: 15 * 60 * 1000, path: '/api' }); // 15 minutes
+      res.cookie('refreshToken', refresh_token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api' }); // 7 days
+
+      res.status(201).json({
+        _id: user._id,
+        userName: user.userName,
+        email: user.email,
+        profileImage: user.profileImage,
+        tokens: { access_token, refresh_token },
+      });
+    } else {
+      res.status(401);
+      throw new Error('Invalid user email or password');
+    }
   } else {
     res.status(401);
     throw new Error('Invalid user email or password');
@@ -36,12 +46,20 @@ const login = asyncHandler(async (req, res) => {
 });
 
 
+
 // @desc Register new user
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password, birthdate, userName } = req.body;
-  const profileImage = req.file.path;
+  let profileImage 
+  try {
+   profileImage = await upload(req.file)
+
+  } catch (error) {
+    return res.status(401).json({message: 'faild to upload profileimage'})
+  }
+
 
   if (!firstName || !lastName || !email || !password || !birthdate || !userName || !profileImage) {
     res.status(400);
@@ -63,7 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
     userName,
     lastName,
     email,
-    password: hashedPassword,
+    password,
     birthdate,
     profileImage
   });
@@ -75,6 +93,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userRefreshToken = new RefreshToken({ token: refresh_token, user: user._id });
   await userRefreshToken.save();
 
+
   // Send the tokens to the client in cookies
   res.cookie('accessToken', access_token, { httpOnly: true, maxAge: 15 * 60 * 1000, path: '/api' }); // 15 minutes
   res.cookie('refreshToken', refresh_token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api' }); // 7 days
@@ -82,7 +101,9 @@ const registerUser = asyncHandler(async (req, res) => {
   res.status(201).json({
     _id: user.id,
     name: user.name,
+    userName: user.userName,
     email: user.email,
+    profileImage: user.profileImage
   });
 });
 
@@ -138,8 +159,10 @@ const refreshToken = asyncHandler(async (req, res) => {
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const userId = req.user.id;
+
+
   const user = await User.findById(userId)
-    .select('firstName lastName email birthdate profileImage')
+    .select('firstName userName lastName email birthdate profileImage')
     .exec();
 
   if (user) {
@@ -153,11 +176,13 @@ const getUserByUserId = asyncHandler(async (req, res) => {
   const userId = req.params.userId;
   console.log("UserId from request:", req.user.id);
 
-  const user = await User.findById( userId )
+  const user = await User.findById(userId)
     .sort('-created')
     .exec();
   res.json(user);
 });
+
+
 
 // @desc Log out user
 // @route GET /api/users/logout

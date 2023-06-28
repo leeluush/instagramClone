@@ -4,7 +4,9 @@ import { fetchComments } from '../../services/api.comments';
 
 function Comment({ comment }) {
     const { content } = comment;
+    console.log(comment)
     const { userName, profileImage } = comment.author;
+    
     
     return (
       <ListItem alignItems="flex-start">

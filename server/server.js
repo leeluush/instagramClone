@@ -26,7 +26,7 @@ if(process.env.NODE_ENV === "development") {
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use('/upload', express.static('upload'));
+
 
 
 app.use(router)

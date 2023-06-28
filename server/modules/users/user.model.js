@@ -54,6 +54,8 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', hashPassword);
 UserSchema.methods.matchPassword = matchPassword;
 
+
+
 const User = mongoose.model('User', UserSchema)
 
 module.exports = User;

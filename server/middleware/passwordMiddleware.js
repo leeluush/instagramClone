@@ -10,7 +10,12 @@ const hashPassword = async function(next) {
 };
 
 const matchPassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
+
+
+  const isMatch = await bcrypt.compare(candidatePassword, this.password);
+
+
+  return isMatch;
 };
 
 module.exports = {

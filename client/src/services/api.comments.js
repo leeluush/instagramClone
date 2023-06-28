@@ -6,6 +6,7 @@ export async function deleteComment(commentId) {
     });
 
     const data = await response.json();
+    
 
     return data;
   } catch (error) {
@@ -15,21 +16,26 @@ export async function deleteComment(commentId) {
 }
 
 export async function fetchComments(postId) {
-  
- 
-    try {
-      const response = await fetch(`/api/posts/${postId}/comments`, {
-        credentials: 'include',
-      });
-  
-      const data = await response.json();
-  
-      return data;
-    } catch (error) {
-      console.error(error);
-      throw new Error('Failed to fetch comments');
+  try {
+    const response = await fetch(`/api/posts/${postId}/comments`, {
+      credentials: 'include',
+    });
+
+    // Check if response is ok (status in the range 200-299)
+    if (!response.ok) {
+      throw new Error('Server responded with an error');
     }
+
+    const data = await response.json();
+    console.log(data)
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch comments');
   }
+}
+
   
   export async function postComment(postId, comment ) {
     try {

@@ -6,8 +6,8 @@ const authMiddleware = require('../../middleware/authMiddleware')
 
 router.get('/api/likes/likescount/:postId', controller.getLikesCountPost)
 router.get('/api/likes/:commentId',controller.getLikesCountComments)
-router.post('/api/likes/:postId', controller.likePost);
-router.delete('/api/likes/:postId', controller.unlikePost);
+router.post('/api/likes/:postId',authMiddleware, controller.likePost);
+router.delete('/api/likes/:postId',authMiddleware, controller.unlikePost);
 router.get('/api/likes/like/:postId/:userId', controller.checkLikePost);
 
 

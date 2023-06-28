@@ -45,10 +45,10 @@ export async function getPosts() {
     });
 
     if (!response.ok) {
-        console.log('Response:', response);
-        throw new Error('Failed to fetch posts');
-      }
-  
+      console.log('Response:', response);
+      throw new Error('Failed to fetch posts');
+    }
+
 
     const posts = await response.json();
 
@@ -134,14 +134,43 @@ export async function fetchUserInfo() {
     });
 
     if (response.status === 401) {
-      throw new Error('401');
+      const refreshedResponse = await refreshToken();
+
+      if (!refreshedResponse.ok) {
+        throw new Error('Failed to refresh token');
+      }
+      
+      return fetchUserInfo();
     } else if (!response.ok) {
       throw new Error('Failed to fetch user info');
     }
-    const userInfo = await response.json();
-    return userInfo;
-  } catch (error) {
-    console.error('Failed to fetch user info:', error);
-    return null;
+
+      const userInfo = await response.json();
+      return userInfo;
+    } catch (error) {
+      console.error('Failed to fetch user info:', error);
+      return null;
+    }
   }
-}
+
+  export async function refreshToken() {
+    try {
+      const response = await fetch(`/api/users/refresh-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to refresh token');
+      }
+  
+      return response;
+    } catch (error) {
+      console.error('Failed to refresh token:', error);
+      throw error;
+    }
+  }
+

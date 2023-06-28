@@ -4,7 +4,7 @@ import { TextField, Button, Grid, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => { 
-    const { setUser } = useContext(AuthContext);
+    const { setUser } = useContext(AuthContext)
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -33,6 +33,8 @@ const RegisterPage = () => {
         Object.keys(formData).forEach((key) => {
             data.append(key, formData[key]);
         });
+        console.log('formData:', formData);
+
 
         try {
             const res = await fetch('/api/register', {
@@ -41,12 +43,15 @@ const RegisterPage = () => {
             });
   
             if (!res.ok) {
-                throw new Error('Registration failed'); 
+                const errorData = await res.json();
+                console.log('Error data from server:', errorData);
+
+                throw new Error(errorData.message || 'Registration failed');
             }
   
             const user = await res.json();
             setUser(user);
-            navigate("/app");
+            navigate("/feed");
         } catch (err) {
             setError(err.message);
         }

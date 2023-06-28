@@ -9,7 +9,7 @@ const upload = require('../../middleware/upload');
 router.post('/api/users/login',controller.login)
 router.post('/api/register',upload.single('profileImage'), controller.registerUser)
 router.post('/api/users/logout',controller.logOutUser)
-router.get('/api/users/userprofile', authMiddleware, controller.getUserByUserId)
+router.get('/api/users/userprofile',authMiddleware, controller.getUserProfile)
 router.post('/api/users/refresh-token',authMiddleware, controller.refreshToken)
 
 

@@ -12,10 +12,10 @@ async function getCommentsByPostId(req, res) {
   try {
 
     const comments = await Comment.find({ post: postId })
-      .populate('author', "profileImage userName")
+      .populate("author", "profileImage")
       .sort('-created')
       .exec();
-
+ 
     res.json(comments)
   } catch (error) {
   console.log(error);

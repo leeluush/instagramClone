@@ -49,7 +49,7 @@ function Post({ post }) {
       </CardActions>
       <PostCommentDialog open ={dialogOpen} handleClose ={handleDialogClose} post={post} postId={_id}/>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <List>
+        <List comments={comments}>
         
           {comments.map((comment) => (
             <Comment key={comment._id} comment={comment} />

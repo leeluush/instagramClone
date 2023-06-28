@@ -6,11 +6,7 @@ import './UserHeader.css'
 function UserHeader() {
 
   const { user } = useContext(AuthContext);
-  
-    if (!user) {
-      return <div>Loading user information... </div>;
-    }
-  
+
     const { profileImage, userName, email } = user || {};
   
     if(!profileImage || !userName || !email) {

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
+import { fetchUserInfo } from '../../services/api.service';
 
 export const AuthContext = createContext();
 
@@ -9,14 +10,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const localData = localStorage.getItem('user');
-        if (localData) {
-          const userInfo = JSON.parse(localData);
-          setUser(userInfo);
-        }
+        const userInfo = await fetchUserInfo()
+        setUser(userInfo)
+        
       } catch (error) {
         if (error.message === '401') {
-          throw Error;
+          // If the user is not authorized, remove the user from localStorage
+          localStorage.removeItem('user');
         }
       } finally {
         setLoading(false); // set loading to false after fetching user data
