@@ -4,8 +4,8 @@ import { fetchComments } from '../../services/api.comments';
 
 function Comment({ comment }) {
     const { content } = comment;
-    console.log(comment)
-    const { userName, profileImage } = comment.author;
+    const userName = comment.author?.userName || '';
+    const profileImage = comment.author?.profileImage || '';
     
     
     return (
