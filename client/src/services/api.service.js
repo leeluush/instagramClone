@@ -63,6 +63,8 @@ export async function getPosts() {
 
 
 
+
+
 export async function followUser(userId, followerId) {
   try {
     const response = await fetch(`/api/users/follow`, {
@@ -112,7 +114,7 @@ export async function logout() {
       credentials: 'include',
     });
     if (response.ok) {
-      // Handle successful logout if needed
+ 
     } else {
       throw new Error('Logout failed');
     }

@@ -52,7 +52,7 @@ function Post({ post }) {
         <List>
         
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment}  postId={_id}/>
           ))}
         </List>
       </Collapse>

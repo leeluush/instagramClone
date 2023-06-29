@@ -1,5 +1,5 @@
-import { CardActions, Typography , Button} from "@mui/material";
-import { useState } from 'react'
+import { CardActions, Typography, Button } from "@mui/material";
+import { useState, useEffect } from 'react'; // Import useEffect hook
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useCommentLikes } from '../../services/api.likes';
@@ -7,42 +7,57 @@ import timeSincePost from '../../services/timeUtils';
 import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { deleteComment } from '../../services/api.comments';
-import fetchComments from '../../services/api.comments';
 
-function CommentInteractions({ commentId, commentCreated, fetchComments }) {
+
+function CommentInteractions({ commentId }) {
     const { likes, liked, handleLike } = useCommentLikes(commentId);
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [deleted, setDeleted] = useState(false); // Track deleted state
 
     var aDay = 24 * 60 * 60 * 1000;
     const timeSince = timeSincePost(new Date(Date.now() - aDay));
 
+    useEffect(() => {
+        // Check if comment has been deleted and close the dialog
+        if (deleted) {
+            setOpen(false);
+        }
+    }, [deleted]);
+
     const handleOpen = () => {
         setOpen(true);
-        setAnchorEl(null);  
+        setAnchorEl(null);
     };
-    
+
     const handleClose = () => {
         setOpen(false);
     };
-    
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    
+
     const handleCloseMenu = () => {
         setAnchorEl(null);
     };
 
     async function handleDeleteComment() {
         try {
-          await deleteComment(commentId);
-          handleClose(); // Close the dialog
-          fetchComments(); // Refresh comments
+            await deleteComment(commentId);
+
+            console.log(`Deleted comment: ${commentId}`);
+            setDeleted(true); // Set deleted state to trigger re-render
+
         } catch (error) {
-          console.error(error);
-          // Here you could set an error message state to display to the user
+            console.error(`Error deleting comment: ${commentId}`);
+            console.error(error);
         }
+    }
+
+    // Render null if comment is deleted
+    if (deleted) {
+        return null;
     }
 
 
@@ -88,7 +103,7 @@ function CommentInteractions({ commentId, commentCreated, fetchComments }) {
             </Dialog>
         </CardActions>
     );
-            }
+}
 
 
 export default CommentInteractions;

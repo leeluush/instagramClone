@@ -48,12 +48,12 @@ async function createComment (req, res) {
 async function removeComment(req, res) {
   try {
     const commentId = req.params.commentId;
-    const userId = req.user._id;
-
+    console.log(commentId)
     await Comment
       .deleteOne({ _id: commentId })
       .exec()
     res.json({ message: "Comment removed successfully" });
+    console.log('comment reomved')
 
 
   } catch (error) {

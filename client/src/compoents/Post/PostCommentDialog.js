@@ -33,6 +33,12 @@ const PostCommentDialog = ({ open, handleClose, post }) => {
         setPostComments(comments);
     }, [comments]);
 
+    const fetchAndUpdateComments = async () => {
+        const updatedComments = await fetchComments(_id);
+        setPostComments(updatedComments);
+    };
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -83,7 +89,7 @@ const PostCommentDialog = ({ open, handleClose, post }) => {
                             ))}
                         </Box>
                         <Box>
-                            <PostInteractions postId={_id} likes={likes} />
+                            <PostInteractions postId={_id} likes={likes} fetchAndUpdateComments={fetchAndUpdateComments} />
                             <form onSubmit={handleSubmit}>
                                 <TextField
                                     value={comment}
