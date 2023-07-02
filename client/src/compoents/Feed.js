@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Post from './Post/Post'
-import Reels from './Reels';
-import { getPosts  } from '../services/api.service';
+import { getPosts } from '../services/api.service';
 import Container from '@mui/material/Container';
 import { fetchComments } from "../services/api.comments";
 
@@ -36,20 +35,19 @@ function Feed() {
 
 
   return (
-    <Container maxWidth="sm">
 
-      <Reels/>
+      <Container maxWidth="sm">
+        <ul className="post-list">
+          {posts.map((post) => (
+            <li key={post._id}>
+              <Post
+                post={post} key={post._id}
+              />
+            </li>
+          ))}
+        </ul>
+      </Container>
 
-      <ul className="post-list">
-        {posts.map((post) => (
-          <li key={post._id}>
-            <Post
-              post={post} key={post._id}
-            />
-          </li>
-        ))}
-      </ul>
-    </Container>
 
 
   );

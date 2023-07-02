@@ -1,7 +1,7 @@
 import React from "react";
 import { CardMedia } from "@mui/material";
 
-function PostCardMedia({ media }) {
+function PostMedia({ media }) {
   return (
     <CardMedia
       component="img"
@@ -14,4 +14,4 @@ function PostCardMedia({ media }) {
   );
 }
 
-export default PostCardMedia;
+export default PostMedia;

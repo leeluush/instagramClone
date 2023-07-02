@@ -34,7 +34,6 @@ async function createComment (req, res) {
   comment.author = req.user.id;
   comment.post = body.postId;
 
-
   try {
     await comment.save();
     res.status(201).json({ message: "Comment created successfully", data: comment });
@@ -54,7 +53,6 @@ async function removeComment(req, res) {
       .exec()
     res.json({ message: "Comment removed successfully" });
     console.log('comment reomved')
-
 
   } catch (error) {
     res.status(500).json({ message: "An error occurred while removing the comment" });

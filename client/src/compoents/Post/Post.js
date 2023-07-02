@@ -1,23 +1,22 @@
-import React from "react";
-import { useState } from "react";
-import PostCardHeader from "./PostCardHeader";
-import PostCardMedia from "./PostCardMedia";
-import PostContent from "./PostContent";
-import PostInteractions from "./PostInteractions";
-import PostCommentDialog from './PostCommentDialog';
-
-
+import React, { useEffect, useState } from "react";
+import { apiDeleteComment, fetchComments } from "../../services/api.comments";
 import { Collapse, IconButton, Card, CardActions, List } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import Comment from "../Comment/Comment";
+import PostHeader from "./PostHeader";
+import PostMedia from "./PostMedia";
+import PostContent from "./PostContent";
+import PostActions from "./PostActions";
+import PostDialog from './PostDialog';
+
+import CommentList from "../Comment/CommentList";
 import "./Post.css";
 
-
 function Post({ post }) {
-  const { thumbnail, _id, content, comments } = post;
+  const { thumbnail, _id, content } = post;
   const [expanded, setExpanded] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false); 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [comments, setComments] = useState([]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -28,17 +27,40 @@ function Post({ post }) {
   }
 
   const handleDialogClose = () => {
-    setDialogOpen(false)
+    setDialogOpen(false);
   };
+
+  const deleteComment = async (commentId) => {
+    try {
+      await apiDeleteComment(commentId);
+      const updatedComments = comments.filter(comment => comment._id !== commentId);
+      setComments(updatedComments);
+    } catch (error) {
+      console.error(`Failed to delete comment: ${commentId}`);
+      console.error(error);
+    }
+  };
+
+  const fetchPostComments = async () => {
+    try {
+      const commentsData = await fetchComments(_id);
+      setComments(commentsData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPostComments();
+  }, [_id]);
 
   return (
     <Card className="post">
-      <PostCardHeader post={post} />
-      <PostCardMedia media={thumbnail} />
-      <PostInteractions postId={_id} handleDialogOpen={handleDialogOpen}/>
+      <PostHeader post={post} />
+      <PostMedia media={thumbnail} />
+      <PostActions postId={_id} handleDialogOpen={handleDialogOpen} deleteComment={deleteComment} />
       <PostContent content={content}></PostContent>
       <CardActions disableSpacing>
-       
         <IconButton
           onClick={handleExpandClick}
           aria-expanded={expanded}
@@ -47,16 +69,19 @@ function Post({ post }) {
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
-      <PostCommentDialog open ={dialogOpen} handleClose ={handleDialogClose} post={post} postId={_id}/>
+      <PostDialog open={dialogOpen} handleClose={handleDialogClose} post={post} postId={_id} comments={comments} deleteComment={deleteComment} />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <List>
-        
-          {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment}  postId={_id}/>
-          ))}
+          <CommentList 
+            postId={_id} 
+            comments={comments} 
+            deleteComment={deleteComment} 
+            fetchPostComments={fetchPostComments} 
+          />
         </List>
       </Collapse>
     </Card>
   );
 }
+
 export default Post;

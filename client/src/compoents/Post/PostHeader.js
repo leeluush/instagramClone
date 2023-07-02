@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, Typography, Box } from "@mui/material";
 import timeSincePost from '../../services/timeUtils'
 
-function PostCardHeader({post}) {
+function PostHeader({post}) {
     if (!post || !post.author) return null;
     const { userName, profileImage } = post.author;
     var aDay = 24*60*60*1000;
@@ -28,4 +28,4 @@ function PostCardHeader({post}) {
   );
 }
   
-  export default PostCardHeader;
+  export default PostHeader;

@@ -5,7 +5,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import {usePostLikes} from '../../services/api.likes'
 
-function PostInteractions({ postId, handleDialogOpen }) {
+function PostActions({ postId, handleDialogOpen }) {
   const { likes, liked, handleLike } = usePostLikes(postId);
 
   return (
@@ -35,4 +35,4 @@ function PostInteractions({ postId, handleDialogOpen }) {
 }
 
 
-export default PostInteractions
+export default PostActions
