@@ -77,6 +77,7 @@ function Post({ post }) {
             comments={comments} 
             deleteComment={deleteComment} 
             fetchPostComments={fetchPostComments} 
+           
           />
         </List>
       </Collapse>

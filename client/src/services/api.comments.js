@@ -17,14 +17,20 @@ async function fetchWithTokenRefresh(input, init) {
   return response;
 }
 
-export async function apiDeleteComment(commentId) {
+export async function apiDeleteComment(commentId, userId) {
 
   try {
     const response = await fetchWithTokenRefresh(`/api/comments/${commentId}`, {
       method: 'DELETE',
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to delete comment')
+    }
+
     const data = await response.json();
+
     return data;
   } catch (error) {
     console.error(error);

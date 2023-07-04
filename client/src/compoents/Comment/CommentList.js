@@ -2,13 +2,16 @@ import React from "react";
 import { Grid, ListItem, ListItemAvatar, Avatar, Typography, Box } from "@mui/material";
 import CommentActions from "./CommentActions";
 
-function CommentList({ postId, comments, deleteComment, fetchPostComments }) {
+function CommentList({ postId, comments, deleteComment, fetchPostComments, userId }) {
+
   return (
     <>
       {comments && comments.map((comment) => {
-        const { content, _id } = comment;
+        const { content, _id , author} = comment;
         const userName = comment.author?.userName || '';
         const profileImage = comment.author?.profileImage || '';
+        const commentAuthorId = author?._id || '';  // Obtain authorId from each comment
+
 
         return (
           <ListItem key={_id} alignItems="flex-start">
@@ -33,6 +36,9 @@ function CommentList({ postId, comments, deleteComment, fetchPostComments }) {
                   commentId={_id}
                   deleteComment={deleteComment}
                   fetchPostComments={fetchPostComments}
+                  userId={userId}
+                  commentAuthorId={commentAuthorId}
+             
                 />
               </Grid>
             </Grid>

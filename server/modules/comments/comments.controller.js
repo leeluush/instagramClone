@@ -47,12 +47,24 @@ async function createComment (req, res) {
 async function removeComment(req, res) {
   try {
     const commentId = req.params.commentId;
-    console.log(commentId)
+    const userId = req.user.id;
+
+    const comment = await Comment
+    .findById(commentId)
+    .exec()
+
+    if(!comment) {
+      return res.status(404).json({message: "Comment not found"})
+    }
+
+    if (comment.author.toString() !== userId) {
+      return res.status(403).json({message: "User is not authorized to delete the this comment"})
+    }
+
     await Comment
       .deleteOne({ _id: commentId })
       .exec()
-    res.json({ message: "Comment removed successfully" });
-    console.log('comment reomved')
+      res.json({ message: "Comment removed successfully" });
 
   } catch (error) {
     res.status(500).json({ message: "An error occurred while removing the comment" });

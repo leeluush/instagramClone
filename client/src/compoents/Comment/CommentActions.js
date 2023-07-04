@@ -1,13 +1,17 @@
 import { CardActions, Typography, Button } from "@mui/material";
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useCommentLikes } from '../../services/api.likes';
 import timeSincePost from '../../services/timeUtils';
 import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { AuthContext } from "../Auth/AuthContext";
 
-function CommentActions({ commentId, deleteComment }) {
+function CommentActions({ commentId, deleteComment, commentAuthorId }) {
+  const { user } = useContext(AuthContext)
+
+
   const { likes, liked, handleLike } = useCommentLikes(commentId);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -32,6 +36,9 @@ function CommentActions({ commentId, deleteComment }) {
     setAnchorEl(null);
   };
 
+  const showActions = user && user._id && commentAuthorId && user._id.toString() === commentAuthorId.toString();
+
+
   return (
     <CardActions>
       {liked ? (
@@ -48,6 +55,8 @@ function CommentActions({ commentId, deleteComment }) {
       <Typography variant="body2" color="primary" style={{ cursor: 'pointer', marginLeft: '16px' }}>
         Reply
       </Typography>
+      {showActions && (
+      <>
       <IconButton onClick={handleClick}>
         <MoreHorizIcon />
       </IconButton>
@@ -69,10 +78,12 @@ function CommentActions({ commentId, deleteComment }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={() => deleteComment(commentId)}>Delete Comment</Button>
-        </DialogActions>
-      </Dialog>
-    </CardActions>
+          <Button onClick={() => deleteComment(commentId, user._id)}>Delete Comment</Button>
+        </DialogActions>      
+    </Dialog>
+     </>
+    )}
+    </CardActions >
   );
 }
 
