@@ -1,5 +1,5 @@
-service-account-new.json
-service-account.json
-key-service.json
+server/service-account-new.json
+server/service-account.json
+server/key-service.json
 node_modules
 .env
