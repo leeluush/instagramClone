@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { apiDeleteComment, fetchComments } from "../../services/api.comments";
 import { Collapse, IconButton, Card, CardActions, List } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -41,18 +41,19 @@ function Post({ post }) {
     }
   };
 
-  const fetchPostComments = async () => {
+  
+  const fetchPostComments = useCallback(async () => {
     try {
       const commentsData = await fetchComments(_id);
       setComments(commentsData);
     } catch (error) {
       console.error(error);
     }
-  };
+  },[_id]);
 
   useEffect(() => {
     fetchPostComments();
-  }, [_id]);
+  }, [fetchPostComments]);
 
   return (
     <Card className="post">
