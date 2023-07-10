@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { apiDeleteComment, fetchComments } from "../../services/api.comments";
+import { apiDeleteComment, apiEditComment, fetchComments } from "../../services/api.comments";
 import { Collapse, IconButton, Card, CardActions, List } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -41,6 +41,19 @@ function Post({ post }) {
     }
   };
 
+  const editComment = async (commentId, newComment) => {
+    try {
+      const updatedComment = await apiEditComment(commentId, newComment);
+      const updatedComments = comments.map(comment => 
+        comment._id === commentId ? updatedComment : comment
+      );
+      setComments(updatedComments);
+    } catch (error) {
+      console.error(`Failed to edit comment: ${commentId}`)
+      console.error(error)
+    }
+  }
+
   
   const fetchPostComments = useCallback(async () => {
     try {
@@ -78,6 +91,7 @@ function Post({ post }) {
             comments={comments} 
             deleteComment={deleteComment} 
             fetchPostComments={fetchPostComments} 
+            editComment={editComment}
            
           />
         </List>

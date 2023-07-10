@@ -77,15 +77,29 @@ async function removeComment(req, res) {
 async function updateComment(req, res) {
   try {
     const commentId = req.params.commentId;
-    const userId = req.user._id
+    const userId = req.user.id
+    const commentContent = req.body.comment;
 
-    const comment = req.body.comment;
+    const comment = await Comment
+    .findById(commentId)
+    .exec()
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    if (comment.author.toString() !== userId) {
+      return res.status(403).json({message: "User is not authorized to update the this comment"})
+    }
+
     await Comment.updateOne(
-      { _id: commentId, author: req.user._id },
+      { _id: commentId, author: userId },
       { $set: { content: commentContent } }).exec();
-    res.json({ message: "Comment updated successfully", data: comment });
+
+      const updatedComment = await Comment.findById(commentId).exec();
+      res.json({ message: "Comment updated successfully", data: updatedComment });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred while updating the comment" });
+    res.status(500).json({ message: "An error occurred while updating the comment", error });
   }
 }
 

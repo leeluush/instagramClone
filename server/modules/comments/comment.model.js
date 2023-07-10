@@ -10,7 +10,7 @@ const CommentSchema = new mongoose.Schema({
     },
     post: {
         type: ObjectId,
-        require: true,
+        required: true,
         ref: 'Post',
         index: true,
     },

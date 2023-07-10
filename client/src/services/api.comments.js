@@ -39,6 +39,7 @@ export async function apiDeleteComment(commentId, userId) {
 }
 
 export async function fetchComments(postId) {
+ 
   try {
     const response = await fetchWithTokenRefresh(`/api/posts/${postId}/comments`, {
       credentials: 'include',
@@ -56,6 +57,25 @@ export async function fetchComments(postId) {
   }
 }
 
+export async function apiEditComment(commentId, commentContent) {
+ 
+  try {
+    const response = await fetchWithTokenRefresh(`/api/comments/${commentId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ comment: commentContent })
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('There was an error updating the comment', error)
+  }
+}
 export async function postComment(postId, comment) {
   try {
     const response = await fetchWithTokenRefresh(`/api/comments`, {

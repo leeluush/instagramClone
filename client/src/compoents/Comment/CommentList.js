@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, ListItem, ListItemAvatar, Avatar, Typography, Box } from "@mui/material";
 import CommentActions from "./CommentActions";
 
-function CommentList({ postId, comments, deleteComment, fetchPostComments, userId }) {
+function CommentList({ postId, comments, deleteComment, fetchPostComments, userId, editComment }) {
 
   return (
     <>
@@ -38,6 +38,10 @@ function CommentList({ postId, comments, deleteComment, fetchPostComments, userI
                   fetchPostComments={fetchPostComments}
                   userId={userId}
                   commentAuthorId={commentAuthorId}
+                  editComment={editComment}
+                  content={content}
+                  postId={postId}
+       
              
                 />
               </Grid>

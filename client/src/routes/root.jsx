@@ -12,7 +12,7 @@ export default function Root() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(user)
+
     if (user) {
       navigate('/feed')
 
