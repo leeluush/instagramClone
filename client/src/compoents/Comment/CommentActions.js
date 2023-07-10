@@ -7,18 +7,19 @@ import timeSincePost from '../../services/timeUtils';
 import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { AuthContext } from "../Auth/AuthContext";
-import { apiEditComment, fetchComments } from "../../services/api.comments";
+import { apiEditComment } from "../../services/api.comments";
 
-function CommentActions({ commentId, deleteComment, commentAuthorId, content, postId,fetchPostComments}) {
+function CommentActions({ commentId, deleteComment, commentAuthorId, content, postId,fetchPostComments, created}) {
   const { user } = useContext(AuthContext)
-  const [editMode, setEditMode] = useState(false);
+  const [ editMode, setEditMode ] = useState(false);
   const [editedComment, setEditedComment] = useState('');
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const { likes, liked, handleLike } = useCommentLikes(commentId);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const timeSince = timeSincePost(new Date());
+
+  const timeSince = timeSincePost(new Date(created)); 
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);

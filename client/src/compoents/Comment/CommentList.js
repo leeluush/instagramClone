@@ -7,7 +7,8 @@ function CommentList({ postId, comments, deleteComment, fetchPostComments, userI
   return (
     <>
       {comments && comments.map((comment) => {
-        const { content, _id , author} = comment;
+        const { content, _id , author } = comment;
+
         const userName = comment.author?.userName || '';
         const profileImage = comment.author?.profileImage || '';
         const commentAuthorId = author?._id || '';  // Obtain authorId from each comment
@@ -41,6 +42,7 @@ function CommentList({ postId, comments, deleteComment, fetchPostComments, userI
                   editComment={editComment}
                   content={content}
                   postId={postId}
+                  created={comment.created}
        
              
                 />

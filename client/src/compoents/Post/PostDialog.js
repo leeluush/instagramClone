@@ -19,15 +19,15 @@ import timeSincePost from '../../services/timeUtils';
 import PostActions from './PostActions';
 
 const PostDialog = ({ open, handleClose, post, postId, comments, deleteComment }) => {
-  const { thumbnail, content } = post;
+  const { thumbnail, content, created } = post;
   const { user } = useContext(AuthContext);
   const [comment, setComment] = useState('');
   const [postComments, setPostComments] = useState(comments);
   const { userName, profileImage } = post.author;
   const { likes } = usePostLikes(postId);
 
-  var aDay = 24 * 60 * 60 * 1000;
-  const timeSince = timeSincePost(new Date(Date.now() - aDay));
+  const createdDate = new Date(created);
+  const timeSince = timeSincePost(createdDate);
 
   useEffect(() => {
     setPostComments(comments);
@@ -69,7 +69,7 @@ const PostDialog = ({ open, handleClose, post, postId, comments, deleteComment }
                 <strong>{userName}</strong> {content}
               </Typography>
             </Box>
-            <Typography variant="body2" style={{ paddingLeft: '40px' }}>
+            <Typography variant="body2" style={{ paddingLeft: '40px', textDecoration: 'none' }}>
               {timeSince}
             </Typography>
             <Box sx={{ overflowY: 'scroll', maxHeight: '200px', marginBottom: '10px' }}>

@@ -5,9 +5,12 @@ import timeSincePost from '../../services/timeUtils'
 function PostHeader({post}) {
     if (!post || !post.author) return null;
     const { userName, profileImage } = post.author;
-    var aDay = 24*60*60*1000;
+    const { created } = post
 
-    const timeSince = timeSincePost(new Date(Date.now()-aDay));
+
+    const createdDate = new Date(created);
+    const timeSince = timeSincePost(createdDate);
+
 
   
     return (
