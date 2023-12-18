@@ -28,7 +28,9 @@ jobs:
           npm install
 
       - name: Build the client
-        run: npm run build:client
+        run: |
+          cd client
+              npm run build:client
 
       - name: Install server dependencies
         run: |
