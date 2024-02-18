@@ -15,7 +15,7 @@ import PostMedia from "./PostMedia";
 import PostContent from "./PostContent";
 import PostActions from "./PostActions";
 import PostDialog from "./PostDialog";
-import { AuthContext } from "../Auth/AuthContext";
+import { AuthContext } from "../Auth/AuthContext" 
 import { postComment } from "../../services/api.comments";
 
 import CommentList from "../Comment/CommentList";

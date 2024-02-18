@@ -1,49 +1,16 @@
-const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
-const util = require('util');
-
+const crypto = require('crypto');
+const {
+  signAccessToken,
+  signRefreshToken,
+  verifyRefreshToken,
+  verifyAccessToken,
+} = require('./tokenController');
 const User = require('../models/userModel');
-const RefreshToken = require('../utils/refreshToken.model');
+const RefreshToken = require('../models/refreshToken.model');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../middleware/appError');
-
-const signJWT = util.promisify(jwt.sign);
-const verifyJWT = util.promisify(jwt.verify);
-
-const createToken = async (id, secret, expiresIn) => {
-  const token = await signJWT({ id }, secret, { expiresIn });
-  if (!token) {
-    throw new AppError('Could not sign the token', 500);
-  }
-  return token;
-};
-
-const verifyToken = async (token, secret) => {
-  const decodedToken = await verifyJWT(token, secret);
-  if (!decodedToken) {
-    throw new AppError('Invalid token', 401);
-  }
-  return decodedToken;
-};
-
-const verifyAccessToken = async (token) =>
-  verifyToken(token, process.env.ACCESS_JWT_SECRET);
-
-const verifyRefreshToken = async (token) =>
-  verifyToken(token, process.env.REFRESH_JWT_SECRET);
-
-const signAccessToken = async (id) =>
-  createToken(
-    id,
-    process.env.ACCESS_JWT_SECRET,
-    process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
-  );
-const signRefreshToken = async (id) =>
-  createToken(
-    id,
-    process.env.REFRESH_JWT_SECRET,
-    process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
-  );
+const sendEmail = require('../utils/email');
 
 const setCookie = (res, cookieName, cookieValue, maxAge, path = '/api') => {
   res.cookie(cookieName, cookieValue, {
@@ -54,67 +21,6 @@ const setCookie = (res, cookieName, cookieValue, maxAge, path = '/api') => {
     path: path,
   });
 };
-
-exports.refreshToken = catchAsync(async (req, res, next) => {
-  const existingRefreshToken = req.cookies ? req.cookies.refreshToken : '';
-
-  let decoded;
-  try {
-    decoded = await verifyRefreshToken(existingRefreshToken);
-  } catch (error) {
-    return res.status(401).json({ message: 'Invalid refresh token' });
-  }
-
-  if (!decoded) {
-    return res.status(401).json({ message: 'Invalid refresh token' });
-  }
-
-  const userId = decoded.id;
-
-  const refreshTokenInDb = await RefreshToken.findOne({
-    token: existingRefreshToken,
-    user: userId,
-  });
-
-  if (!refreshTokenInDb) {
-    return res
-      .status(401)
-      .json({ message: 'Refresh token has expired, please log in again.' });
-  }
-
-  const accessToken = await signAccessToken(userId);
-
-  setCookie(
-    res,
-    'accessToken',
-    accessToken,
-    process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
-  );
-  setCookie(
-    res,
-    'refreshToken',
-    existingRefreshToken,
-    process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
-  );
-
-  const user = await User.findById(userId);
-  if (!user) {
-    return res.status(401).json({ message: 'User not found.' });
-  }
-
-  res.status(200).json({
-    status: 'success',
-    tokens: { accessToken, existingRefreshToken },
-    payload: {
-      user: {
-        _id: user._id,
-        userName: user.userName,
-        email: user.email,
-        profileImage: user.profileImage,
-      },
-    },
-  });
-});
 
 exports.signUp = catchAsync(async (req, res, next) => {
   const requiredFields = [
@@ -145,9 +51,9 @@ exports.signUp = catchAsync(async (req, res, next) => {
     lastName,
     email,
     password,
+    passwordConfirm,
     birthdate,
     userName,
-    passwordConfirm,
   } = req.body;
   const profileImage = req.file ? req.file.path : null;
 
@@ -161,17 +67,20 @@ exports.signUp = catchAsync(async (req, res, next) => {
     return next(new AppError('Passwords do not match', 400));
   }
 
-  // Create user
-  const newUser = await User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    birthdate,
-    userName,
-    passwordConfirm,
-    profileImage: profileImage,
-  });
+  let newUser; // Declare newUser outside try block
+  try {
+    newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      birthdate,
+      userName,
+      profileImage: profileImage,
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
 
   const accessToken = await signAccessToken(newUser._id);
   const refreshToken = await signRefreshToken(newUser._id);
@@ -250,6 +159,98 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError('There is no user with that email address', 404));
+  }
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  const resetUrl = `${req.protocol}://${req.get(
+    'host',
+  )}/api/auth/resetPassword/${resetToken}`;
+
+  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetUrl}.\nIf you didn't forget your password, please ignore this email!`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Your password reset token (valid for 10 min)',
+      message,
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Token sent to email!',
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new AppError(
+        'There was an error sending the email. Try agian later',
+        500,
+      ),
+    );
+  }
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new AppError('Token is invalid or has expired', 400));
+  }
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  const accessToken = await signAccessToken(user._id);
+  const refreshToken = await signRefreshToken(user._id);
+
+  const userRefreshToken = new RefreshToken({
+    token: refreshToken,
+    user: user._id,
+  });
+  await userRefreshToken.save();
+
+  setCookie(
+    res,
+    'accessToken',
+    accessToken,
+    process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
+  );
+  setCookie(
+    res,
+    'refreshToken',
+    refreshToken,
+    process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
+  );
+
+  res.status(200).json({
+    status: 'success',
+    tokens: { accessToken, refreshToken },
+    user: {
+      id: user.id,
+      profileImage: user.profileImage,
+      userName: user.userName,
+      email: user.email,
+    },
+  });
+});
+
 exports.logOutUser = catchAsync(async (req, res, next) => {
   const existingRefreshToken = req.cookies ? req.cookies.refreshToken : null;
 
@@ -276,4 +277,65 @@ exports.protect = catchAsync(async (req, res, next) => {
   } catch (error) {
     next(new AppError(error.message, 401));
   }
+});
+
+exports.refreshToken = catchAsync(async (req, res, next) => {
+  const existingRefreshToken = req.cookies ? req.cookies.refreshToken : '';
+
+  let decoded;
+  try {
+    decoded = await verifyRefreshToken(existingRefreshToken);
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid refresh token' });
+  }
+
+  if (!decoded) {
+    return res.status(401).json({ message: 'Invalid refresh token' });
+  }
+
+  const userId = decoded.id;
+
+  const refreshTokenInDb = await RefreshToken.findOne({
+    token: existingRefreshToken,
+    user: userId,
+  });
+
+  if (!refreshTokenInDb) {
+    return res
+      .status(401)
+      .json({ message: 'Refresh token has expired, please log in again.' });
+  }
+
+  const accessToken = await signAccessToken(userId);
+
+  setCookie(
+    res,
+    'accessToken',
+    accessToken,
+    process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
+  );
+  setCookie(
+    res,
+    'refreshToken',
+    existingRefreshToken,
+    process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
+  );
+
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(401).json({ message: 'User not found.' });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    tokens: { accessToken, existingRefreshToken },
+    payload: {
+      user: {
+        _id: user._id,
+        userName: user.userName,
+        email: user.email,
+        profileImage: user.profileImage,
+      },
+    },
+  });
 });

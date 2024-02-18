@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 require('../models/userModel');
 require('../models/comment.model');
 require('../models/follower.model');
-require('./refreshToken.model');
+require('../models/refreshToken.model');
 require('../models/like.model');
 require('../models/post.model');
 

@@ -133,6 +133,7 @@ export async function logout() {
       credentials: "include",
     });
     if (response.ok) {
+      localStorage.clear()
     } else {
       throw new Error("Logout failed");
     }

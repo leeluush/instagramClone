@@ -9,9 +9,15 @@ router
   .post(uploadProfileImage.single('profileImage'), authController.signUp);
 
 router.route('/login').post(authController.login);
+router.route('/forgotPassword').post(authController.forgotPassword);
+router.route('/resetPassword/:token').patch(authController.resetPassword);
+
+router
+  .route('/updateMe')
+  .patch(authController.protect, userController.updateMe);
 
 // For logout
-router.route('/logout').post(authController.logOutUser);
+router.route('/logout').post(authController.protect, authController.logOutUser);
 
 // For user profile
 router

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Post from "./Post/Post";
+import Post from "../components/Post/Post";
 import { getFeed } from "../services/api.service";
 import { fetchComments } from "../services/api.comments";
 import Container from "@mui/material/Container";
