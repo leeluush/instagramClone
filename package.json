@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "render": "(cd client && npm i && npm run build)&& (cd backend && npm i )",
-    "start": "cd backend && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "(npm run build --workspace client)",
-    "postinstall": "npm run build",
-    "build:client": "(cd client && npm i && npm run build)&& (mv client/build backend/build)"
+    "start": "if [ \"$NODE_ENV\" = \"production\" ]; then npm run start-server; else npm run dev; fi",
+    "build": "npm run install-server && npm run install-client && npm run build-client && mkdir -p backend/client && mv client/build backend/client/build",
+    "install-server": "cd backend && npm install",
+    "start-server": "cd backend && node server.js",
+    "dev": "cd backend && npm run dev",
+    "install-client": "cd client && npm install",
+    "build-client": "cd client && npm run build",
+    "start-client": "cd client && npm run start"
   },
   "workspaces": [
     "client",
