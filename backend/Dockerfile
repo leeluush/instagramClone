@@ -4,17 +4,14 @@ FROM node:18 as builder
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json for both client and backend
-COPY client/package*.json ./client/
+# Copy the entire client application
+COPY client ./client
+
+# Install client dependencies and build the client
+RUN npm install --prefix client && npm run build --prefix client
+
+# Copy backend package.json and package-lock.json and install dependencies
 COPY backend/package*.json ./backend/
-
-# Install client dependencies
-RUN npm install --prefix client
-
-# Build the client
-RUN npm run build --prefix client
-
-# Install backend dependencies
 RUN npm install --prefix backend
 
 # Now, set up the production image
@@ -26,13 +23,9 @@ WORKDIR /app
 # Copy built client files from the 'builder' stage into the production image
 COPY --from=builder /app/client/build ./client/build
 
-# Copy backend files
+# Copy backend files and install only production dependencies
 COPY backend ./backend
-
-# Copy the backend's package.json (and potentially other needed files)
 COPY backend/package*.json ./backend/
-
-# Install only production dependencies
 RUN npm install --prefix backend --only=production
 
 # Set the working directory to backend to start the server
