@@ -35,15 +35,6 @@ const UserSchema = new mongoose.Schema({
     minLength: 8,
     select: false,
   },
-  passwordConfirm: {
-    type: String,
-    required: [true, 'Please confirm your password'],
-    validate: {
-      validator: function (el) {
-        return el === this.password;
-      },
-    },
-  },
   passwordResetToken: String,
   passwordResetExpires: Date,
   created: {

@@ -30,10 +30,15 @@ exports.signUp = catchAsync(async (req, res, next) => {
     'password',
     'birthdate',
     'userName',
-    'passwordConfirm',
   ];
   const missingFields = [];
 
+  // Check for password confirmation right at the beginning
+  if (req.body.password !== req.body.passwordConfirm) {
+    return next(new AppError('Passwords do not match', 400));
+  }
+
+  // Check for missing fields
   requiredFields.forEach((field) => {
     if (!req.body[field]) {
       missingFields.push(field);
@@ -46,46 +51,29 @@ exports.signUp = catchAsync(async (req, res, next) => {
     );
   }
 
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    passwordConfirm,
-    birthdate,
-    userName,
-  } = req.body;
+  const { ...userData } = req.body;
   const profileImage = req.file ? req.file.path : null;
 
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ email: userData.email });
 
   if (userExists) {
     return next(new AppError('User already exists', 400));
   }
 
-  if (password !== passwordConfirm) {
-    return next(new AppError('Passwords do not match', 400));
-  }
-
-  let newUser; // Declare newUser outside try block
+  let newUser;
   try {
     newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password,
-      birthdate,
-      userName,
-      profileImage: profileImage,
+      ...userData,
+      profileImage,
     });
   } catch (error) {
     return next(new AppError(error.message, 500));
   }
 
+  // Create tokens, set cookies, and send response
   const accessToken = await signAccessToken(newUser._id);
   const refreshToken = await signRefreshToken(newUser._id);
 
-  // Send the tokens to the client in cookies
   setCookie(
     res,
     'accessToken',
@@ -103,7 +91,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     status: 'success',
     tokens: { accessToken, refreshToken },
     user: {
-      id: newUser.id,
+      id: newUser._id,
       profileImage: newUser.profileImage,
       userName: newUser.userName,
       email: newUser.email,
