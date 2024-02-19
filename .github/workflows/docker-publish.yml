@@ -30,7 +30,7 @@ jobs:
       - name: Build the client
         run: |
           cd client
-              npm run build:client
+              npm run build
 
       - name: Install server dependencies
         run: |
