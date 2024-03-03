@@ -9,7 +9,7 @@ import { AuthProvider } from "./components/Auth/AuthContext";
 import { Navigate } from "react-router-dom";
 
 import "./index.css";
-import Feed from "./components/Feed";
+import Feed from "./components/Feed/Feed";
 
 const router = createBrowserRouter([
   {

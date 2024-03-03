@@ -117,15 +117,21 @@ PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
     ])
     .exec();
 
-  if (followingIds.length === 0 || posts.length === 0) {
-    posts = await this.find()
-      .sort({ likes: -1 })
-      .limit(limit)
+  const minimumThreshold = 5;
+
+  if (posts.length < minimumThreshold) {
+    const additionalPostsNeeded = minimumThreshold - posts.length;
+    const topLikedOrRecentPosts = await this.find({
+      _id: { $nin: posts.map((post) => post._id) },
+    })
+      .sort({ likes: -1, created: -1 })
+      .limit(additionalPostsNeeded)
       .lean()
       .populate([
         { path: 'author', select: 'firstName lastName profileImage userName' },
       ])
       .exec();
+    posts = [...posts, ...topLikedOrRecentPosts];
   }
 
   const postIds = posts.map((post) => post._id);
