@@ -6,8 +6,8 @@
   "scripts": {
     "start": "if [ \"$NODE_ENV\" = \"production\" ]; then npm run start-server; else npm run start-dev; fi",
     "start-dev": "concurrently \"npm run start-server-dev\" \"npm run start-client-dev\"",
-    "build": "npm run build-client && npm run build-server && mkdir -p backend/client && mv client/build backend/client/build",
-    "build-server": "cd backend && npm install && npm run build",
+    "build": "npm run build-client && rm -rf backend/client/build && npm run build-server && mkdir -p backend/client && mv client/build backend/client/",
+    "build-server": "cd backend && npm install",
     "start-server": "cd backend && npm start",
     "start-server-dev": "cd backend && npm run dev",
     "build-client": "cd client && npm install && npm run build",
