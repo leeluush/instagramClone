@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/leeluush/instagramClone#readme",
   "dependencies": {
-    "html-to-text": "^9.0.5",
     "nodemailer": "^6.9.9",
     "pug": "^3.0.2"
   }
