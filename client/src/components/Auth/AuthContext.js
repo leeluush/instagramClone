@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { fetchUserInfo } from "../../services/api.service";
+import { fetchUserInfo } from "../../api/userApi";
 
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {

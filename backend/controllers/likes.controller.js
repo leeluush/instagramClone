@@ -17,11 +17,12 @@ exports.likeComment = catchAsync(async (req, res, next) => {
   }
 
   if (existingLike) {
-    return next(new AppError('Already liked this comment', 404));
+    return next(new AppError('Already liked this comment', 400));
   }
 
   const like = new Like({ user: userId, comment: commentId });
   const savedLike = await like.save();
+  console.log('savedLike', savedLike)
 
   if (!savedLike) {
     return next(new AppError('Faild to like this comment', 500));
@@ -38,6 +39,7 @@ exports.likeComment = catchAsync(async (req, res, next) => {
   }
 
   const likeCount = await Like.countDocuments({ comment: commentId });
+
   return res
     .status(200)
     .json({ message: 'Like created successfully', likeCount });

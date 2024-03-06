@@ -4,7 +4,7 @@ import { CardContent, CardActions, Typography } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import { toggleLike } from "../../services/api.likes";
+import { toggleLike } from "../../api/likesApi";
 import { AuthContext } from "../Auth/AuthContext";
 
 function PostActions({

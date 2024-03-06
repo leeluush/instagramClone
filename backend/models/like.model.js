@@ -37,8 +37,12 @@ LikeSchema.pre('save', function (next) {
 });
 
 LikeSchema.index(
-  { user: 1, post: 1, comment: 1 },
-  { unique: true, sparse: true },
+  { user: 1, post: 1 },
+  { unique: true, partialFilterExpression: { post: { $type: 'objectId' } } },
+);
+LikeSchema.index(
+  { user: 1, comment: 1 },
+  { unique: true, partialFilterExpression: { comment: { $type: 'objectId' } } },
 );
 
 const Like = mongoose.model('Like', LikeSchema);

@@ -12,9 +12,9 @@ import {
 
 import PostMedia from "./PostMedia";
 import CommentList from "../Comment/CommentList";
-import { postComment } from "../../services/api.comments";
+import { postComment } from "../../api/commentApi";
 import { AuthContext } from "../Auth/AuthContext";
-import timeSincePost from "../../services/timeUtils";
+import timeSincePost from "../../utils/timeSincePost";
 import PostActions from "./PostActions";
 
 const PostDialog = ({

@@ -1,21 +1,4 @@
-import { refreshToken } from "./api.service";
-
-async function fetchWithTokenRefresh(input, init) {
-  const response = await fetch(input, { ...init, credentials: "include" });
-
-  if (response.status === 401) {
-    const refreshedResponse = await refreshToken();
-
-    if (!refreshedResponse.ok) {
-      throw new Error("Failed to refresh token");
-    }
-
-    // Retry the request
-    return await fetch(input, { ...init, credentials: "include" });
-  }
-
-  return response;
-}
+import { fetchWithTokenRefresh } from "./utils";
 
 async function followUserApi(userId) {
   const response = await fetchWithTokenRefresh(

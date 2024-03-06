@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Post from "../Post/Post";
-import { getFeed } from "../../services/api.service";
-import { fetchComments } from "../../services/api.comments";
+import { getFeed } from "../../api/feedApi";
+import { fetchComments } from "../../api/commentApi";
 import Container from "@mui/material/Container";
 import { PostContext } from "../Post/PostContext";
 import { useContext } from "react";

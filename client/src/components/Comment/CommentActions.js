@@ -2,8 +2,8 @@ import { CardActions, Button, TextField } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { toggleLike } from "../../services/api.likes";
-import timeSincePost from "../../services/timeUtils";
+import { toggleLike } from "../../api/likesApi";
+import timeSincePost from "../../utils/timeSincePost";
 import {
   Dialog,
   DialogTitle,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { AuthContext } from "../Auth/AuthContext";
-import { apiEditComment } from "../../services/api.comments";
+import { apiEditComment } from "../../api/commentApi";
 
 function CommentActions({
   commentId,
@@ -83,7 +83,7 @@ function CommentActions({
         user._id,
         false
       );
-      // Update state based on API response
+     
       setLikes(response.likeCount);
       setLiked(newLikedStatus); // Assuming the API toggles the like status
     } catch (error) {

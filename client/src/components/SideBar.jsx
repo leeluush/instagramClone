@@ -16,7 +16,7 @@ import { PostContext } from "./Post/PostContext";
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { logout } from '../services/api.service'
+import { logout } from '../api/userApi'
 
 import './SideBar.css';
 import { useMediaQuery } from '@mui/material';

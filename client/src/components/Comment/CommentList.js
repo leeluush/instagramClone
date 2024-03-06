@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { apiDeleteComment, apiEditComment } from "../../services/api.comments";
+import { apiDeleteComment, apiEditComment } from "../../api/commentApi";
 
 import {
   Grid,

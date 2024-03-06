@@ -8,7 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { useState, useEffect, useContext } from "react";
-import { createPostApi } from "../../services/api.posts";
+import { createPostApi } from "../../api/postsApi";
 import { PostContext } from "../Post/PostContext";
 
 const DialogStyled = styled(Dialog)({

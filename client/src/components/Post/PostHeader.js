@@ -7,13 +7,13 @@ import {
   ListItemButton,
   Button,
 } from "@mui/material";
-import timeSincePost from "../../services/timeUtils";
+import timeSincePost from "../../utils/timeSincePost";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Dialog, List, ListItemText } from "@mui/material";
 import { AuthContext } from "../Auth/AuthContext";
 import EditPost from "../CreatePost/EditPost";
-import { deletePostApi } from "../../services/api.posts";
-import { followUserApi, unfollowUserApi } from "../../services/api.followers";
+import { deletePostApi } from "../../api/postsApi";
+import { followUserApi, unfollowUserApi } from "../../api/userFollowApi";
 
 function PostHeader({
   post,
