@@ -66,6 +66,8 @@ function UserHeader() {
     return null;
   }
 
+  if (isLoading) { return <div>Loading...</div>}
+
   return (
     <div className="UserHeader">
       <div className="UserProfile">
