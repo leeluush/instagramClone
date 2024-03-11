@@ -58,26 +58,24 @@ const sendErrorDev = (err, res) => {
 // };
 
 const sendErrorProd = (err, res) => {
-  // Log error for debugging
-  console.error('ERROR 💥', err);
+  // First log the error to the console
+  console.error('ERROR 💥', {
+    message: err.message,
+    stack: err.stack,
+    err: JSON.stringify(err, Object.getOwnPropertyNames(err)),
+  });
 
-  // Send a more detailed error response temporarily
+  // Then decide on what to send to the client
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
-      error: err,
-      stack: err.stack, // Include stack trace for operational errors
     });
   } else {
-    // For non-operational errors, provide a generic message to the client
-    // but log the details to the server logs for debugging
+    // Send a generic message to the client
     res.status(500).json({
       status: 'error',
       message: 'Something went very wrong',
-      // You might decide to include more info based on your logging needs:
-      // error: err, // Unwise to send the whole error object to the client
-      // stack: err.stack, // Or include stack trace (be cautious)
     });
   }
 };
