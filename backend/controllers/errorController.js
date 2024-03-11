@@ -36,23 +36,48 @@ const sendErrorDev = (err, res) => {
   });
 };
 
+// const sendErrorProd = (err, res) => {
+//   // Operational, trusted error: send message to client
+//   if (err.isOperational) {
+//     res.status(err.statusCode).json({
+//       status: err.status,
+//       message: err.message,
+//     });
+
+//     // Programming or other unknown error: don't leak error details
+//   } else {
+//     // 1) Log error
+//     console.error('ERROR 💥', err);
+
+//     // 2) Send genric message to client
+//     res.status(500).json({
+//       status: 'error',
+//       message: 'Something went very wrong',
+//     });
+//   }
+// };
+
 const sendErrorProd = (err, res) => {
-  // Operational, trusted error: send message to client
+  // Log error for debugging
+  console.error('ERROR 💥', err);
+
+  // Send a more detailed error response temporarily
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
+      error: err,
+      stack: err.stack, // Include stack trace for operational errors
     });
-
-    // Programming or other unknown error: don't leak error details
   } else {
-    // 1) Log error
-    console.error('ERROR 💥', err);
-
-    // 2) Send genric message to client
+    // For non-operational errors, provide a generic message to the client
+    // but log the details to the server logs for debugging
     res.status(500).json({
       status: 'error',
       message: 'Something went very wrong',
+      // You might decide to include more info based on your logging needs:
+      // error: err, // Unwise to send the whole error object to the client
+      // stack: err.stack, // Or include stack trace (be cautious)
     });
   }
 };
