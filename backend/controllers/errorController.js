@@ -1,4 +1,3 @@
-const util = require('util');
 const AppError = require('../middleware/appError');
 
 const handleCastErrorDB = (err) => {
@@ -48,12 +47,7 @@ const sendErrorProd = (err, res) => {
     // Programming or other unknown error: don't leak error details
   } else {
     // 1) Log error
-    const errorMessage = err.message || "No error message available";
-    const errorStack = err.stack || "No stack trace available";
-    console.error(`ERROR 💥: ${errorMessage}`, errorStack);
-    console.error(`ERROR 💥: ${err.message}`, err.stack);
-    console.error(`ERROR 💥: ${util.inspect(err, { showHidden: false, depth: null })}`);
-
+    console.error('ERROR 💥', err);
 
     // 2) Send genric message to client
     res.status(500).json({

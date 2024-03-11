@@ -5,25 +5,31 @@ import { fetchWithTokenRefresh, refreshToken } from "./utils";
 export async function getSuggestedUsers() {
   try {
     const response = await fetchWithTokenRefresh(`/api/users/suggested-users`, {
-      method: 'GET', 
+      method: 'GET',
       headers: {
         "Content-Type": "application/json",
       },
     });
+
+    // Log response status for debugging
+    console.log(`Response status: ${response.status} ${response.statusText}`);
+
     if (!response.ok) {
-      throw new Error("Failed to fetch suggested users");
+      // Attempt to read response body for detailed error message
+      const errorResponse = await response.text(); // Use .json() if the error response is in JSON format
+      console.error(`Failed to fetch suggested users: ${errorResponse}`);
+      throw new Error(`Failed to fetch suggested users: Status ${response.status}`);
     }
 
     const suggestedUsers = await response.json();
-    console.log("api",suggestedUsers)
+    console.log("API Response:", suggestedUsers);
     return suggestedUsers;
   } catch (error) {
-    console.error(error);
+    // Log the entire error object
+    console.error("Error in getSuggestedUsers:", error);
     throw error;
   }
 }
-
-
 
 
 export async function getUsersById(userId) {
