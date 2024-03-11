@@ -1,4 +1,29 @@
-import { refreshToken } from "./utils";
+import { fetchWithTokenRefresh, refreshToken } from "./utils";
+
+
+
+export async function getSuggestedUsers() {
+  try {
+    const response = await fetchWithTokenRefresh(`/api/users/suggested-users`, {
+      method: 'GET', 
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch suggested users");
+    }
+
+    const suggestedUsers = await response.json();
+    console.log("api",suggestedUsers)
+    return suggestedUsers;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
 
 
 export async function getUsersById(userId) {
@@ -21,8 +46,8 @@ export async function getUsersById(userId) {
 
 export async function followUser(userId, followerId) {
   try {
-    const response = await fetch(`/api/users/follow`, {
-      method: "POST",
+    const response = await fetchWithTokenRefresh(`/api/followers/follow/${followerId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,8 +68,8 @@ export async function followUser(userId, followerId) {
 
 export async function unfollowUser(userId, followerId) {
   try {
-    const response = await fetch(`/api/users/unfollow`, {
-      method: "POST",
+    const response = await fetchWithTokenRefresh(`/api/followers/unfollow/${followerId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },

@@ -22,7 +22,6 @@ exports.likeComment = catchAsync(async (req, res, next) => {
 
   const like = new Like({ user: userId, comment: commentId });
   const savedLike = await like.save();
-  console.log('savedLike', savedLike)
 
   if (!savedLike) {
     return next(new AppError('Faild to like this comment', 500));

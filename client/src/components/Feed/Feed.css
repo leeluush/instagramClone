@@ -1,0 +1,18 @@
+/* Feed.css */
+.feed-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px; /* Adjust as needed */
+}
+
+.posts-container {
+  /* Adjust max-width for posts if necessary to leave space for SuggestedUsers */
+  max-width: 600px; /* Example size, adjust as needed */
+}
+
+.suggested-users-container {
+  position: fixed;
+  top: 20px; /* Distance from top */
+  right: 20px; /* Distance from right */
+  width: 300px; /* Adjust width as needed */
+}

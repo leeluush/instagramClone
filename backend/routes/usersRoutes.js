@@ -16,6 +16,10 @@ router
   .route('/updateMe')
   .patch(authController.protect, userController.updateMe);
 
+router
+  .route('/suggested-users')
+  .get(authController.protect, userController.getSuggestedUsers);
+
 // For logout
 router.route('/logout').post(authController.protect, authController.logOutUser);
 

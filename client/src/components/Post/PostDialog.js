@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import PostMedia from "./PostMedia";
-import CommentList from "../Comment/CommentList";
+import CommentList from "../Feed/CommentList";
 import { postComment } from "../../api/commentApi";
 import { AuthContext } from "../Auth/AuthContext";
 import timeSincePost from "../../utils/timeSincePost";

@@ -33,6 +33,7 @@
     "@faker-js/faker": "^8.4.1",
     "faker": "^6.6.6",
     "mongodb": "^6.4.0",
+    "mongoose": "^8.2.1",
     "nodemailer": "^6.9.9",
     "pug": "^3.0.2"
   },

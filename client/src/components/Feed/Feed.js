@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Post from "../Post/Post";
+import Post from "./Post";
 import { getFeed } from "../../api/feedApi";
 import { fetchComments } from "../../api/commentApi";
 import Container from "@mui/material/Container";
 import { PostContext } from "../Post/PostContext";
 import { useContext } from "react";
+import "./Feed.css";
 
 function Feed() {
   const [posts, setPosts] = useState([]);
@@ -75,8 +76,8 @@ function Feed() {
           </li>
         ))}
       </ul>
+
     </Container>
   );
 }
-
 export default Feed;

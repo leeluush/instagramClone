@@ -10,15 +10,15 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import PostHeader from "./PostHeader";
-import PostMedia from "./PostMedia";
-import PostContent from "./PostContent";
-import PostActions from "./PostActions";
-import PostDialog from "./PostDialog";
-import { AuthContext } from "../Auth/AuthContext" 
+import PostHeader from "../Post/PostHeader";
+import PostMedia from "../Post/PostMedia";
+import PostContent from "../Post/PostContent";
+import PostActions from "../Post/PostActions";
+import PostDialog from "../Post/PostDialog";
+import { AuthContext } from "../Auth/AuthContext";
 import { postComment } from "../../api/commentApi";
 
-import CommentList from "../Comment/CommentList";
+import CommentList from "./CommentList";
 import "./Post.css";
 
 function Post({

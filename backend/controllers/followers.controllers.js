@@ -1,31 +1,59 @@
 const Follower = require('../models/follower.model');
-const catchAsync = require('../utils/catchAsync'); // Make sure to import catchAsync
+const User = require('../models/userModel');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../middleware/appError');
 
 exports.followUser = catchAsync(async (req, res, next) => {
-  const followee = req.params.id;
-  const user = req.user.id;
+  const followeeId = req.params.id;
+  const userId = req.user.id;
 
-  const follower = new Follower({
-    user,
-    followee,
+  const existingFollower = await Follower.findOne({
+    user: userId,
+    followee: followeeId,
+  });
+  if (existingFollower) {
+    return next(new AppError('You are already following this user.', 400));
+  }
+
+  const follower = new Follower({ user: userId, followee: followeeId });
+  await follower.save();
+  await User.findByIdAndUpdate(userId, {
+    $addToSet: { following: followeeId },
   });
 
-  await follower.save();
-  res.status(200).json({ message: 'Followed Successfully' });
+  await User.findByIdAndUpdate(followeeId, {
+    $addToSet: { followers: userId },
+  });
+
+  res.status(200).json({
+    message: 'Followed Successfully',
+    follower: follower,
+  });
 });
 
 exports.unfollowUser = catchAsync(async (req, res, next) => {
-  const followee = req.params.followeeId;
-  const user = req.user.id;
+  const followeeId = req.params.id;
+  const userId = req.user.id;
+  const followerToDelete = await Follower.findOneAndDelete({
+    user: userId,
+    followee: followeeId,
+  });
 
-  const deletedFollower = await Follower.findOneAndRemove({ user, followee });
-
-  if (deletedFollower) {
-    return res.status(200).json({ message: 'Unfollowed successfully' });
+  if (!followerToDelete) {
+    return next(
+      new AppError('Could not unfollow. Relationship does not exist.', 400),
+    );
   }
-  return res
-    .status(400)
-    .json({ message: 'Could not unfollow. Relationship does not exist.' });
+
+  await User.findByIdAndUpdate(userId, {
+    $pull: { following: followeeId },
+  });
+
+  await User.findByIdAndUpdate(followeeId, {
+    $pull: { followers: userId },
+  });
+
+  res.status(200).json({ message: 'Unfollowed successfully' });
 });
 
 exports.isFollowing = catchAsync(async (req, res, next) => {
@@ -36,6 +64,5 @@ exports.isFollowing = catchAsync(async (req, res, next) => {
     user: userId,
     followee: followeeId,
   });
-
   res.status(200).json({ isFollowing: !!follower });
 });
