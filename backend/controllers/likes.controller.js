@@ -38,7 +38,6 @@ exports.likeComment = catchAsync(async (req, res, next) => {
   }
 
   const likeCount = await Like.countDocuments({ comment: commentId });
-
   return res
     .status(200)
     .json({ message: 'Like created successfully', likeCount });
@@ -109,7 +108,7 @@ exports.unlikePost = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
   const { postId } = req.params;
 
-  await Like.findByIdAndDelete({ user: userId, post: postId });
+  await Like.findOneAndDelete({ user: userId, post: postId });
   const likeCount = await Like.countDocuments({ post: postId });
   res.status(200).json({ message: 'Like deleted successfully', likeCount });
 });
