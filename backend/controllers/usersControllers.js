@@ -72,6 +72,12 @@ exports.getSuggestedUsers = async (req, res, next) => {
 
     // Fetch the list of users that the current user is following
     const user = await User.findById(currentUserId).select('following -_id');
+
+    if (!user) {
+      console.error(`User not found with id: ${currentUserId}`);
+      return next(new Error(`User not found with id: ${currentUserId}`)); // Or use your AppError class
+    }
+
     const currentUserFollowing = user.following;
 
     const followingIds = currentUserFollowing.map(
