@@ -11,138 +11,57 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-// exports.getSuggestedUsers = catchAsync(async (req, res, next) => {
-//   const currentUserId = req.user.id;
+exports.getSuggestedUsers = catchAsync(async (req, res, next) => {
+  const currentUserId = req.user.id;
 
-//   const currentUserFollowing = (
-//     await User.findById(currentUserId).select('following -_id')
-//   ).following;
+  const currentUserFollowing = (
+    await User.findById(currentUserId).select('following -_id')
+  ).following;
 
-//   const followingIds = currentUserFollowing.map(
-//     (userId) => new mongoose.Types.ObjectId(userId),
-//   );
+  const followingIds = currentUserFollowing.map(
+    (userId) => new mongoose.Types.ObjectId(userId),
+  );
 
-//   const suggestedUsers = await User.aggregate([
-//     {
-//       $match: {
-//         $and: [
-//           { _id: { $nin: followingIds } },
-//           { _id: { $ne: new mongoose.Types.ObjectId(currentUserId) } },
-//         ],
-//       },
-//     },
-//     {
-//       $lookup: {
-//         from: 'users', // Assuming the followers are stored in the same 'users' collection. Adjust if otherwise.
-//         localField: 'followers',
-//         foreignField: '_id',
-//         as: 'mutualFollowers',
-//       },
-//     },
-//     {
-//       $project: {
-//         userName: 1,
-//         profileImage: 1,
-//         mutualConnections: {
-//           $size: {
-//             $filter: {
-//               input: '$mutualFollowers',
-//               as: 'mutualFollower',
-//               cond: { $in: ['$$mutualFollower._id', followingIds] },
-//             },
-//           },
-//         },
-//       },
-//     },
-//     { $sort: { mutualConnections: -1 } }, // Sort by mutual connections
-//     { $limit: 10 },
-//   ]);
-
-//   res.status(200).json({
-//     status: 'success',
-//     data: {
-//       users: suggestedUsers,
-//     },
-//   });
-// });
-
-exports.getSuggestedUsers = async (req, res, next) => {
-  try {
-    const currentUserId = req.user.id;
-
-    // Fetch the list of users that the current user is following
-    const user = await User.findById(currentUserId).select('following -_id');
-
-    if (!user) {
-      console.error(`User not found with id: ${currentUserId}`);
-      return next(new Error(`User not found with id: ${currentUserId}`)); // Or use your AppError class
-    }
-
-    const currentUserFollowing = user.following;
-
-    const followingIds = currentUserFollowing.map(
-      (userId) => new mongoose.Types.ObjectId(userId),
-    );
-
-    // Perform the aggregation to find suggested users
-
-    const suggestedUsers = await User.aggregate([
-      {
-        $match: {
-          $and: [
-            { _id: { $nin: followingIds } },
-            { _id: { $ne: new mongoose.Types.ObjectId(currentUserId) } },
-          ],
-        },
+  const suggestedUsers = await User.aggregate([
+    {
+      $match: {
+        $and: [
+          { _id: { $nin: followingIds } },
+          { _id: { $ne: new mongoose.Types.ObjectId(currentUserId) } },
+        ],
       },
-      {
-        $lookup: {
-          from: 'users', // Assuming the followers are stored in the same 'users' collection. Adjust if otherwise.
-          localField: 'followers',
-          foreignField: '_id',
-          as: 'mutualFollowers',
-        },
+    },
+    {
+      $lookup: {
+        from: 'users', // Assuming the followers are stored in the same 'users' collection. Adjust if otherwise.
+        localField: 'followers',
+        foreignField: '_id',
+        as: 'mutualFollowers',
       },
-      {
-        $project: {
-          userName: 1,
-          profileImage: 1,
-          mutualConnections: {
-            $size: {
-              $filter: {
-                input: '$mutualFollowers',
-                as: 'mutualFollower',
-                cond: { $in: ['$$mutualFollower._id', followingIds] },
-              },
+    },
+    {
+      $project: {
+        userName: 1,
+        profileImage: 1,
+        mutualConnections: {
+          $size: {
+            $filter: {
+              input: '$mutualFollowers',
+              as: 'mutualFollower',
+              cond: { $in: ['$$mutualFollower._id', followingIds] },
             },
           },
         },
       },
-      { $sort: { mutualConnections: -1 } }, // Sort by mutual connections
-      { $limit: 10 },
-    ]);
-    res.status(200).json({
-      status: 'success',
-      data: {
-        users: suggestedUsers,
-      },
-    });
-  } catch (err) {
-    console.error(
-      'Error performing user aggregation for suggested users:',
-      err,
-    );
-    return next(err); // Use return to make sure the function execution stops here
-  }
-};
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
+    },
+    { $sort: { mutualConnections: -1 } }, // Sort by mutual connections
+    { $limit: 10 },
+  ]);
 
   res.status(200).json({
     status: 'success',
-    results: users.length,
     data: {
-      users,
+      users: suggestedUsers,
     },
   });
 });
