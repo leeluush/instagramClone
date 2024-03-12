@@ -109,7 +109,7 @@ exports.unlikePost = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
   const { postId } = req.params;
 
-  await Like.findOneAndRemove({ user: userId, post: postId });
+  await Like.findByIdAndDelete({ user: userId, post: postId });
   const likeCount = await Like.countDocuments({ post: postId });
   res.status(200).json({ message: 'Like deleted successfully', likeCount });
 });
