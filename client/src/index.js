@@ -7,9 +7,11 @@ import LoginPage from "./components/Auth/loginForm";
 import RegisterPage from "./components/Auth/RegisterForm";
 import { AuthProvider } from "./components/Auth/AuthContext";
 import { Navigate } from "react-router-dom";
+import LayoutWithoutUserHeader from './components/Layout/LayoutWithoutUserHeader';
 
 import "./index.css";
 import Feed from "./components/Feed/Feed";
+import SuggestedUsersPage from "./components/SuggestedUsers/SuggestedUsersPage";
 
 const router = createBrowserRouter([
   {
@@ -23,9 +25,21 @@ const router = createBrowserRouter([
             path: "feed",
             element: <Feed />,
           },
+     
           {
             path: "*", // Catch-all route for / routes
             element: <Navigate to="/feed" />,
+          },
+
+        ],
+      },
+      {
+        path: "suggested-for-you",
+        element: <LayoutWithoutUserHeader />,
+        children: [
+          {
+            index: true,
+            element: <SuggestedUsersPage />,
           },
         ],
       },

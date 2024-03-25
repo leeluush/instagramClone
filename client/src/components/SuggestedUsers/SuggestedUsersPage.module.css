@@ -1,0 +1,71 @@
+
+.SuggestedUsersPage {
+  width: 100%;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+
+.SuggestedUsersHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.SuggestedUsersList {
+  list-style-type: none; 
+  padding: 0;
+  margin: 0;
+}
+
+.SuggestedUserItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0; 
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.SuggestedUserImage {
+  width: 50px; 
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px; 
+}
+
+.SuggestedUserInfo {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.SuggestedUserName {
+  font-weight: 500;
+  font-size: 14px;
+    margin-right: auto; 
+}
+
+.FollowButton {
+  background-color: #0095f6; 
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 15px;
+  cursor: pointer;
+  text-transform: uppercase; 
+  font-weight: bold;
+  align-self: flex-start;
+  margin-left:auto;
+}
+
+.Following {
+  background-color: #ffffff;
+  color: #262626;
+  border: 1px solid #dbdbdb;
+}
