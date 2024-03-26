@@ -14,6 +14,7 @@ import { AuthContext } from "../Auth/AuthContext";
 import EditPost from "../CreatePost/EditPost";
 import { deletePostApi } from "../../api/postsApi";
 import { followUserApi, unfollowUserApi } from "../../api/userFollowApi";
+import "./PostHeader.css";
 
 function PostHeader({
   post,
@@ -83,6 +84,7 @@ function PostHeader({
       display="flex"
       alignItems="center"
       justifyContent="space-between"
+      className="post-header"
       mb={2}
     >
       <Box display="flex" alignItems="center">
@@ -90,23 +92,28 @@ function PostHeader({
           alt={userName}
           src={profileImage}
           sx={{ width: 32, height: 32 }}
+          className="post-header-avatar"
         />
-        <Box mx={1}>
-          <Typography variant="body1" component="span" fontWeight="bold">
+       <Box display="flex" alignItems="center" className="post-header-username-timestamp">
+          <Typography className="post-header-username" variant="body1" component="span" fontWeight="bold">
             {userName}
           </Typography>
           <Typography variant="body2" component="span" color="textSecondary">
             {" • "}
           </Typography>
-          <Typography variant="body2" component="span" color="textSecondary">
+          <Typography className="post-header-timestamp" variant="body2" component="span" color="textSecondary">
             {timeSince}
+            <Typography variant="body2" component="span" color="textSecondary">
+            {" • "}
+          </Typography>
           </Typography>
         </Box>
       </Box>
+      <Box className="post-header-options">
       {user && user._id !== post.author._id && (
         <Box>
           <Button onClick={isFollowing ? handleUnfollow : handleFollow}>
-            {isFollowing ? "Unfollow" : "Follow"}
+            {isFollowing ? "unfollow" : "follow"}
           </Button>
         </Box>
       )}
@@ -132,7 +139,8 @@ function PostHeader({
         handleClose={handleEditClose}
         post={post}
         fetchPosts={fetchPosts}
-      />
+        />
+        </Box>
     </Box>
   );
 }

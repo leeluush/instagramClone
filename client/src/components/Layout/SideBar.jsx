@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import InstagramLogo from "../../logos/instagramLogo";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import ExploreIcon from "@mui/icons-material/Explore";
@@ -113,6 +114,7 @@ function SideBar() {
           aria-controls="simple-menu"
           aria-haspopup="true"
           onClick={handleClick}
+          startIcon={<MoreHorizIcon />}
         >
           More
         </Button>

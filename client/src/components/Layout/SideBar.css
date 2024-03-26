@@ -1,42 +1,47 @@
 .side-bar {
   background-color: white;
-  width: 250px;
+  width: 180px;
  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  padding: 20px;
+  padding: 20px 15px;
   border-right: 1px solid #dbdbdb;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
   transition: width 0.3s ease;
 
 }
 
+.side-bar-small nav ul li .icon {
+  margin: 0; 
+}
 
 .side-bar-small {
-  width: 50px;
-  padding: 10px 0;
+  width: 77px;
+  padding: 10px 5px;
 }
 
 .side-bar header {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
   margin-bottom: 30px;
 }
 
 .side-bar nav {
   flex-grow: 1;
-  flex-shrink: 1;
-  margin-bottom: 10px; 
+  width: 100%;
 
 }
 
 .side-bar nav ul {
+  width: 100%;
   list-style-type: none;
   padding: 0;
   display: flex;
@@ -46,19 +51,21 @@
 }
 
 .side-bar nav ul li {
+  width: 100px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 5px 0;
+  padding: 8px 0;
 }
 
 .side-bar nav ul li .icon {
-  margin-right: 15px; 
+  margin-right: 10px; 
 }
 
 .side-bar nav ul li .link-text {
-  flex-grow: 1;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
+  color: #262626;
 }
 
 .side-bar-small nav ul li {
@@ -67,4 +74,30 @@
 
 .side-bar-small nav ul li .link-text {
   display: none;
+}
+
+.profile-image {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+}
+
+.more-options {
+  width: 100%;
+  text-align: left; 
+  padding-left: 15px; 
+  margin-top: auto; 
+}
+
+.more-options Button {
+  font-size: 14px;
+  color: #262626;
+  text-transform: none;
+  justify-content: flex-start; 
+  padding-left: 8px;
+  width: 100%; 
+  text-align: left; 
+}
+.more-options .MuiButton-startIcon {
+  margin-right: 10px; 
 }

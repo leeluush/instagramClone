@@ -1,18 +1,18 @@
-/* Feed.css */
 .feed-container {
   display: flex;
   justify-content: center;
-  padding-top: 20px; /* Adjust as needed */
+  padding-top: 20px;
 }
 
 .posts-container {
-  /* Adjust max-width for posts if necessary to leave space for SuggestedUsers */
-  max-width: 600px; /* Example size, adjust as needed */
+  max-width: 470px; 
+  margin: auto; 
 }
 
 .suggested-users-container {
   position: fixed;
-  top: 20px; /* Distance from top */
-  right: 20px; /* Distance from right */
-  width: 300px; /* Adjust width as needed */
+  top: 88px; 
+  right: 20px;
+  width: 293px;
+  padding-top: 20px;
 }
