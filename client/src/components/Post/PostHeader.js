@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, {  useContext } from "react";
 import {
   Avatar,
   Typography,
@@ -6,72 +6,42 @@ import {
   IconButton,
   ListItemButton,
   Button,
+  Dialog,
+  List,
+  ListItemText
 } from "@mui/material";
 import timeSincePost from "../../utils/timeSincePost";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { Dialog, List, ListItemText } from "@mui/material";
 import { AuthContext } from "../Auth/AuthContext";
 import EditPost from "../CreatePost/EditPost";
 import { deletePostApi } from "../../api/postsApi";
-import { followUserApi, unfollowUserApi } from "../../api/userFollowApi";
+import useDialog from "../../hooks/useDialog";
+
 import "./PostHeader.css";
 
 function PostHeader({
   post,
-  isFollowing,
-  setIsFollowing,
+  handleFollowToggle, 
   fetchPosts,
   handlePostDeletion,
+  followedUsers,
 }) {
-  const [open, setOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
+
   const { user } = useContext(AuthContext);
+  const optionsDialog = useDialog();
+  const editDialog = useDialog();
 
-  const handleFollow = async () => {
-    try {
-      await followUserApi(post.author._id);
-      console.log(post.author._id);
-      setIsFollowing(true);
-    } catch (error) {
-      console.error("Failed to follow user:", error);
-    }
-  };
-
-  const handleUnfollow = async () => {
-    try {
-      await unfollowUserApi(post.author._id);
-      setIsFollowing(false);
-    } catch (error) {
-      console.error("Failed to unfollow user:", error);
-    }
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleDeletePost = async () => {
     try {
       await deletePostApi(post._id);
       handlePostDeletion(post._id);
-      handleClose();
+      optionsDialog.closeDialog()
     } catch (error) {
       console.error("Failed to delete post:", error);
     }
   };
 
-  const handleEditOpen = () => {
-    setOpen(false);
-    setEditOpen(true);
-  };
-
-  const handleEditClose = () => {
-    setEditOpen(false);
-  };
 
   if (!post || !post.author) return null;
   const { userName, profileImage } = post.author;
@@ -110,39 +80,39 @@ function PostHeader({
         </Box>
       </Box>
       <Box className="post-header-options">
-      {user && user._id !== post.author._id && (
-        <Box>
-          <Button onClick={isFollowing ? handleUnfollow : handleFollow}>
-            {isFollowing ? "unfollow" : "follow"}
+        {user && user._id !== post.author._id && (
+          <Button onClick={() => handleFollowToggle(user._id, post.author._id)}>
+            {followedUsers[post.author._id] ? "Unfollow" : "Follow"}
           </Button>
-        </Box>
-      )}
-      {user && user._id === post.author._id && (
-        <Box>
-          <IconButton onClick={handleClickOpen}>
+        )}
+
+        {user && user._id === post.author._id && (
+          <IconButton onClick={optionsDialog.openDialog}>
             <MoreHorizIcon />
           </IconButton>
-        </Box>
-      )}
-      <Dialog onClose={handleClose} open={open}>
-        <List>
-          <ListItemButton onClick={handleEditOpen}>
-            <ListItemText primary="Edit Post" />
-          </ListItemButton>
-          <ListItemButton onClick={handleDeletePost}>
-            <ListItemText primary="Delete Post" />
-          </ListItemButton>
-        </List>
-      </Dialog>
-      <EditPost
-        open={editOpen}
-        handleClose={handleEditClose}
-        post={post}
-        fetchPosts={fetchPosts}
+        )}
+
+        <Dialog onClose={optionsDialog.closeDialog} open={optionsDialog.isOpen}>
+          <List>
+            <ListItemButton onClick={editDialog.openDialog}>
+              <ListItemText primary="Edit Post" />
+            </ListItemButton>
+            <ListItemButton onClick={handleDeletePost}>
+              <ListItemText primary="Delete Post" />
+            </ListItemButton>
+          </List>
+        </Dialog>
+
+        <EditPost
+          open={editDialog.isOpen}
+          handleClose={editDialog.closeDialog}
+          post={post}
+          fetchPosts={fetchPosts}
         />
-        </Box>
+      </Box>
     </Box>
   );
 }
+
 
 export default PostHeader;

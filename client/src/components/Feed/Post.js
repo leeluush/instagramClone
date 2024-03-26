@@ -15,6 +15,7 @@ import PostMedia from "../Post/PostMedia";
 import PostContent from "../Post/PostContent";
 import PostActions from "../Post/PostActions";
 import PostDialog from "../Post/PostDialog";
+import useFollowToggle from "../../hooks/useFollowToggle";
 import { AuthContext } from "../Auth/AuthContext";
 import { postComment } from "../../api/commentApi";
 
@@ -32,10 +33,12 @@ function Post({
   const { media, _id, content } = post;
   const [expanded, setExpanded] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(post.isFollowing);
   const [comment, setComment] = useState("");
   const [localComments, setLocalComments] = useState([]);
   const { user } = useContext(AuthContext);
+
+  const { followedUsers, handleFollowToggle } = useFollowToggle({[post.author._id]: post.isFollowing});
+
 
   useEffect(() => {
     setLocalComments(comments);
@@ -76,8 +79,8 @@ function Post({
     <Card className="post">
       <PostHeader
         post={post}
-        isFollowing={isFollowing}
-        setIsFollowing={setIsFollowing}
+        handleFollowToggle={handleFollowToggle}
+        followedUsers={followedUsers}
         setPosts={setPosts}
         handlePostDeletion={handlePostDeletion}
       />
