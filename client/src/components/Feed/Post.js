@@ -65,10 +65,10 @@ function Post({
     }
     try {
       const response = await postComment(_id, comment, user._id);
-      const newComment = response.data; // Access the new comment object from response.data
+      const newComment = response.data; 
 
       setLocalComments((prevComments) => [...prevComments, newComment]);
-      fetchAndUpdateComments(_id); // Optionally, if additional updates are needed
+      fetchAndUpdateComments(_id); 
       setComment("");
     } catch (error) {
       console.error(error);
@@ -85,7 +85,6 @@ function Post({
         handlePostDeletion={handlePostDeletion}
       />
       <PostMedia media={media}></PostMedia>
-      <PostContent content={content} />
       <PostActions
         postId={_id}
         likeCount={post.likeCount}
@@ -93,6 +92,8 @@ function Post({
         handleDialogOpen={handleDialogOpen}
         updateLikeCount={updateLikeCount}
       ></PostActions>
+      <PostContent content={content} />
+   
       <CardActions disableSpacing>
         <IconButton
           onClick={handleExpandClick}

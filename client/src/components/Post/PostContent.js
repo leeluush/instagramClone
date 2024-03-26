@@ -1,13 +1,14 @@
 import React from "react";
-import { CardContent } from "@mui/material";
+import "./PostContent.css"
 
 
 function PostContent({ content }) {
   return (
-  <CardContent>
-          <p className="post-content">{content}</p>
-  </CardContent>
-  )
+    <div className="post-content">
+      <p>{content}</p>
+    </div>
+  );
 }
+
 
 export default PostContent; 

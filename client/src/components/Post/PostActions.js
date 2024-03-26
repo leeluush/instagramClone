@@ -1,11 +1,14 @@
 import React from "react";
 import { useContext } from "react";
-import { CardContent, CardActions, Typography } from "@mui/material";
+import { CardContent, CardActions, Typography, IconButton } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { toggleLike } from "../../api/likesApi";
 import { AuthContext } from "../Auth/AuthContext";
+import "./PostActions.css";
 
 function PostActions({
   postId,
@@ -14,7 +17,6 @@ function PostActions({
   isLiked,
   updateLikeCount,
 }) {
-  // const { likes, liked, handleLike } = usePostLikes(postId, likeCount, isLiked);
   const { user } = useContext(AuthContext);
 
   const handleLikeAndUpdate = async () => {
@@ -28,19 +30,23 @@ function PostActions({
 
   return (
     <CardContent>
-      <CardActions>
-        <FavoriteBorderIcon
-          onClick={handleLikeAndUpdate}
-          style={{ color: isLiked ? "red" : "inherit" }}
-        />
-        <ChatBubbleOutlineIcon onClick={handleDialogOpen} />
-        <TelegramIcon />
+      <CardActions disableSpacing className="post-actions">
+        <IconButton onClick={handleLikeAndUpdate} className="icon-button">
+          {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+        </IconButton>
+        <IconButton onClick={handleDialogOpen} className="icon-button">
+          <ChatBubbleOutlineIcon />
+        </IconButton>
+        <IconButton className="icon-button">
+          <TelegramIcon />
+        </IconButton>
       </CardActions>
       <Typography variant="body2" color="textSecondary" className="post-likes">
-        {postLikes}
+        <strong>{postLikes}</strong>
       </Typography>
     </CardContent>
   );
 }
+
 
 export default PostActions;

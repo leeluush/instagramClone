@@ -1,0 +1,18 @@
+.post-actions {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+gap: 1px;
+}
+
+
+.post-likes {
+  margin-top: 8px; 
+  margin-left: 15px; 
+  padding-left: 8px;
+  
+}
+.icon-button {
+  margin-right: 8px; 
+
+}
