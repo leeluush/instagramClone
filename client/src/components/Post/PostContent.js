@@ -1,14 +1,30 @@
-import React from "react";
-import "./PostContent.css"
+import React, { useState } from "react";
+import "./PostContent.css";
 
+function PostContent({ content,author }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const maxContentLength = 50;
 
-function PostContent({ content }) {
+  const toggleIsExpanded = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  const contentPreview = content.length > maxContentLength && !isExpanded
+    ? content.slice(0, maxContentLength) + '...'
+    : content;
+
   return (
     <div className="post-content">
-      <p>{content}</p>
+   <span> <strong>{author.userName}</strong></span>
+        <span>{contentPreview}</span>
+      {content.length > maxContentLength && (
+        <span className={isExpanded ? "less-link" : "more-link"} onClick={toggleIsExpanded}>
+          {isExpanded ? ' see less' : ' see all'}
+        </span>
+      )}
+
     </div>
   );
 }
 
-
-export default PostContent; 
+export default PostContent;

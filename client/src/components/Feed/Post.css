@@ -34,17 +34,7 @@
   color: #262626;
   line-height: 18px;
 }
-.post-actions {
-  padding: 0 16px 16px 16px;
-}
 
-.post-actions button {
-  background: none;
-  border: none;
-  font-weight: 600;
-  color: #262626;
-  margin-right: 16px;
-}
 
 .post-expand {
   padding: 0 16px;

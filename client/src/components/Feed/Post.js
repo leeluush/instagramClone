@@ -30,7 +30,7 @@ function Post({
   fetchAndUpdateComments,
   comments,
 }) {
-  const { media, _id, content } = post;
+  const { media, _id  } = post;
   const [expanded, setExpanded] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
@@ -92,7 +92,7 @@ function Post({
         handleDialogOpen={handleDialogOpen}
         updateLikeCount={updateLikeCount}
       ></PostActions>
-      <PostContent content={content} />
+<PostContent content={post.content} author={post.author} />
    
       <CardActions disableSpacing>
         <IconButton

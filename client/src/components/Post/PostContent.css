@@ -1,5 +1,21 @@
-.post-content p {
-  padding: 16px;
-  margin: 0; 
-  font-size: 14px; 
+.post-content {
+  font-size: 14px;
+  line-height: 18px; 
+  margin: 8px 16px; 
+}
+
+.post-content strong {
+  font-weight: bold;
+  margin-right: 6px;
+}
+
+.more-link, .less-link {
+  color: #0095f6;
+  margin-left: 4px; 
+  font-weight: bold; 
+}
+
+.more-link:hover, .less-link:hover {
+  text-decoration: underline; 
+  cursor: pointer;
 }
