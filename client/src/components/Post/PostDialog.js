@@ -41,7 +41,11 @@ const PostDialog = ({
     if (!post || !user) return;
     try {
       const response = await postComment(postId, comment, user._id);
-      setComment(""); // Clear comment field
+      if (response.status === 200) {
+        setComment(""); // Clear comment field
+      } else {
+        console.log("Comment posting failed with status:", response.status);
+      }
     } catch (error) {
       console.error("Failed to post comment:", error);
     }

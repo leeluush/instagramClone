@@ -16,7 +16,6 @@ import {
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { AuthContext } from "../Auth/AuthContext";
 import { editComment as editCommentApi } from "../../api/commentApi";
-import { useCommentLikes } from "../../hooks/useCommentLikes"; 
 
 function CommentActions({
   commentId,
