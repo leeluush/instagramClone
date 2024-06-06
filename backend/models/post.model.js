@@ -149,7 +149,6 @@ PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
     posts.map(async (post) => {
       const comments = await Comment.find({ post: post._id })
         .sort({ created: -1 })
-        .limit(3)
         .populate('author', 'userName profileImage')
         .lean()
         .exec();

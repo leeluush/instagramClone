@@ -9,7 +9,6 @@ import PostDialog from "../Post/PostDialog";
 import useFollowToggle from "../../hooks/useFollowToggle";
 import useComments from "../../hooks/useComments";
 import { AuthContext } from "../Auth/AuthContext";
-import { postComment } from "../../api/commentApi";
 import { usePostLikes } from "../../hooks/usePostLikes";
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
