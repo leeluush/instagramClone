@@ -1,0 +1,76 @@
+/* UserHeader.css */
+.UserHeader {
+  position: fixed; 
+  top: 0; 
+  right: 0; 
+  width: 300px; 
+  height: 100vh; 
+  background-color: #fff; 
+  padding: 20px;
+  box-sizing: border-box; 
+  overflow-y: auto; 
+}
+
+.UserProfile {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dbdbdb; 
+  padding-bottom: 16px; 
+  margin-bottom: 20px; 
+}
+
+.UserProfileImage {
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin-right: 10px;
+}
+
+.UserInfo {
+  flex-grow: 1;
+}
+
+.UserInfo h1 {
+  font-size: 14px; 
+  margin: 0;
+  color: #262626; 
+  font-weight: 600; 
+}
+
+.UserInfo p {
+  font-size: 12px; 
+  margin: 0;
+  color: #8e8e8e; 
+}
+
+
+.SuggestedUsersHeader {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 10px; 
+  padding: 0 5px;
+  font-size: 10px;
+  color: #8e8e8e;
+  font-weight: 600; 
+}
+
+.SeeAllButton {
+  background: none;
+  border: none;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 0; 
+  margin-left: auto; 
+
+}
+
+@media (max-width: 1134px) {
+  .UserHeader {
+    display: none;
+  }
+}
