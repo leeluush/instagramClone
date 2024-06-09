@@ -45,28 +45,6 @@
   font-size: 14px;
 }
 
-.comment-form {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #ffffff;
-  width: 100%;
-}
 
-.comment-input::before {
-  content: "";
-  display: block;
-  height: 1px;
-  background: #dbdbdb;
-  position: relative;
-  top: 50%;
-  margin-top: -1px;
-}
 
-.emoji-picker-container {
-  position: absolute;
-  z-index: 1000;
-  right: 0;
-  max-height: 250px;
-  overflow-y: auto;
-}
+

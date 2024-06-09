@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Card, Button, TextField, Typography, InputAdornment } from "@mui/material";
-import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
+import { Card, Typography } from "@mui/material";
 import PostHeader from "../Post/PostHeader";
 import PostMedia from "../Post/PostMedia";
 import PostContent from "../Post/PostContent";
@@ -10,42 +9,17 @@ import useFollowToggle from "../../hooks/useFollowToggle";
 import useComments from "../../hooks/useComments";
 import { AuthContext } from "../Auth/AuthContext";
 import { usePostLikes } from "../../hooks/usePostLikes";
-import Picker from '@emoji-mart/react';
-import data from '@emoji-mart/data';
+import CommentInput from "../Shared/CommentInput";
 
 import "./Post.css";
 
 function Post({ post, handlePostDeletion }) {
   const { comments, addComment, updateComment, removeComment } = useComments(post.comments);
   const { media, _id, author } = post;
-  const [comment, setComment] = useState("");
-  const [showPostButton, setShowPostButton] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const { user } = useContext(AuthContext);
   const { likes, liked, handleLike } = usePostLikes(_id, post.likeCount, post.isLiked);
   const { followedUsers, handleFollowToggle } = useFollowToggle({ [post.author._id]: post.isFollowing });
-  const [isPickerVisible, setIsPickerVisible] = useState(false);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (user && post._id && comment.trim()) {
-      await addComment(post._id, comment, user._id)
-        setComment("");
-    }
-  };
-
-
-  const handleCommentChange = (e) => {
-    const text = e.target.value;
-    setComment(text);
-    setShowPostButton(text.length > 0);
-  };
-
-  const handleEmojiSelect = (e) => {
-    const emoji = e.native;
-    setComment((prevComment) => prevComment + emoji);
-    setShowPostButton(true);
-  };
 
   return (
     <Card className="post" style={{ border: "none", boxShadow: "none" }}>
@@ -87,58 +61,9 @@ function Post({ post, handlePostDeletion }) {
         comments={comments}
         deleteComment={removeComment}
         updateComment={updateComment}
-
+        addComment={addComment}  
       />
-      <form onSubmit={handleSubmit} className="comment-form">
-        <TextField
-          value={comment}
-          onChange={handleCommentChange}
-          placeholder="Add a comment..."
-          fullWidth
-          margin="dense"
-          InputLabelProps={{ shrink: true }}
-          InputProps={{
-            disableUnderline: false,
-            style: {
-              backgroundColor: "transparent",
-              boxShadow: "none",
-              padding: 0,
-              borderBottom: "dbdbdb",
-            },
-            endAdornment: (
-              <InputAdornment position="end">
-                {showPostButton && (
-                  <Button
-                    type="submit"
-                    style={{
-                      color: "#3897f0",
-                    }}
-                  >
-                    Post
-                  </Button>
-                )}
-              </InputAdornment>
-            ),
-          }}
-          variant="standard"
-          sx={{
-            "& .MuiInputBase-input": {
-              backgroundColor: "transparent",
-              boxShadow: "none",
-              border: "none",
-              padding: 0,
-            },
-          }}
-        />
-        <Button onClick={() => setIsPickerVisible(!isPickerVisible)}>
-          <EmojiEmotionsOutlinedIcon fontSize="xsmall" style={{ color: "gray"}} />
-        </Button>
-        {isPickerVisible && (
-          <div className="emoji-picker-container">
-            <Picker data={data} previewPosition="none" onEmojiSelect={handleEmojiSelect} />
-          </div>
-        )}
-      </form>
+      <CommentInput onCommentSubmit={(comment) => addComment(post._id, comment, user._id)} />
     </Card>
   );
 }

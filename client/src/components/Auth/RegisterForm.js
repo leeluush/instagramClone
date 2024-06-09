@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
-import "../Auth/styles/SignUp.css"; // Ensure this CSS is styled similarly to your login CSS
+import styles from "../Auth/styles/SignUp.module.css"; // Import the CSS module
 import instagramLogo from "../../assets/instagram-text-icon.png";
 
 const RegisterPage = () => {
@@ -37,7 +37,6 @@ const RegisterPage = () => {
     });
     console.log("Form data before submission:", Object.fromEntries(data.entries()));
 
-
     try {
       const res = await fetch("/api/users/signup", {
         method: "POST",
@@ -58,9 +57,9 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="signup-container">
-      <form onSubmit={handleSubmit} className="signup-form">
-        <div className="signup-logo">
+    <div className={styles.signupContainer}>
+      <form onSubmit={handleSubmit} className={styles.signupForm}>
+        <div className={styles.signupLogo}>
           <img src={instagramLogo} alt="Instagram Logo" />
         </div>
         <input
@@ -116,10 +115,10 @@ const RegisterPage = () => {
           name="profileImage"
           onChange={handleChange}
         />
-        {error && <div className="signup-error">{error}</div>}
-        <button type="submit" className="signup-button">Register</button>
-        <div className="signup-footer">
-          Already have an account? <span className="signup-link" onClick={() => navigate("/login")}>Login</span>
+        {error && <div className={styles.signupError}>{error}</div>}
+        <button type="submit" className={styles.signupButton}>Register</button>
+        <div className={styles.signupFooter}>
+          Already have an account? <span className={styles.signupLink} onClick={() => navigate("/login")}>Login</span>
         </div>
       </form>
     </div>

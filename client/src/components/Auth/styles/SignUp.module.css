@@ -1,8 +1,11 @@
-/* Registration Page Styles */
+/* SignUp.module.css */
+
+/* Base styles to ensure box-sizing is consistent */
 * {
   box-sizing: border-box;
 }
 
+/* Main container for the sign-up form */
 .signup-container {
   display: flex;
   align-items: center;
@@ -15,13 +18,15 @@
   background-color: rgb(250, 250, 250);
 }
 
-.signup-logo img {
+/* Styling for the Instagram logo */
+.signup-container .signup-logo img {
   width: 175px;
   height: 51px;
   margin: 15px 0;
 }
 
-.signup-form {
+/* Form container styles */
+.signup-container .signup-form {
   height: auto; /* Adjusted for more content */
   width: 350px;
   border: 1px solid rgb(219, 219, 219);
@@ -32,11 +37,12 @@
   align-items: center;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
-input[type="file"] {
+/* Styles for all input fields */
+.signup-container input[type="text"],
+.signup-container input[type="email"],
+.signup-container input[type="password"],
+.signup-container input[type="date"],
+.signup-container input[type="file"] {
   background-color: rgb(250, 250, 250);
   font-weight: 400;
   line-height: 18px;
@@ -49,7 +55,8 @@ input[type="file"] {
   outline: none;
 }
 
-.signup-button {
+/* Button styling */
+.signup-container .signup-button {
   border-radius: 4px;
   background-color: #0095f6;
   color: rgb(255, 255, 255);
@@ -61,8 +68,8 @@ input[type="file"] {
   cursor: pointer;
 }
 
-/* Adjust the style for preview avatar or profile image */
-.avatar-preview {
+/* Preview avatar or profile image */
+.signup-container .avatar-preview {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -70,26 +77,26 @@ input[type="file"] {
 }
 
 /* Error message styling */
-.signup-error {
+.signup-container .signup-error {
   color: red;
   font-size: 14px;
   margin: 10px 0;
 }
 
 /* Footer styling for registration related links */
-.signup-footer {
+.signup-container .signup-footer {
   margin: 20px 0;
   font-size: 13px;
 }
 
-.signup-link {
+.signup-container .signup-link {
   color: #385185;
   font-size: 15px;
   cursor: pointer;
 }
 
 /* Styling for the layout of date picker and other elements if needed */
-.date-picker-container {
+.signup-container .date-picker-container {
   width: 100%;
   margin: 10px 0;
 }

@@ -8,7 +8,8 @@ function useComments(initialComments) {
     try {
       const response = await postComment(postId, content, userId);
       const newComment = response.data;
-      setComments(prevComments => [...prevComments, newComment]);  
+      setComments(prevComments => [newComment, ...prevComments]); 
+      console.log('newComment:', newComment)
     } catch (error) {
       console.error('Failed to add comment:', error);
     }

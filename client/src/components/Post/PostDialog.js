@@ -1,22 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import {
   Dialog,
   DialogContent,
-  TextField,
-  Button,
   Box,
   Grid,
   Typography,
   Avatar,
 } from "@mui/material";
-
 import PostMedia from "./PostMedia";
 import CommentList from "../Feed/CommentList";
-import { postComment } from "../../api/commentApi";
+import CommentInput from "../Shared/CommentInput";
 import { AuthContext } from "../Auth/AuthContext";
 import timeSincePost from "../../utils/timeSincePost";
 import PostActions from "./PostActions";
-import { usePostLikes } from "../../hooks/usePostLikes"; // Ensure you import the usePostLikes hook
+import { usePostLikes } from "../../hooks/usePostLikes";
 
 const PostDialog = ({
   handleDialogOpen,
@@ -27,27 +24,16 @@ const PostDialog = ({
   deleteComment,
   comments,
   updateComment,
+  addComment,
 }) => {
   const { media, content, created, likeCount, isLiked } = post;
   const { user } = useContext(AuthContext);
   const { userName, profileImage } = post.author;
-  const [comment, setComment] = useState("");
-
-  // Using the usePostLikes hook
   const { likes, liked, handleLike } = usePostLikes(postId, likeCount, isLiked);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!post || !user) return;
-    try {
-      const response = await postComment(postId, comment, user._id);
-      if (response.status === 200) {
-        setComment(""); // Clear comment field
-      } else {
-        console.log("Comment posting failed with status:", response.status);
-      }
-    } catch (error) {
-      console.error("Failed to post comment:", error);
+  const handleCommentSubmit = (comment) => {
+    if (user && postId) {
+      addComment(postId, comment, user._id);
     }
   };
 
@@ -56,48 +42,57 @@ const PostDialog = ({
       open={dialogOpen}
       onClose={handleClose}
       scroll="paper"
-      maxWidth="md"
-      fullWidth
+      maxWidth="lg"
+      fullWidth={true}
+      PaperProps={{
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '80vh',
+        },
+      }}
     >
-      <DialogContent>
-        <Grid container>
-          <Grid item xs={6}>
+      <DialogContent style={{ display: 'flex', flexDirection: 'column', padding: 0, height: '100%', overflow: 'hidden' }}>
+        <Grid container spacing={0} style={{ height: '100%' }}>
+          <Grid item xs={6} style={{ overflow: 'hidden' }}>
             <PostMedia media={media} />
           </Grid>
-          <Grid item xs={6} style={{ paddingLeft: "16px" }}>
-            <Box display="flex" alignItems="flex-start" mb={2}>
+          <Grid item xs={6} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Box display="flex" alignItems="center" p={2} borderBottom="1px solid #e0e0e0">
               <Avatar alt={userName} src={profileImage} sx={{ width: 32, height: 32, marginRight: 1 }} />
-              <Typography variant="body1"><strong>{userName}</strong> {content}</Typography>
+              <Typography variant="body1"><strong>{userName}</strong></Typography>
             </Box>
-            <Typography variant="body2" style={{ paddingLeft: "40px", textDecoration: "none" }}>
-              {timeSincePost(new Date(created))}
-            </Typography>
-            <CommentList
-              postId={postId}
-              deleteComment={deleteComment}
-              comments={comments}
-              updateComment={updateComment}
-            />
-            <PostActions
-              isLiked={liked}
-              likeCount={likes}
-              handleDialogOpen={handleDialogOpen}
-              onLike={handleLike}
-            />
-            <form onSubmit={handleSubmit}>
-              <TextField
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Add a comment"
-                fullWidth
-                margin="normal"
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
+            <Box display="flex" flexDirection="column" p={2} borderBottom="1px solid #e0e0e0">
+              <Typography variant="body1">{content}</Typography>
+              <Typography variant="body2" color="textSecondary">
+                {timeSincePost(new Date(created))}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                flexGrow: 1,
+                overflowY: 'auto',
+                width: '100%',
+                padding: 2,
+              }}
+            >
+              <CommentList
+                postId={postId}
+                deleteComment={deleteComment}
+                comments={comments}
+                updateComment={updateComment}
               />
-              <Button type="submit" variant="contained" color="primary">
-                Post Comment
-              </Button>
-            </form>
+            </Box>
+            <Box p={2} pt={0}>
+              <PostActions
+                isLiked={liked}
+                likeCount={likes}
+                handleDialogOpen={handleDialogOpen}
+                onLike={handleLike}
+              />
+              <CommentInput onCommentSubmit={handleCommentSubmit} />
+            </Box>
           </Grid>
         </Grid>
       </DialogContent>
