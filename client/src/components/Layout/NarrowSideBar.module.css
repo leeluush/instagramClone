@@ -1,0 +1,83 @@
+.narrow-side-bar {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  width: 77px; 
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  align-items: center;
+  border-right: 1px solid #dbdbdb;
+  overflow-y: auto;
+  flex-direction: column;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.icons-container {
+  padding-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.nav-item {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 15px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-item-active .icon,
+.nav-item-active .link-text {
+  font-weight: bold;
+}
+
+.icon,
+.link-text {
+  color: #262626;
+  padding: 6px 16px;
+}
+
+.icon:hover,
+.link-text:hover {
+  color: #000;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.link-text {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.more-options {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  color: black;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+ @media (max-height: 560px) {
+  .more-options {
+    display: none; /* Hide the more options button on small screens */
+  }
+} 

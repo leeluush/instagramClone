@@ -5,6 +5,7 @@ const { protect } = require('../controllers/authController');
 
 router.route('/api/feed').get(protect, feedController.getFeed);
 
+
 const postsRouter = require('./postRoutes');
 const usersRouter = require('./usersRoutes');
 const followersRouter = require('./followersRoutes');

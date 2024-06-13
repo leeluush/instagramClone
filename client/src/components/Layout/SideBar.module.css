@@ -27,7 +27,10 @@
 
 .icons-container {
   padding-top: 25px;
-  display: flex;;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1; 
 }
 
 .nav-item {
@@ -164,27 +167,6 @@
     z-index: 10;
   }
 
-  .top-bar nav {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-
-  .bottom-bar nav {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-
-  .side-bar-small {
-    display: flex;
-    
-    flex-direction: column-reverse; /* This flips the order so .top-bar can be first */
-  }
 
   .icon {
     
@@ -209,3 +191,8 @@
     display: none;
   }
 }
+@media (max-height: 560px) {
+  .more-options {
+    display: none; /* Hide the more options button on small screens */
+  }
+} 

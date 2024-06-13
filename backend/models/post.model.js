@@ -12,46 +12,37 @@ const PostSchema = new mongoose.Schema({
     ref: 'User',
     index: true,
   },
-
   title: {
     type: String,
     required: false,
   },
-
   content: {
     type: String,
     required: true,
   },
-
   media: {
     type: String,
     required: true,
   },
-
   mediaType: {
     type: String,
     required: true,
   },
-
   thumbnail: {
     type: String,
   },
-
   likes: {
     type: Number,
     default: 0,
   },
-
   created: {
     type: Date,
     default: Date.now,
   },
-
   updated: {
     type: Date,
     default: Date.now,
   },
-
   comments: [
     {
       type: ObjectId,
@@ -103,7 +94,7 @@ async function fetchLikedStatus(userId, postIds) {
   return likedStatus;
 }
 
-PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
+PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 10) {
   const followingIds = await fetchFollowingIds(userId);
 
   let posts = await this.find({ author: { $in: followingIds } })
@@ -111,73 +102,52 @@ PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
     .skip((page - 1) * limit)
     .limit(limit)
     .lean()
-    .populate([
-      { path: 'author', select: 'firstName lastName profileImage userName' },
-    ])
-    .exec();
+    .populate('author', 'firstName lastName profileImage userName');
 
-  // Check if additional posts are needed to meet the minimum threshold
-  const minimumThreshold = 5;
-  if (posts.length < minimumThreshold) {
-    const additionalPostsNeeded = minimumThreshold - posts.length;
-    const topLikedOrRecentPosts = await this.find({
-      _id: { $nin: posts.map((post) => post._id) },
-    })
+  if (posts.length < limit) {
+    const additionalPostsNeeded = limit - posts.length;
+    const topLikedOrRecentPosts = await this.find({ author: { $nin: followingIds } })
       .sort({ likes: -1, created: -1 })
+      .skip((page - 1) * limit)
       .limit(additionalPostsNeeded)
       .lean()
-      .populate([
-        { path: 'author', select: 'firstName lastName profileImage userName' },
-      ])
-      .exec();
+      .populate('author', 'firstName lastName profileImage userName');
 
     posts = [...posts, ...topLikedOrRecentPosts];
   }
 
-  const likeCounts = await fetchLikeCounts(posts.map((post) => post._id));
-  const followingStatus = await fetchFollowingStatus(
-    userId,
-    posts.map((post) => post.author._id),
-  );
-  const likedStatus = await fetchLikedStatus(
-    userId,
-    posts.map((post) => post._id),
-  );
+  const totalPosts = await this.countDocuments();
+  const hasMore = totalPosts > page * limit;
 
-  // Attach comments to each post
-  posts = await Promise.all(
-    posts.map(async (post) => {
-      const comments = await Comment.find({ post: post._id })
-        .sort({ created: -1 })
-        .populate('author', 'userName profileImage')
-        .lean()
-        .exec();
+  // Fetch like counts, following status, and liked status for enriched information
+  const enrichedPosts = await Promise.all(posts.map(async (post) => {
+    const comments = await Comment.find({ post: post._id })
+      .sort({ created: -1 })
+      .populate('author', 'userName profileImage')
+      .lean();
 
-      return {
-        ...post,
-        comments,
-        likeCount: likeCounts[post._id.toString()] || 0,
-        isFollowing: followingStatus[post.author._id.toString()] || false,
-        isLiked: likedStatus[post._id.toString()] || false,
-      };
-    }),
-  );
+    const likeCount = await fetchLikeCounts([post._id]);
+    const followingStatus = await fetchFollowingStatus(userId, [post.author._id]);
+    const likedStatus = await fetchLikedStatus(userId, [post._id]);
 
-  // Calculate weights for sorting posts
-  posts.forEach((post) => {
-    post.weight = 100; // Base weight
-    post.weight -= (new Date() - new Date(post.created)) / (1000 * 60 * 60); // Adjust for time decay
-    post.weight += post.likeCount || 0; // Adjust for likes
-  });
+    // Calculate the weight for sorting
+    const ageInHours = (Date.now() - new Date(post.created).getTime()) / (1000 * 3600);
+    const weight = (likeCount[post._id.toString()] || 0) - ageInHours;
 
-  // Sort posts based on weight
-  posts.sort((a, b) => b.weight - a.weight);
+    return {
+      ...post,
+      comments,
+      likeCount: likeCount[post._id.toString()] || 0,
+      isFollowing: followingStatus[post.author._id.toString()] || false,
+      isLiked: likedStatus[post._id.toString()] || false,
+      weight,
+    };
+  }));
 
-  const hasMore =
-    (await this.countDocuments({ author: { $in: followingIds } })) >
-    page * limit;
+  // Sort based on the weight
+  enrichedPosts.sort((a, b) => b.weight - a.weight);
 
-  return { posts, nextPage: hasMore ? page + 1 : null };
+  return { posts: enrichedPosts, nextPage: hasMore ? page + 1 : null, totalPosts };
 };
 
 const Post = mongoose.model('Post', PostSchema);

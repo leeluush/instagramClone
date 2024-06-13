@@ -4,15 +4,22 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.getFeed = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const feed = await Post.fetchFeed(userId, page, limit);
 
-  const feed = await Post.fetchFeed(userId);
-
-  if (!feed || feed.length === 0) {
-    return next(new AppError('No posts found', 404));
+  if (!feed || feed.posts.length === 0) {
+      return next(new AppError('No posts found', 404));
   }
 
+  // Ensure that only the specified limit of posts are returned in the response
+  feed.posts = feed.posts.slice(0, limit);
+
   res.status(200).json({
-    status: 'success',
-    data: feed,
+      status: 'success',
+      total: feed.totalPosts,
+      data: feed.posts,
+      nextPage: feed.nextPage
   });
 });
+

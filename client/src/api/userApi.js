@@ -11,18 +11,12 @@ export async function getSuggestedUsers() {
       },
     });
 
-    // Log response status for debugging
-    console.log(`Response status: ${response.status} ${response.statusText}`);
-
     if (!response.ok) {
-      // Attempt to read response body for detailed error message
-      const errorResponse = await response.text(); // Use .json() if the error response is in JSON format
-      console.error(`Failed to fetch suggested users: ${errorResponse}`);
+      const errorResponse = await response.text(); 
       throw new Error(`Failed to fetch suggested users: Status ${response.status}`);
     }
 
     const suggestedUsers = await response.json();
-    console.log("API Response:", suggestedUsers);
     return suggestedUsers;
   } catch (error) {
     // Log the entire error object

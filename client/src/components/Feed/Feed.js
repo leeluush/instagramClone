@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Post from "./Post";
 import { getFeed } from "../../api/feedApi";
 import Container from "@mui/material/Container";
 import { PostContext } from "../Post/PostContext";
-import { useContext } from "react";
 import "./Feed.css";
 
 function Feed() {
@@ -12,20 +11,25 @@ function Feed() {
   const [loading, setLoading] = useState(false);
   const { newPost } = useContext(PostContext);
 
-
   async function fetchFeed(page, limit = 10) {
     setLoading(true);
     try {
       const response = await getFeed(page, limit);
-      if (response.data && response.data.posts) {
-        setPosts(prevPosts => [...prevPosts, ...response.data.posts]);
+      if (response.data) {
+        setPosts((prevPosts) => {
+          const newPosts = response.data.filter(
+            (post) => !prevPosts.some((p) => p._id === post._id)
+          );
+          return [...prevPosts, ...newPosts];
+        });
       } else {
         console.error("No posts data received from the server");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching feed:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -33,32 +37,35 @@ function Feed() {
   }, [page]);
 
   useEffect(() => {
-    setPosts([]); // Clear the posts when a new post is added
-    fetchFeed(1); // Fetch the first page of the feed
+    if (newPost) {
+      setPosts((prevPosts) => [newPost, ...prevPosts]);
+    }
   }, [newPost]);
 
-  const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) return;
-    setPage(prevPage => prevPage + 1);
-  };
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const fromBottom = document.documentElement.offsetHeight - (window.innerHeight + document.documentElement.scrollTop);
+      if (fromBottom < 100 && !loading) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
 
   return (
     <Container maxWidth="sm">
       <ul className="post-list">
-        {posts.map((post) => (
-          <li key={post._id}>
+        {posts.map((post, index) => (
+          <li key={post._id || index}>
             <Post
               post={post}
               setPosts={setPosts}
               handlePostDeletion={() => {
                 const newPosts = posts.filter((p) => p._id !== post._id);
                 setPosts(newPosts);
-              }}       
+              }}
               comments={post.comments || []}
             />
           </li>
@@ -68,4 +75,5 @@ function Feed() {
     </Container>
   );
 }
+
 export default Feed;
