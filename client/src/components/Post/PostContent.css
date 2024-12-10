@@ -1,0 +1,23 @@
+
+.post-content {
+  font-size: 14px;
+  color: #262626;
+  line-height: 18px;
+}
+
+.post-content strong {
+  margin-right: 8px; /* Adds space to the right of the username */
+}
+
+
+
+.more-link, .less-link {
+  color: #0095f6;
+  margin-left: 4px; 
+  font-weight: bold; 
+}
+
+.more-link:hover, .less-link:hover {
+  text-decoration: underline; 
+  cursor: pointer;
+}

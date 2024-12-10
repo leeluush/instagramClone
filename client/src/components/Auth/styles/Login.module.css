@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(250, 250, 250);
+}
+
+.instagram-logo {
+  width: 175px;
+  height: 51px;
+  margin: 15px 0;
+}
+
+.box-1 {
+  height: 400px;
+  width: 350px;
+  border: 1px solid rgb(219, 219, 219);
+  background-color: rgb(255, 255, 255);
+}
+
+.box-2 {
+  height: 63px;
+  width: 350px;
+  border: 1px solid rgb(219, 219, 219);
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 10px 0;
+}
+
+input {
+  background-color: rgb(250, 250, 250);
+  font-weight: 400;
+  line-height: 18px;
+  font-size: 13px;
+  padding: 9px 0 7px 8px;
+  height: 36px;
+  width: 260px;
+  border: 0;
+  outline: none;
+  margin: 10px 0;
+  border: 1px solid rgb(219, 219, 219);
+}
+
+.login-button {
+  border-radius: 4px;
+  background-color: #0095f6;
+  color: rgb(255, 255, 255);
+  padding: 5px 9px;
+  width: 268px;
+  height: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.lines-box {
+  margin: 20px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 10px;
+  font-size: 13px;
+  color: #8e8e8e;
+  font-weight: bold;
+}
+
+.line-1 {
+  width: 106px;
+  height: 1px;
+  background: #dbdbdb;
+  margin-right: 10px;
+}
+
+.line-2 {
+  width: 106px;
+  height: 1px;
+  background: #dbdbdb;
+  margin-left: 10px;
+}
+
+.forgotten-password-link {
+ color:#385185;
+ font-size: 13px;
+ cursor: pointer;
+}
+
+.sign-up-span {
+  color:#385185;
+  font-size: 15px;
+  cursor: pointer;
+}

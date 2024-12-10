@@ -1,0 +1,56 @@
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.post-header-avatar {
+  margin-right: 10px; 
+}
+
+.post-header-username {
+  font-weight: bold;
+  color: #262626; 
+  font-size: 14px; 
+  margin-right: 4px
+}
+
+.post-header-username-timestamp {
+  display: flex;
+  align-items: center; 
+  gap: 4px;
+}
+
+
+
+.post-header-options {
+  display: flex;
+  align-items: center;
+}
+
+.post-header-options button {
+  font-size: 14px;
+  text-transform: none; 
+  color: #262626;
+  background-color: blue;
+  margin-left: 12px; 
+  
+}
+
+.post-header-options .MuiIconButton-root {
+  padding: 8px; 
+}
+
+
+.post-header-info {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Adjust the gap as needed */
+}
+
+.post-header-username, .post-header-timestamp {
+  line-height: normal; 
+  display: block; 
+  margin: 0; 
+}

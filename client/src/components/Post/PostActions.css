@@ -1,0 +1,17 @@
+.post-actions-container {
+  padding: 0px; /* Adjust padding to your preference */
+}
+
+
+
+
+.post-likes, .icon-button svg {
+  color: #000;
+}
+
+
+.icon-button svg {
+  margin-right: 2px;
+  font-size: 25px;
+}
+

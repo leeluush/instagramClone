@@ -1,0 +1,33 @@
+
+.suggested-users {
+  margin: 20px 0;
+}
+
+.suggested-user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.suggested-user img {
+  border-radius: 50%;
+  width: 40px; /* Adjust size as needed */
+  margin-right: 10px;
+}
+
+.user-info {
+  flex-grow: 1;
+}
+
+.user-info strong {
+  display: block;
+}
+
+button {
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}

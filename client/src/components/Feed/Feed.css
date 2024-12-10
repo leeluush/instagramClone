@@ -1,0 +1,18 @@
+.feed-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.posts-container {
+  max-width: 470px; 
+  margin: auto; 
+}
+
+.suggested-users-container {
+  position: fixed;
+  top: 88px; 
+  right: 20px;
+  width: 293px;
+  padding-top: 20px;
+}

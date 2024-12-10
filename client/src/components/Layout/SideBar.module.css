@@ -1,0 +1,211 @@
+.side-bar,
+.side-bar-medium {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  width: 244px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 40px 15px 15px;
+  border-right: 1px solid #dbdbdb;
+  overflow-y: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+
+
+.side-bar-medium {
+  width: 77px; 
+  padding-top: 20px; 
+  align-items: center;
+
+}
+
+.icons-container {
+  padding-top: 25px;
+  display: flex;;
+}
+
+.nav-item {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 15px 16px;
+
+
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-item:hover .icon,
+.nav-item-active .icon {
+  font-weight: bold;
+}
+
+.nav-item-active .link-text {
+  font-weight: bold;
+}
+
+.icon,
+.link-text {
+  color: #262626;
+  padding: 6px 16px;
+}
+
+.icon:hover,
+.link-text:hover {
+  color: #000;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.link-text {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+.profile-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.profile-text {
+  margin-left: 5px;
+}
+
+.nav-item-active {
+  background-color: transparent;
+  color: #fff;
+}
+
+@media (min-width: 767px) and (max-width: 992px) {
+  .side-bar {
+    width: 77px;
+    padding-top: 20px;
+    align-items: center;
+  }
+  .logo-container {
+    justify-content: center;
+    align-items: center;
+    height: 52px; /* Set the height to match other icons if needed */
+    display: flex;
+  }
+
+
+
+  .side-bar .logo-container {
+    display: none; /* Hide the large logo on medium screens */
+  }
+
+
+  .nav-item .link-text {
+    display: none;
+  }
+
+  .profile-image {
+    margin: auto;
+  }
+
+  .side-bar-medium .nav-item {
+    padding: 8px; /* Reduce padding to bring border closer to icons */
+    justify-content: center; /* Center icons */
+  }
+}
+
+
+
+.more-options {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  color: black;
+  box-sizing: border-box;
+}
+
+.hide-text {
+  display: none;
+}
+
+@media (max-width: 766px) {
+  .side-bar,
+  .side-bar-small {
+   
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 10px 0;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    z-index: 10;
+  }
+
+  .top-bar nav {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .bottom-bar nav {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .side-bar-small {
+    display: flex;
+    
+    flex-direction: column-reverse; /* This flips the order so .top-bar can be first */
+  }
+
+  .icon {
+    
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin-right: 20px;   } 
+
+  .nav-item {
+    padding: 5px;
+    flex-grow: 1;
+    justify-content: center;
+  }
+
+  .nav-item .link-text,
+  .hide-text {
+    display: none;
+  }
+
+  .profile-container,
+  .more-options {
+    display: none;
+  }
+}
