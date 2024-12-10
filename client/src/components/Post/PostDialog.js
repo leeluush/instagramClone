@@ -40,7 +40,7 @@ const PostDialog = ({
     event.preventDefault();
     if (!post || !user) return;
     try {
-      const response = await postComment(postId, comment, user._id);
+      await postComment(postId, comment, user._id);
       setComment(""); // Clear comment field
     } catch (error) {
       console.error("Failed to post comment:", error);
@@ -62,10 +62,19 @@ const PostDialog = ({
           </Grid>
           <Grid item xs={6} style={{ paddingLeft: "16px" }}>
             <Box display="flex" alignItems="flex-start" mb={2}>
-              <Avatar alt={userName} src={profileImage} sx={{ width: 32, height: 32, marginRight: 1 }} />
-              <Typography variant="body1"><strong>{userName}</strong> {content}</Typography>
+              <Avatar
+                alt={userName}
+                src={profileImage}
+                sx={{ width: 32, height: 32, marginRight: 1 }}
+              />
+              <Typography variant="body1">
+                <strong>{userName}</strong> {content}
+              </Typography>
             </Box>
-            <Typography variant="body2" style={{ paddingLeft: "40px", textDecoration: "none" }}>
+            <Typography
+              variant="body2"
+              style={{ paddingLeft: "40px", textDecoration: "none" }}
+            >
               {timeSincePost(new Date(created))}
             </Typography>
             <CommentList

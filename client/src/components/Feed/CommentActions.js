@@ -16,7 +16,6 @@ import {
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { AuthContext } from "../Auth/AuthContext";
 import { editComment as editCommentApi } from "../../api/commentApi";
-import { useCommentLikes } from "../../hooks/useCommentLikes"; 
 
 function CommentActions({
   commentId,
@@ -37,8 +36,8 @@ function CommentActions({
   const [isLiked, setIsLiked] = useState(initialIsLiked);
 
   useEffect(() => {
-    console.log('Initial Likes:', initialLikes);
-    console.log('Initial IsLiked:', initialIsLiked);
+    console.log("Initial Likes:", initialLikes);
+    console.log("Initial IsLiked:", initialIsLiked);
     setCurrentLikes(initialLikes);
     setIsLiked(initialIsLiked);
   }, [initialLikes, initialIsLiked]);
@@ -67,7 +66,11 @@ function CommentActions({
 
   const handleSaveEdit = async () => {
     try {
-      const updatedCommentData = await editCommentApi(postId, commentId, editedComment);
+      const updatedCommentData = await editCommentApi(
+        postId,
+        commentId,
+        editedComment
+      );
       if (updatedCommentData) {
         updateComment(commentId, editedComment);
       }

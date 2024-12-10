@@ -1,6 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Card, Button, TextField, Typography, InputAdornment } from "@mui/material";
-import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
+import {
+  Card,
+  Button,
+  TextField,
+  Typography,
+  InputAdornment,
+} from "@mui/material";
+import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import PostHeader from "../Post/PostHeader";
 import PostMedia from "../Post/PostMedia";
 import PostContent from "../Post/PostContent";
@@ -9,32 +15,38 @@ import PostDialog from "../Post/PostDialog";
 import useFollowToggle from "../../hooks/useFollowToggle";
 import useComments from "../../hooks/useComments";
 import { AuthContext } from "../Auth/AuthContext";
-import { postComment } from "../../api/commentApi";
 import { usePostLikes } from "../../hooks/usePostLikes";
-import Picker from '@emoji-mart/react';
-import data from '@emoji-mart/data';
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 
 import "./Post.css";
 
 function Post({ post, handlePostDeletion }) {
-  const { comments, addComment, updateComment, removeComment } = useComments(post.comments);
+  const { comments, addComment, updateComment, removeComment } = useComments(
+    post.comments
+  );
   const { media, _id, author } = post;
   const [comment, setComment] = useState("");
   const [showPostButton, setShowPostButton] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const { user } = useContext(AuthContext);
-  const { likes, liked, handleLike } = usePostLikes(_id, post.likeCount, post.isLiked);
-  const { followedUsers, handleFollowToggle } = useFollowToggle({ [post.author._id]: post.isFollowing });
+  const { likes, liked, handleLike } = usePostLikes(
+    _id,
+    post.likeCount,
+    post.isLiked
+  );
+  const { followedUsers, handleFollowToggle } = useFollowToggle({
+    [post.author._id]: post.isFollowing,
+  });
   const [isPickerVisible, setIsPickerVisible] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (user && post._id && comment.trim()) {
-      await addComment(post._id, comment, user._id)
-        setComment("");
+      await addComment(post._id, comment, user._id);
+      setComment("");
     }
   };
-
 
   const handleCommentChange = (e) => {
     const text = e.target.value;
@@ -88,7 +100,6 @@ function Post({ post, handlePostDeletion }) {
         comments={comments}
         deleteComment={removeComment}
         updateComment={updateComment}
-
       />
       <form onSubmit={handleSubmit} className="comment-form">
         <TextField
@@ -132,11 +143,18 @@ function Post({ post, handlePostDeletion }) {
           }}
         />
         <Button onClick={() => setIsPickerVisible(!isPickerVisible)}>
-          <EmojiEmotionsOutlinedIcon fontSize="xsmall" style={{ color: "gray"}} />
+          <EmojiEmotionsOutlinedIcon
+            fontSize="xsmall"
+            style={{ color: "gray" }}
+          />
         </Button>
         {isPickerVisible && (
           <div className="emoji-picker-container">
-            <Picker data={data} previewPosition="none" onEmojiSelect={handleEmojiSelect} />
+            <Picker
+              data={data}
+              previewPosition="none"
+              onEmojiSelect={handleEmojiSelect}
+            />
           </div>
         )}
       </form>
