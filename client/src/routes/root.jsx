@@ -1,7 +1,7 @@
 import UserHeader from "../components/Shared/UserHeader";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import SideBar from "../components/Layout/SideBar";
+import SideBar from "../components/Layouts/Sidebar";
 import { AuthContext } from "../components/Auth/AuthContext";
 import { useState } from "react";
 import { PostContext } from "../components/Post/PostContext";

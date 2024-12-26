@@ -1,0 +1,29 @@
+.mainLayout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  width: 240px; /* Set fixed width for the sidebar */
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff; /* Optional for better visual alignment */
+  border-right: 1px solid #dbdbdb;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  max-width: 100%;
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dbdbdb;
+}
