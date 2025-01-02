@@ -1,83 +1,48 @@
-/* SideBar.module.css */
-
 .sideBar {
-  background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 244px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  border-right: 1px solid #dbdbdb;
-  overflow-y: auto;
-  box-sizing: border-box;
+  width: 250px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  padding: 10px;
 }
 
 .logoContainer {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 20px 0;
 }
 
 .navContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  gap: 10px;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  gap: 12px; /* Consistent spacing between icon and label */
-  padding: 10px 15px;
+  gap: 10px;
+  padding: 10px;
   border: none;
   background: none;
+  cursor: pointer;
   font-size: 16px;
   color: #333;
-  text-align: left;
-  cursor: pointer;
 }
 
 .navItem:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.navItem.active {
-  font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-left: 3px solid #3897f0;
+  background-color: #f5f5f5;
+  border-radius: 5px;
 }
 
 .navLabel {
-  white-space: nowrap; /* Prevent text wrapping */
+  display: inline-block;
 }
 
 .avatar {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-}
-
-@media (max-width: 766px) {
-  .sideBar {
-    flex-direction: row;
-    height: 60px;
-    width: 100%;
-    align-items: center;
-  }
-
-  .navContainer {
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 0;
-  }
-
-  .navLabel {
-    display: none; /* Hide labels on small screens */
-  }
-
-  .logoContainer {
-    display: none; /* Hide the logo on small screens */
-  }
 }

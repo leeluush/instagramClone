@@ -1,7 +1,6 @@
 import UserHeader from "../components/Shared/UserHeader";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import SideBar from "../components/Layouts/Sidebar";
 import { AuthContext } from "../components/Auth/AuthContext";
 import { useState } from "react";
 import { PostContext } from "../components/Post/PostContext";
@@ -32,9 +31,6 @@ export default function Root() {
     <PostContext.Provider value={{ newPost, setNewPost }}>
       <div className="App">
         {user && <UserHeader />}
-        <div className="SideBar">
-          {user && <SideBar onNewPost={handleNewPost} />}
-        </div>
         <main className="Main">
           <Outlet newPost={newPost} />
         </main>

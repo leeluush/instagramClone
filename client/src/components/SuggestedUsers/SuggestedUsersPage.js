@@ -17,29 +17,21 @@ function SuggestedUsersPage() {
   const { followedUsers, handleFollowToggle } = useFollowToggle(initialState);
 
   if (isLoading) {
-    return (
-      <MainLayout>
-        <div>Loading...</div>
-      </MainLayout>
-    );
+    return <div>Loading...</div>;
   }
   return (
-    <MainLayout>
-      <div className="suggested-users-page">
-        <h1>Suggested Users</h1>
-        {suggestedUsers.map((suggestedUser) => (
-          <SuggestedUserItem
-            key={suggestedUser._id}
-            user={suggestedUser}
-            isOnSuggestedPage={true}
-            onFollowToggle={() =>
-              handleFollowToggle(user._id, suggestedUser._id)
-            }
-            isFollowing={!!followedUsers[suggestedUser._id]}
-          />
-        ))}
-      </div>
-    </MainLayout>
+    <div className="suggested-users-page">
+      <h1>Suggested Users</h1>
+      {suggestedUsers.map((suggestedUser) => (
+        <SuggestedUserItem
+          key={suggestedUser._id}
+          user={suggestedUser}
+          isOnSuggestedPage={true}
+          onFollowToggle={() => handleFollowToggle(user._id, suggestedUser._id)}
+          isFollowing={!!followedUsers[suggestedUser._id]}
+        />
+      ))}
+    </div>
   );
 }
 

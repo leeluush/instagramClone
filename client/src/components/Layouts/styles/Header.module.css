@@ -1,0 +1,47 @@
+/* General header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff;
+  height: 60px;
+  z-index: 100;
+  position: sticky;
+  top: 0;
+}
+
+/* Left section (Logo) */
+.left {
+  display: none; /* Hidden by default */
+}
+
+.logo {
+  height: 30px;
+  width: auto;
+  cursor: pointer;
+}
+
+/* Center section (Notification icon) */
+.center {
+  display: none; /* Hidden by default */
+}
+
+/* Right section (User Avatar) */
+.right {
+  display: none; /* Hidden by default */
+}
+
+/* Small screens */
+@media (max-width: 766px) {
+  .left,
+  .center,
+  .right {
+    display: flex;
+  }
+
+  .center {
+    justify-content: center;
+  }
+}

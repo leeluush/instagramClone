@@ -1,19 +1,41 @@
 import React, { useContext } from "react";
-import Sidebar from "./Sidebar"; // Existing Sidebar component
-import Header from "./Header"; // Optional new Header component
+import Sidebar from "./Sidebar"; // Left Sidebar
+import SuggestedUsers from "../SuggestedUsers/SuggestedUsersItem"; // Right Sidebar
+import Header from "./Header"; // Header Component
 import { AuthContext } from "../Auth/AuthContext";
-import styles from "./styles/SideBar.module.css"; // Reuse existing styles
+import styles from "./styles/MainLayout.module.css";
 
-function MainLayout({ children, showHeader = true }) {
-  const { user } = useContext(AuthContext); // Check if user is logged in
+function MainLayout({ children }) {
+  const { user } = useContext(AuthContext);
 
   return (
     <div className={styles.mainLayout}>
-      {user && <Sidebar />} {/* Show Sidebar only if logged in */}
-      <div className={styles.content}>
-        {showHeader && <Header />} {/* Show Header based on props */}
-        <main>{children}</main>
-      </div>
+      {/* Sidebar */}
+      <aside className={styles.sidebar}>
+        <Sidebar user={user} />
+      </aside>
+
+      {/* Main Content */}
+      <main className={styles.mainContent}>
+        <Header user={user} />
+
+        {/* Stories Section */}
+        <div className={styles.stories}>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className={styles.storyPlaceholder}>
+              Coming Soon
+            </div>
+          ))}
+        </div>
+
+        {/* Feed Section */}
+        <section className={styles.feed}>{children}</section>
+      </main>
+
+      {/* Right Sidebar */}
+      <aside className={styles.suggested}>
+        <SuggestedUsers />
+      </aside>
     </div>
   );
 }

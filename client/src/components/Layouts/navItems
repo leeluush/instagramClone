@@ -1,0 +1,14 @@
+import React from "react";
+import HomeIcon from "@mui/icons-material/Home";
+import SearchIcon from "@mui/icons-material/Search";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import Avatar from "@mui/material/Avatar";
+
+const navItems = [
+  { label: "Home", icon: <HomeIcon />, route: "/home" },
+  { label: "Search", icon: <SearchIcon />, route: "/search" },
+  { label: "Create", icon: <AddBoxIcon />, route: "/create" },
+  // Additional icons...
+];
+
+export default navItems;
