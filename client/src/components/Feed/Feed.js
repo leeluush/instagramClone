@@ -27,7 +27,7 @@ function Feed() {
   };
 
   return (
-    <div className="feed">
+    <div className="feed-container">
       <ul className="post-list">
         {posts.map((post) => (
           <li key={post._id}>

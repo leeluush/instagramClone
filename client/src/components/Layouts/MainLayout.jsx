@@ -20,7 +20,7 @@ function MainLayout({ children }) {
         <Header user={user} />
 
         {/* Stories Section */}
-        <div className={styles.stories}>
+        <div className={styles.storiesContainer}>
           {Array.from({ length: 5 }).map((_, index) => (
             <div key={index} className={styles.storyPlaceholder}>
               Coming Soon

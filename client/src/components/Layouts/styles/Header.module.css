@@ -1,15 +1,14 @@
-/* General header styling */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  border-bottom: 1px solid #ddd;
-  background-color: #fff;
-  height: 60px;
-  z-index: 100;
   position: sticky;
   top: 0;
+  z-index: 10;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  display: none; /* Hide by default */
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 60px;
 }
 
 /* Left section (Logo) */
@@ -31,6 +30,12 @@
 /* Right section (User Avatar) */
 .right {
   display: none; /* Hidden by default */
+}
+
+@media (max-width: 1024px) {
+  .header {
+    display: flex;
+  }
 }
 
 /* Small screens */

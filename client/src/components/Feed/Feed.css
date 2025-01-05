@@ -1,18 +1,14 @@
 .feed-container {
   display: flex;
   justify-content: center;
-  padding-top: 20px;
 }
 
-.posts-container {
-  max-width: 470px; 
-  margin: auto; 
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.suggested-users-container {
-  position: fixed;
-  top: 88px; 
-  right: 20px;
-  width: 293px;
-  padding-top: 20px;
+.post-list li {
+  margin-bottom: 20px;
 }

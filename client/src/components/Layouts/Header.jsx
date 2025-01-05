@@ -1,42 +1,34 @@
 import React from "react";
-import { useMediaQuery } from "@mui/material";
+import ThreadsIcon from "@mui/icons-material/Forum";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Avatar from "@mui/material/Avatar";
 import styles from "./styles/Header.module.css";
 
 function Header({ user }) {
-  const isSmallScreen = useMediaQuery("(max-width: 766px)");
-
   return (
     <header className={styles.header}>
-      {isSmallScreen && (
-        <>
-          {/* Logo */}
-          <div className={styles.left}>
-            <img
-              src="/path-to-your-logo/logo-icon.png"
-              alt="Instagram"
-              className={styles.logo}
-            />
-          </div>
+      {/* Center: Stories Placeholder */}
+      <div className={styles.stories}>
+        <ul>
+          {[...Array(5)].map((_, index) => (
+            <li key={index} className={styles.storyPlaceholder}>
+              <div className={styles.circle}></div>
+              <span>Coming Soon</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-          {/* Notification Icon */}
-          <div className={styles.center}>
-            <button className={styles.navItem}>
-              <FavoriteIcon />
-            </button>
-          </div>
-
-          {/* User Avatar */}
-          <div className={styles.right}>
-            <Avatar
-              src={user?.profileImage}
-              alt="User Avatar"
-              className={styles.avatar}
-            />
-          </div>
-        </>
-      )}
+      {/* Right: Threads, Notifications, and Profile */}
+      <div className={styles.right}>
+        <button className={styles.iconButton}>
+          <ThreadsIcon />
+        </button>
+        <button className={styles.iconButton}>
+          <FavoriteIcon />
+        </button>
+        <Avatar src={user?.profileImage} alt={user?.userName} />
+      </div>
     </header>
   );
 }
