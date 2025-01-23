@@ -19,9 +19,7 @@ export async function refreshToken() {
   }
 }
 
-
-
-export async function getFeed(page = 1, limit = 10) {
+export async function getFeed(page = 1, limit = 20) {
   try {
     let response = await fetch(`/api/feed?page=${page}&limit=${limit}`, {
       credentials: "include",

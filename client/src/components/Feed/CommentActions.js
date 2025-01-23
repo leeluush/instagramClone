@@ -1,21 +1,22 @@
-import { CardActions, Button, TextField } from "@mui/material";
-import { useContext, useState, useEffect } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { toggleLike } from "../../api/likesApi";
-import timeSincePost from "../../utils/timeSincePost";
+import React, { useContext, useState, useEffect } from "react";
 import {
+  IconButton,
+  Menu,
+  MenuItem,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton,
-  Menu,
-  MenuItem,
+  Button,
+  TextField,
 } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { AuthContext } from "../Auth/AuthContext";
+import { toggleLike } from "../../api/likesApi";
 import { editComment as editCommentApi } from "../../api/commentApi";
+import timeSincePost from "../../utils/timeSincePost";
 
 function CommentActions({
   commentId,
@@ -26,7 +27,7 @@ function CommentActions({
   created,
   likes: initialLikes,
   liked: initialIsLiked,
-  updateComment, // This is passed from the parent component (CommentList)
+  updateComment,
 }) {
   const { user } = useContext(AuthContext);
   const [editedComment, setEditedComment] = useState(content);
@@ -36,52 +37,13 @@ function CommentActions({
   const [isLiked, setIsLiked] = useState(initialIsLiked);
 
   useEffect(() => {
-    console.log("Initial Likes:", initialLikes);
-    console.log("Initial IsLiked:", initialIsLiked);
     setCurrentLikes(initialLikes);
     setIsLiked(initialIsLiked);
   }, [initialLikes, initialIsLiked]);
 
   const timeSince = timeSincePost(new Date(created));
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleEditOpen = () => {
-    setEditDialogOpen(true);
-  };
-
-  const handleEditClose = () => {
-    setEditDialogOpen(false);
-  };
-
-  const handleEditChange = (event) => {
-    setEditedComment(event.target.value);
-  };
-
-  const handleSaveEdit = async () => {
-    try {
-      const updatedCommentData = await editCommentApi(
-        postId,
-        commentId,
-        editedComment
-      );
-      if (updatedCommentData) {
-        updateComment(commentId, editedComment);
-      }
-      handleEditClose();
-    } catch (error) {
-      console.error(`Failed to edit comment: ${commentId}`, error);
-    }
-  };
-
   const handleLike = async () => {
-    // Optimistically update UI
     const newLikedStatus = !isLiked;
     const newLikesCount = isLiked ? currentLikes - 1 : currentLikes + 1;
 
@@ -95,101 +57,166 @@ function CommentActions({
         user._id,
         false
       );
-
-      // Assuming response contains the updated like count
       setCurrentLikes(response.likeCount);
-      setIsLiked(newLikedStatus); // Assuming the API toggles the like status
     } catch (error) {
-      // Revert to initial state in case of error
       setCurrentLikes(initialLikes);
       setIsLiked(initialIsLiked);
       console.error("Could not update like status:", error);
     }
   };
 
-  const userId = user.id || user._id;
-
-  const showActions =
-    user &&
-    userId &&
-    commentAuthorId &&
-    userId.toString() === commentAuthorId.toString();
-
-  useEffect(() => {
-    if (editDialogOpen) {
-      setEditedComment(content);
+  const handleEditSave = async () => {
+    try {
+      await editCommentApi(postId, commentId, editedComment);
+      updateComment(commentId, editedComment);
+      setEditDialogOpen(false);
+    } catch (error) {
+      console.error(`Failed to edit comment: ${commentId}`, error);
     }
-  }, [editDialogOpen, content]);
+  };
+
+  const userId = user.id || user._id;
+  const showActions =
+    user && userId?.toString() === commentAuthorId?.toString();
 
   return (
-    <CardActions>
-      <IconButton onClick={handleLike}>
-        {isLiked ? (
-          <FavoriteIcon style={{ color: "red" }} />
-        ) : (
-          <FavoriteBorderIcon />
+    <div className="comment-actions-container">
+      <div className="comment-meta">
+        <span className="comment-time">{timeSince}</span>
+        {currentLikes > 0 && (
+          <span className="comment-likes">{currentLikes} likes</span>
         )}
-      </IconButton>
-      {currentLikes !== undefined ? (
-        <span>{currentLikes} likes</span>
-      ) : (
-        <span>Loading likes...</span>
-      )}
-      <span
-        style={{
-          color: "var(--secondary-color)",
-          cursor: "default",
-          marginLeft: "16px",
-        }}
-      >
-        {timeSince}
-      </span>
-      <span
-        style={{
-          color: "var(--secondary-color)",
-          cursor: "pointer",
-          marginLeft: "16px",
-        }}
-      >
-        Reply
-      </span>
-      {showActions && (
-        <>
-          <IconButton onClick={handleMenuClick}>
-            <MoreHorizIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-          >
-            <MenuItem onClick={handleEditOpen}>Edit</MenuItem>
-            <MenuItem onClick={() => deleteComment(commentId, user._id)}>
-              Delete
-            </MenuItem>
-          </Menu>
-          <Dialog open={editDialogOpen} onClose={handleEditClose}>
-            <DialogTitle>Edit your comment</DialogTitle>
-            <DialogContent>
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Edit Comment"
-                type="text"
-                fullWidth
-                value={editedComment}
-                onChange={handleEditChange}
-                InputLabelProps={{ shrink: true }}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleEditClose}>Close</Button>
-              <Button onClick={handleSaveEdit}>Save</Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      )}
-    </CardActions>
+        <button className="comment-reply">Reply</button>
+      </div>
+
+      <div className="comment-buttons">
+        <IconButton
+          onClick={handleLike}
+          className={`like-button ${isLiked ? "liked" : ""}`}
+          size="small"
+        >
+          {isLiked ? (
+            <FavoriteIcon fontSize="small" />
+          ) : (
+            <FavoriteBorderIcon fontSize="small" />
+          )}
+        </IconButton>
+
+        {showActions && (
+          <>
+            <IconButton
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              size="small"
+              className="more-button"
+            >
+              <MoreHorizIcon fontSize="small" />
+            </IconButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={() => setAnchorEl(null)}
+              transformOrigin={{ vertical: -25, horizontal: "right" }}
+              PaperProps={{
+                sx: {
+                  boxShadow: "0 2px 16px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "8px",
+                  width: "200px",
+                },
+              }}
+            >
+              <MenuItem
+                onClick={() => {
+                  setEditDialogOpen(true);
+                  setAnchorEl(null);
+                }}
+                sx={{ fontSize: 14, minHeight: 40, justifyContent: "center" }}
+              >
+                Edit
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  deleteComment(commentId);
+                  setAnchorEl(null);
+                }}
+                sx={{
+                  fontSize: 14,
+                  minHeight: 40,
+                  justifyContent: "center",
+                  color: "rgb(237, 73, 86)",
+                }}
+              >
+                Delete
+              </MenuItem>
+            </Menu>
+
+            <Dialog
+              open={editDialogOpen}
+              onClose={() => setEditDialogOpen(false)}
+              PaperProps={{
+                sx: {
+                  borderRadius: "12px",
+                  width: "400px",
+                },
+              }}
+            >
+              <DialogTitle
+                sx={{
+                  textAlign: "center",
+                  borderBottom: "1px solid rgb(219, 219, 219)",
+                  padding: "10px 24px",
+                  fontSize: "16px",
+                }}
+              >
+                Edit comment
+              </DialogTitle>
+              <DialogContent sx={{ padding: "16px" }}>
+                <TextField
+                  autoFocus
+                  fullWidth
+                  multiline
+                  value={editedComment}
+                  onChange={(e) => setEditedComment(e.target.value)}
+                  variant="standard"
+                  InputProps={{
+                    sx: {
+                      fontSize: 14,
+                      padding: "8px 0",
+                    },
+                  }}
+                />
+              </DialogContent>
+              <DialogActions
+                sx={{
+                  padding: "8px",
+                  borderTop: "1px solid rgb(219, 219, 219)",
+                }}
+              >
+                <Button
+                  onClick={() => setEditDialogOpen(false)}
+                  sx={{
+                    color: "rgb(38, 38, 38)",
+                    textTransform: "none",
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleEditSave}
+                  sx={{
+                    color: "#0095f6",
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Done
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 

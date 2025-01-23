@@ -2,31 +2,34 @@ import React from "react";
 import { IconButton, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import TelegramIcon from "@mui/icons-material/Telegram";
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import "./PostActions.css";
 
 function PostActions({ handleDialogOpen, likeCount, isLiked, onLike }) {
-  const postLikes = typeof likeCount === "number" ? `${likeCount} likes` : "Loading likes...";
-
   return (
-    <div className="post-actions-container">
-      <div className="post-actions-icons" style={{marginLeft: '0px' }}>
-        <IconButton onClick={onLike} className="icon-button" aria-label={isLiked ? "Unlike" : "Like"} style={{paddingLeft: '0px'}}>
-          {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon  />}
+    <div className="post-actions">
+      <div className="actions-left">
+        <IconButton
+          onClick={onLike}
+          className={`action-button ${isLiked ? "liked" : ""}`}
+        >
+          {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
-        <IconButton onClick={handleDialogOpen} className="icon-button" aria-label="Comment">
-          <ChatBubbleOutlineIcon />
+        <IconButton onClick={handleDialogOpen} className="action-button">
+          <ChatBubbleOutlineRoundedIcon />
         </IconButton>
-        <IconButton className="icon-button" aria-label="Share">
-          <TelegramIcon />
+        <IconButton className="action-button">
+          <SendOutlinedIcon />
         </IconButton>
       </div>
-      <Typography variant="body2" color="textPrimary" className="post-likes">
-        <strong>{postLikes}</strong>
-      </Typography>
+      <div className="actions-right">
+        <IconButton className="action-button">
+          <BookmarkBorderOutlinedIcon />
+        </IconButton>
+      </div>
     </div>
   );
 }
-
 export default PostActions;

@@ -4,18 +4,19 @@ import {
   Typography,
   Box,
   IconButton,
-  Button,
   Dialog,
   List,
   ListItemButton,
-  ListItemText
+  ListItemText,
 } from "@mui/material";
-import timeSincePost from "../../utils/timeSincePost";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { AuthContext } from "../Auth/AuthContext";
 import EditPost from "../CreatePost/EditPost";
 import { deletePostApi } from "../../api/postsApi";
 import useDialog from "../../hooks/useDialog";
+import timeSincePost from "../../utils/timeSincePost";
+
+import "./PostHeader.css";
 
 function PostHeader({
   post,
@@ -40,55 +41,97 @@ function PostHeader({
 
   if (!post || !post.author) return null;
   const { userName, profileImage } = post.author;
-  const { created } = post;
-  const createdDate = new Date(created);
-  const timeSince = timeSincePost(createdDate);
+  const timeSince = timeSincePost(new Date(post.created));
 
   return (
-    <Box mb={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border:'none'}}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <div className="post-header">
+      <div className="post-header-left">
         <Avatar
-          alt={userName}
           src={profileImage}
-          sx={{ width: 32, height: 32 , marginTop: 1}}
+          alt={userName}
+          className="post-header-avatar"
         />
-        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '10px'}}>
-          <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#262626', fontSize: '14px' ,marginLeft:'1px'}}>
+        <div className="post-header-info">
+          <a href="#" className="post-header-username">
             {userName}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
-            {'· ' + timeSince}
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          </a>
+          <span className="post-header-time">{timeSince}</span>
+        </div>
+      </div>
+
+      <div className="post-header-actions">
         {user && user._id !== post.author._id && (
-          <Button
+          <button
+            className="post-header-button"
             onClick={() => handleFollowToggle(user._id, post.author._id)}
-            variant="contained"
-            size="small"
-            sx={{width: '95px', marginTop: '10px', fontSize: '12px'}}
-            
           >
             {isFollowing ? "Unfollow" : "Follow"}
-          </Button>
+          </button>
         )}
+
         {user && user._id === post.author._id && (
           <IconButton
-            sx={{ '&:hover': { bgcolor: 'lightgrey' } }}
             onClick={optionsDialog.openDialog}
+            sx={{
+              padding: "8px",
+              "&:hover": { backgroundColor: "transparent" },
+            }}
           >
             <MoreHorizIcon />
           </IconButton>
         )}
-      </Box>
-      <Dialog onClose={optionsDialog.closeDialog} open={optionsDialog.isOpen}>
-        <List>
-          <ListItemButton onClick={editDialog.openDialog}>
-            <ListItemText primary="Edit Post" />
+      </div>
+
+      <Dialog
+        onClose={optionsDialog.closeDialog}
+        open={optionsDialog.isOpen}
+        PaperProps={{
+          sx: {
+            borderRadius: "12px",
+            width: "400px",
+          },
+        }}
+      >
+        <List sx={{ padding: 0 }}>
+          <ListItemButton
+            onClick={editDialog.openDialog}
+            sx={{
+              py: 1.5,
+              borderBottom: "1px solid rgb(219, 219, 219)",
+              justifyContent: "center",
+              "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.04)" },
+            }}
+          >
+            <ListItemText
+              primary="Edit Post"
+              primaryTypographyProps={{
+                sx: {
+                  textAlign: "center",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                },
+              }}
+            />
           </ListItemButton>
-          <ListItemButton onClick={handleDeletePost}>
-            <ListItemText primary="Delete Post" />
+          <ListItemButton
+            onClick={handleDeletePost}
+            sx={{
+              py: 1.5,
+              justifyContent: "center",
+              "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.04)" },
+            }}
+          >
+            <ListItemText
+              primary="Delete Post"
+              primaryTypographyProps={{
+                sx: {
+                  textAlign: "center",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#ed4956",
+                },
+              }}
+            />
           </ListItemButton>
         </List>
       </Dialog>
@@ -99,7 +142,7 @@ function PostHeader({
         post={post}
         fetchPosts={fetchPosts}
       />
-    </Box>
+    </div>
   );
 }
 

@@ -18,12 +18,10 @@ function UserHeader() {
   );
   const { followedUsers, handleFollowToggle } = useFollowToggle(initialState);
 
-
   const handleSeeAllClick = () => {
     navigate("/suggested-for-you");
   };
 
- 
   const { profileImage, userName, email } = user || {};
 
   if (!profileImage || !userName || !email) {
@@ -35,31 +33,34 @@ function UserHeader() {
   }
 
   return (
-    <div className="UserHeader">
-      <div className="UserProfile">
-        <img src={profileImage} alt={userName} className="UserProfileImage" />
-        <div className="UserInfo">
-          <h1>{userName}</h1>
-          <p>{email}</p>
+    <div>
+      <div className="UserHeader">
+        <div className="UserProfile">
+          <img src={profileImage} alt={userName} className="UserProfileImage" />
+          <div className="UserInfo">
+            <h1>{userName}</h1>
+            <p>{email}</p>
+          </div>
         </div>
-      </div>
-      <div className="SuggestedUsersSection">
-        <div className="SuggestedUsersHeader">
-          <h2>Suggested for you</h2>
-          <button className="SeeAllButton" onClick={handleSeeAllClick}>
-            See All
-          </button>
-        </div>
-        <div className='SuggestedUsers'>
-          {suggestedUsers.slice(0, 5).map((suggestedUser) => (
-            
-            <SuggestedUserItem
-              key={suggestedUser._id}
-              user={suggestedUser}
-              onFollowToggle={() => handleFollowToggle(user._id,suggestedUser._id)}
-              isFollowing={!!followedUsers[suggestedUser._id]}
-            />
-          ))}
+        <div className="SuggestedUsersSection">
+          <div className="SuggestedUsersHeader">
+            <h2>Suggested for you</h2>
+            <button className="SeeAllButton" onClick={handleSeeAllClick}>
+              See All
+            </button>
+          </div>
+          <div className="SuggestedUsers">
+            {suggestedUsers.slice(0, 5).map((suggestedUser) => (
+              <SuggestedUserItem
+                key={suggestedUser._id}
+                user={suggestedUser}
+                onFollowToggle={() =>
+                  handleFollowToggle(user._id, suggestedUser._id)
+                }
+                isFollowing={!!followedUsers[suggestedUser._id]}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

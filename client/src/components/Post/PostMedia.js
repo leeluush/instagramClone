@@ -1,27 +1,37 @@
-import React from "react";
-import { CardMedia } from "@mui/material";
+import React, { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
-function PostMedia({ media }) {
+const PostMedia = ({ media, sx = {} }) => {
+  const [loading, setLoading] = useState(true);
+
+  const handleLoad = () => {
+    setLoading(false);
+  };
+
+  const handleError = (e) => {
+    console.error("Error loading image:", e);
+    setLoading(false);
+  };
+
   return (
-    <div style={{ paddingTop: '125%', position: 'relative', width: '100%' }}>
-
-    <CardMedia
-      component="img"
-      height="auto"
-      image={media}
-      alt="Post media"
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-      }}
-
-      />
+    <div className="post-media-wrapper">
+      <div className="post-media-container">
+        {loading && (
+          <div className="media-loading">
+            <CircularProgress size={30} />
+          </div>
+        )}
+        <img
+          src={media}
+          alt="Post content"
+          className="post-media"
+          onLoad={handleLoad}
+          onError={handleError}
+          style={{ ...sx }}
+        />
       </div>
+    </div>
   );
-}
+};
 
 export default PostMedia;

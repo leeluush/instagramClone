@@ -2,55 +2,58 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  padding: 8px 12px;
+  height: 56px;
 }
 
-.post-header-avatar {
-  margin-right: 10px; 
-}
-
-.post-header-username {
-  font-weight: bold;
-  color: #262626; 
-  font-size: 14px; 
-  margin-right: 4px
-}
-
-.post-header-username-timestamp {
-  display: flex;
-  align-items: center; 
-  gap: 4px;
-}
-
-
-
-.post-header-options {
+.post-header-left {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
-
-.post-header-options button {
-  font-size: 14px;
-  text-transform: none; 
-  color: #262626;
-  background-color: blue;
-  margin-left: 12px; 
-  
-}
-
-.post-header-options .MuiIconButton-root {
-  padding: 8px; 
-}
-
 
 .post-header-info {
   display: flex;
   align-items: center;
-  gap: 4px; /* Adjust the gap as needed */
+  gap: 4px;
 }
 
-.post-header-username, .post-header-timestamp {
-  line-height: normal; 
-  display: block; 
-  margin: 0; 
+.post-header-username {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(38, 38, 38);
+  text-decoration: none;
+  line-height: 18px;
+}
+
+.post-header-time {
+  color: rgb(115, 115, 115);
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.post-header-time::before {
+  content: "•";
+  margin: 0 4px;
+}
+
+.post-header-button {
+  padding: 7px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(38, 38, 38);
+  background-color: rgb(239, 239, 239);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 85px;
+}
+
+.post-header-button:hover {
+  background-color: rgb(219, 219, 219);
+}
+
+.post-header-actions {
+  display: flex;
+  align-items: center;
 }

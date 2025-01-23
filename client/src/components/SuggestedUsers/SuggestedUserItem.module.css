@@ -1,40 +1,56 @@
 .SuggestedUserItem {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px; /* Space between items */
+  padding: 8px 0;
+  width: 100%;
 }
 
 .SuggestedUserImage {
-  width: 32px; 
-  height: 32px; 
-  border-radius: 50%; 
-  margin-right: 10px; 
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
 }
 
 .SuggestedUserInfo {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-grow: 1; 
+  flex: 1;
 }
 
 .SuggestedUserName {
-  font-weight: 500;
   font-size: 14px;
-    margin-right: auto; 
+  font-weight: 500;
+  color: #262626;
+  text-decoration: none;
+}
+
+.SuggestedUserName:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .FollowButton {
-  padding: 5px 15px; 
-  background-color: #ffff; 
-  color: #0095f6;
+  font-size: 12px;
+  font-weight: 600;
+  background: none;
   border: none;
-  border-radius: 4px; 
-  cursor: pointer; 
+  color: #0095f6;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 12px;
 }
 
+.FollowButton:hover {
+  color: #00376b;
+}
 
-.FollowButton.Following {
-  color: black
+.Following {
+  color: #262626;
+}
+
+.Following:hover {
+  color: #ed4956;
 }

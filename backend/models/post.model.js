@@ -62,6 +62,7 @@ const PostSchema = new mongoose.Schema({
 
 async function fetchFollowingIds(userId) {
   const followingDocs = await Follower.find({ user: userId });
+
   return followingDocs.map((doc) => doc.followee);
 }
 
@@ -106,9 +107,13 @@ async function fetchLikedStatus(userId, postIds) {
 PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
   const followingIds = await fetchFollowingIds(userId);
 
-  let posts = await this.find({ author: { $in: followingIds } })
+  const skip = (page - 1) * limit;
+  const followingQuery = { author: { $in: followingIds } };
+
+  // Fetch posts from followed authors
+  let posts = await this.find(followingQuery)
     .sort({ created: -1 })
-    .skip((page - 1) * limit)
+    .skip(skip)
     .limit(limit)
     .lean()
     .populate([
@@ -116,14 +121,16 @@ PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
     ])
     .exec();
 
-  // Check if additional posts are needed to meet the minimum threshold
-  const minimumThreshold = 5;
-  if (posts.length < minimumThreshold) {
-    const additionalPostsNeeded = minimumThreshold - posts.length;
-    const topLikedOrRecentPosts = await this.find({
-      _id: { $nin: posts.map((post) => post._id) },
+  // Fetch additional posts if needed
+  if (posts.length < limit) {
+    const additionalPostsNeeded = limit - posts.length;
+
+    const excludedPostIds = posts.map((post) => post._id);
+
+    const additionalPosts = await this.find({
+      _id: { $nin: excludedPostIds },
     })
-      .sort({ likes: -1, created: -1 })
+      .sort({ created: -1 })
       .limit(additionalPostsNeeded)
       .lean()
       .populate([
@@ -131,9 +138,23 @@ PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
       ])
       .exec();
 
-    posts = [...posts, ...topLikedOrRecentPosts];
+    posts = [...posts, ...additionalPosts];
   }
 
+  // Remove duplicates
+  const uniquePosts = [];
+  const seenIds = new Set();
+
+  posts.forEach((post) => {
+    if (!seenIds.has(post._id.toString())) {
+      seenIds.add(post._id.toString());
+      uniquePosts.push(post);
+    }
+  });
+
+  posts = uniquePosts;
+
+  // Fetch metadata and enrich posts (unchanged)
   const likeCounts = await fetchLikeCounts(posts.map((post) => post._id));
   const followingStatus = await fetchFollowingStatus(
     userId,
@@ -144,15 +165,13 @@ PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
     posts.map((post) => post._id),
   );
 
-  // Attach comments to each post
   posts = await Promise.all(
     posts.map(async (post) => {
       const comments = await Comment.find({ post: post._id })
         .sort({ created: -1 })
         .limit(3)
         .populate('author', 'userName profileImage')
-        .lean()
-        .exec();
+        .lean();
 
       return {
         ...post,
@@ -164,21 +183,14 @@ PostSchema.statics.fetchFeed = async function (userId, page = 1, limit = 20) {
     }),
   );
 
-  // Calculate weights for sorting posts
-  posts.forEach((post) => {
-    post.weight = 100; // Base weight
-    post.weight -= (new Date() - new Date(post.created)) / (1000 * 60 * 60); // Adjust for time decay
-    post.weight += post.likeCount || 0; // Adjust for likes
-  });
+  const totalPostCount = await this.countDocuments({});
+  const hasMore = totalPostCount > skip + posts.length;
 
-  // Sort posts based on weight
-  posts.sort((a, b) => b.weight - a.weight);
-
-  const hasMore =
-    (await this.countDocuments({ author: { $in: followingIds } })) >
-    page * limit;
-
-  return { posts, nextPage: hasMore ? page + 1 : null };
+  return {
+    posts,
+    hasMore,
+    nextPage: hasMore ? page + 1 : null,
+  };
 };
 
 const Post = mongoose.model('Post', PostSchema);

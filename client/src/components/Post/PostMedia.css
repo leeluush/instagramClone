@@ -1,0 +1,72 @@
+/* Base styles for feed view */
+.post-media-wrapper {
+  position: relative;
+  padding-bottom: 100%; /* Creates 1:1 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.post-media-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(250, 250, 250);
+}
+
+.post-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(250, 250, 250);
+  z-index: 1;
+}
+
+/* Dialog specific styles with proper specificity */
+.dialog-post-container .dialog-image-section {
+  width: 65%;
+  background: rgb(250, 250, 250);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-post-container .dialog-image-section .post-media-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.dialog-post-container .dialog-image-section .post-media-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.dialog-post-container .dialog-image-section .post-media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* This will maintain aspect ratio */
+}

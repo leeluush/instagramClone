@@ -1,23 +1,31 @@
-
+/* PostContent.css */
 .post-content {
+  padding: 0 16px;
+  margin: 8px 0;
   font-size: 14px;
-  color: #262626;
   line-height: 18px;
+  color: rgb(38, 38, 38);
+  word-break: break-word;
 }
 
 .post-content strong {
-  margin-right: 8px; /* Adds space to the right of the username */
+  font-weight: 600;
+  margin-right: 4px;
 }
 
-
-
-.more-link, .less-link {
-  color: #0095f6;
-  margin-left: 4px; 
-  font-weight: bold; 
+.content-preview {
+  display: inline;
 }
 
-.more-link:hover, .less-link:hover {
-  text-decoration: underline; 
+.more-link,
+.less-link {
+  color: rgb(142, 142, 142);
   cursor: pointer;
+  margin-left: 4px;
+  font-weight: 400;
+}
+
+.more-link:hover,
+.less-link:hover {
+  color: rgb(142, 142, 142);
 }

@@ -1,4 +1,3 @@
-import UserHeader from "../components/Shared/UserHeader";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../components/Auth/AuthContext";
@@ -8,11 +7,6 @@ import { PostContext } from "../components/Post/PostContext";
 export default function Root() {
   const { user } = useContext(AuthContext);
   const [newPost, setNewPost] = useState(false);
-
-  const handleNewPost = () => {
-    setNewPost((prevState) => !prevState);
-  };
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,13 +23,7 @@ export default function Root() {
 
   return (
     <PostContext.Provider value={{ newPost, setNewPost }}>
-      <div className="App">
-        {user && <UserHeader />}
-        <main className="Main">
-          <Outlet newPost={newPost} />
-        </main>
-        <footer className="Footer"></footer>
-      </div>
+      <Outlet />
     </PostContext.Provider>
   );
 }

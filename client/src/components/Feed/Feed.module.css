@@ -1,0 +1,35 @@
+.feedContainer {
+  width: 100%;
+  max-width: 470px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.postWrapper {
+  width: 100%;
+  background: #fff;
+  border-radius: 0;
+  margin-bottom: 12px;
+}
+
+.loader {
+  padding: 20px;
+  text-align: center;
+  color: #8e8e8e;
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .feedContainer {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .postWrapper {
+    border-left: none;
+    border-right: none;
+  }
+}

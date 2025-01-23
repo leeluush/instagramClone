@@ -1,71 +1,51 @@
-
-.SuggestedUsersPage {
-  width: 100%;
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-
-.SuggestedUsersHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  font-size: 1.5em;
-  font-weight: bold;
-}
-
-.SuggestedUsersList {
-  list-style-type: none; 
-  padding: 0;
-  margin: 0;
-}
-
 .SuggestedUserItem {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 0; 
-  border-bottom: 1px solid #dbdbdb;
+  padding: 8px 16px;
+  width: 100%;
 }
 
 .SuggestedUserImage {
-  width: 50px; 
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
+  margin-right: 12px;
   object-fit: cover;
-  margin-right: 20px; 
 }
 
 .SuggestedUserInfo {
-  flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .SuggestedUserName {
-  font-weight: 500;
   font-size: 14px;
-    margin-right: auto; 
+  font-weight: 600;
+  color: #262626;
 }
 
 .FollowButton {
-  background-color: #0095f6; 
-  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background: #0095f6;
   border: none;
-  border-radius: 4px;
-  padding: 5px 15px;
+  border-radius: 8px;
+  color: #ffffff;
   cursor: pointer;
-  text-transform: uppercase; 
-  font-weight: bold;
-  align-self: flex-start;
-  margin-left:auto;
+  padding: 7px 16px;
+}
+
+.FollowButton:hover {
+  background: #1877f2;
 }
 
 .Following {
-  background-color: #ffffff;
+  background: #efefef;
   color: #262626;
-  border: 1px solid #dbdbdb;
+}
+
+.Following:hover {
+  background: #dbdbdb;
 }

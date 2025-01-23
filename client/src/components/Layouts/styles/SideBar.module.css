@@ -1,48 +1,120 @@
-.sideBar {
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 244px;
+  height: 100vh;
+  padding: 8px 12px 20px;
+  border-right: 1px solid #dbdbdb;
+  background-color: #fff;
+  z-index: 3;
   display: flex;
   flex-direction: column;
-  width: 250px;
-  background-color: #fff;
-  border-right: 1px solid #ddd;
-  padding: 10px;
 }
 
 .logoContainer {
+  height: 72px; /* Reduced from 92px */
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  padding: 12px 12px; /* Adjusted padding */
+  margin-bottom: 16px; /* Reduced margin */
 }
 
-.navContainer {
+.nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  flex: 1;
+  padding: 0 12px; /* Added padding */
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
+  height: 48px; /* Fixed height */
+  padding: 12px 16px; /* Adjusted padding */
+  margin: 4px 0;
+  text-decoration: none;
+  color: #000;
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 16px;
-  color: #333;
+  transition: all 0.2s;
+  border-radius: 8px;
+  width: 100%; /* Full width */
 }
 
 .navItem:hover {
-  background-color: #f5f5f5;
-  border-radius: 5px;
+  background-color: #f2f2f2; /* Lighter hover state */
+}
+
+.navItem.active {
+  font-weight: 700;
+}
+
+.navItem.active .iconContainer svg {
+  transform: scale(1.1); /* Slightly larger icon for active state */
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px; /* Added fixed height */
+  margin-right: 16px;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.iconContainer svg {
+  width: 24px;
+  height: 24px;
 }
 
 .navLabel {
-  display: inline-block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px; /* Added line height */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+/* More menu button specific styling */
+.navItem.moreButton {
+  margin-top: auto; /* Push to bottom */
+  margin-bottom: 12px;
+}
+
+/* Avatar specific styling */
+.navItem .MuiAvatar-root {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    width: 72px;
+    padding: 8px 4px;
+  }
+
+  .logoContainer {
+    padding: 16px 4px;
+  }
+
+  .nav {
+    padding: 0 4px;
+  }
+
+  .navLabel {
+    display: none;
+  }
+
+  .navItem {
+    padding: 12px;
+    justify-content: center;
+  }
+
+  .iconContainer {
+    margin-right: 0;
+  }
 }
